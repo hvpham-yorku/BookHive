@@ -7,5 +7,5 @@ Parmoun Khalkhali Sharifi  |     E    |    219125046   |    parmounk@my.yorku.ca
 
 | Full Name | Section | Student ID | Email | Best Way to Contact | Discord Username |
 |-----------|---------|------------|-------|---------------------|------------------|
-| John Smit | A       | 1001234567 | j.smith@myv.yorku.ca | 6471234567 | jsmith#1234 |
+| Amira Mohamed| A       | 1001234567 | j.smith@myv.yorku.ca | 6471234567 | jsmith#1234 |
 
