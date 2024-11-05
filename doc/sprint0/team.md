@@ -5,3 +5,5 @@
 | Parmoun Khalkhali Sharifi|   E     | 219125046  | parmounk@my.yorku.ca |    Discord          |    Parmoun#8066       |
 | Sara Riazi               |   E     | 218775791  | sararia@my.yorku.ca  |    Discord          |    sahrah#0584        |
 | Noran Kerret             |   E     | 219305374  | norankrt@my.yorku.ca |    Discord          |    plaintortilla#7254 |
+
+Discord server invite link: https://discord.gg/TqUN6KaJ
