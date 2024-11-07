@@ -1,7 +1,3 @@
-# BookHive
-BookHive created by GitHub Classroom n
-
-
 # Motivation 
 This project aims to streamline and improve the library management system for both administrators and users. The goal is to provide a more efficient, user-friendly platform for managing library catalogs and improving the overall user experience. The system addresses common issues such as outdated catalog systems, poor user interfaces, and inefficient management practices. By creating a modern, easy-to-use system, this project enhances the management of smaller libraries and ensures a more seamless interaction for users and administrators alike.
 
