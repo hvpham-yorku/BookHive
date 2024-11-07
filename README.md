@@ -9,7 +9,7 @@ To run this project, you will need the following tools and software:
 3. HTML, CSS, JavaScript – for the graphical user interface (GUI) of the application.
 
 # Steps to Set Up:
-1. Install Eclipse:
+**1. Install Eclipse:**
 - Download Eclipse from https://www.eclipse.org/downloads/.
 - Install Eclipse IDE for Java Developers.
    
@@ -18,7 +18,7 @@ To run this project, you will need the following tools and software:
 - Set up a MySQL database for storing library information.
 
 3. Set Up the Frontend:
-- Ensure you have a web server (e.g., Apache) running for the frontend files (HTML, CSS, JavaScript).
+- Ensure you have a web server running for the frontend files (HTML, CSS, JavaScript).
 
 4. Run the Project:
 - Import the Java project into Eclipse.
