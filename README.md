@@ -4,34 +4,36 @@ This project aims to streamline and improve the library management system for bo
 
 # Installations needed
 **To run this project, you will need the following tools and software:** 
-**1. Eclipse** – for writing and running the Java code.
+**1. VSCODE** – for writing and running the Java code, API connection and React frontend.
 **2. MySQL** – for database management and storing library data.
-**3. HTML, CSS, JavaScript** – for the graphical user interface (GUI) of the application.
+**3. React, HTML, CSS, JavaScript** – for the graphical user interface (GUI) of the application.
 
 # Steps to Set Up:
-**1. Install Eclipse:**
-- Download Eclipse from https://www.eclipse.org/downloads/.
+**1. Install Springboot:**
+- Download VSCODE with springboot framework installed https://spring.io/guides/gs/guides-with-vscode.
 - Install Eclipse IDE for Java Developers.
+- Add jdk 11
+- setup dependencies for security and MYSQL
    
 **2. Install MySQL:**
 - Download and install MySQL from https://dev.mysql.com/downloads/.
 - Set up a MySQL database for storing library information.
+- Add neseccary extensions on vscode.
 
 **3. Set Up the Frontend:**
-- Ensure you have a web server running for the frontend files (HTML, CSS, JavaScript).
+- Ensure you have a web server running for the frontend files (HTML, CSS, JavaScript): localhost:3000
+- Install the React app and add the HTML, css classes.
 
 **4. Run the Project:**
-- Import the Java project into Eclipse.
-- Set up the database connection using MySQL.
-- Run the application and test the GUI in your browser.
-
+- For API connection, go to Postman and check the POST and GET enteries using json file specification under body section.
+- For frontend, go to the frontend folder(directory) and run: npm start --> wait for the webpage to load
 # Contribution 
 **1. Git Flow:**
 - We will use Git flow to manage our branches. This helps maintain a clean, organized workflow.
 
 **2. Branch Naming:**
 Use the following naming conventions for branches:
-- gui/<feature-name>:  for updates or new features related to the graphical user interface.
+- front/<feature-name>:  for updates or new features related to the graphical user interface.
 - database/<feature-name>: for changes or updates related to the database or its structure.
 - code/<feature-name>:  for changes related to the main code or backend logic.
 - main for the production-ready version.
