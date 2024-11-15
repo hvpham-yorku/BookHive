@@ -1,3 +1,5 @@
+Release Planning Meeting (RPM) Document
+
 1. Release Goal:
    The goal of this sprint is to implement the core functionality that allows users to register for an account and log in to access their dashboard.
    
@@ -16,5 +18,3 @@
    Selected tools: Java, MySQL,RESTful API, Spring Boot
    Sprint Focus: Deliver fully functional user registration and login capabilities.
    Set up a basic dashboard as a placeholder for future features.
-
-
