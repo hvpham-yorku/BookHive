@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block content %}
+<h1 align="center">Welcome {{ name }}!</h1>
+<p align="center">
+    {% if is_admin %}
+        You are viewing the <strong>Admin Dashboard</strong>.
+    {% else %}
+        You are viewing the <strong>User Dashboard</strong>.
+    {% endif %}
+</p>
+{% endblock %}
+
+    
+
+    
+
+   
