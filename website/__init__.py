@@ -4,12 +4,14 @@ from flask_login import LoginManager
 from flask_mail import Mail  # Import Flask-Mail
 from os import path, getenv
 
+
 db = SQLAlchemy()
 DB_NAME = "database.db"
 mail = Mail()  # Initialize Flask-Mail
 
 def create_app():
     app = Flask(__name__)
+
     
     # App configurations
     app.config['SECRET_KEY'] = 'nono'

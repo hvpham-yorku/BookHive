@@ -44,15 +44,29 @@
       <div class="collapse navbar-collapse" id="navbar">
         <div class="navbar-nav">
           {% if current_user.is_authenticated %}
+          <!-- Common Links for All Logged-In Users -->
           <a class="nav-item nav-link" id="home" href="/">Home</a>
           <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
+    
+          <!-- Admin-Specific Link -->
+          {% if current_user.is_admin %}
+          <a class="nav-item nav-link" id="addBook" href="/add-book">Add Book</a>
+          {% endif %}
+    
+          <!-- User-Specific Link -->
+          {% if not current_user.is_admin %}
+          <a class="nav-item nav-link" id="availableBooks" href="/book-list">Available Books</a>
+          {% endif %}
+          
           {% else %}
+          <!-- Links for Non-Authenticated Users -->
           <a class="nav-item nav-link" id="login" href="/login">Login</a>
           <a class="nav-item nav-link" id="signUp" href="/sign-up">Sign Up</a>
           {% endif %}
         </div>
       </div>
     </nav>
+    
 
     {% with messages = get_flashed_messages(with_categories=true) %} {% if
     messages %} {% for category, message in messages %} {% if category ==

@@ -6,10 +6,11 @@ import json
 from flask_mail import Message
 from datetime import datetime, timedelta
 from . import mail
-
-views = Blueprint('views', __name__)
 from flask import Blueprint, render_template, redirect, url_for
 from flask_login import login_required, current_user
+from threading import Thread
+
+
 
 views = Blueprint('views', __name__)
 
@@ -22,20 +23,34 @@ def home():
         is_admin=current_user.is_admin
     )
 
-@views.route('/book-list', methods=['GET'])
+
+
+
+@views.route('/book-list')
 @login_required
 def book_list():
-    books = Book.query.all()  # Fetch all books in the database
-
-    # Get all books borrowed by the current user that are not yet returned
-    borrowed_books = BorrowedBook.query.filter_by(user_id=current_user.id, returned=False).all()
-    
-    # Create a set of book IDs that the user has borrowed
-    borrowed_book_ids = {borrowed.book_id for borrowed in borrowed_books}
-
+    books = Book.query.all()
+    # Get the IDs of books the user has already borrowed
+    borrowed_book_ids = [borrow.book_id for borrow in current_user.borrowed_books]
     return render_template('book_list.html', books=books, borrowed_book_ids=borrowed_book_ids)
 
 
+@views.route('/delete-book/<int:book_id>', methods=['POST'])
+@login_required
+def delete_book(book_id):
+    if not current_user.is_admin:
+        flash('Only admins can delete books.', category='error')
+        return redirect(url_for('views.book_list'))
+
+    book = Book.query.get(book_id)
+    if not book:
+        flash('Book not found.', category='error')
+        return redirect(url_for('views.book_list'))
+
+    db.session.delete(book)
+    db.session.commit()
+    flash(f'Book "{book.name}" has been deleted successfully.', category='success')
+    return redirect(url_for('views.book_list'))
 
 
 
@@ -79,6 +94,7 @@ def borrow_book(book_id):
     flash(f'You have successfully borrowed "{book.name}". A loan receipt has been emailed to you.', category='success')
     return redirect(url_for('views.book_list'))
 
+
 def send_loan_receipt(email, book_name, author, borrow_date, due_date):
     msg = Message(
         subject="Loan Receipt: Book Borrowed Successfully",
@@ -94,7 +110,7 @@ def send_loan_receipt(email, book_name, author, borrow_date, due_date):
 
         Please make sure to return the book by the due date.
 
-        Happy Reading :))
+        Happy Reading :)
         Library Management System
         """
     )
@@ -107,32 +123,65 @@ def send_loan_receipt(email, book_name, author, borrow_date, due_date):
 @views.route('/add-book', methods=['GET', 'POST'])
 @login_required
 def add_book():
-    # Only allow admins to access this route
     if not current_user.is_admin:
         flash("You do not have permission to access this page.", category='error')
         return redirect(url_for('views.home'))
-    
+
     if request.method == 'POST':
         name = request.form.get('name')
         author = request.form.get('author')
+        genre = request.form.get('genre')
         copies = request.form.get('copies')
+        content_link = request.form.get('content_link')
 
         if not name or not author or not copies:
-            flash('Please fill in all fields.', category='error')
+            flash('Please fill in all required fields.', category='error')
         else:
             new_book = Book(
                 name=name,
                 author=author,
+                genre=genre,
                 copies=int(copies),
                 remaining_copies=int(copies),
-                user_id=current_user.id  # Optionally associate with admin who added it
+                content_link=content_link
             )
             db.session.add(new_book)
             db.session.commit()
-            flash('Book added successfully!', category='success')
-            return redirect(url_for('views.book_list'))  # Redirect to the Book List Page
+            flash(f'Book "{name}" added successfully!', category='success')
+            return redirect(url_for('views.book_list'))
 
     return render_template('add_book.html')
+
+
+@views.route('/edit-book/<int:book_id>', methods=['GET', 'POST'])
+@login_required
+def edit_book(book_id):
+    if not current_user.is_admin:
+        flash("You do not have permission to access this page.", category='error')
+        return redirect(url_for('views.home'))
+
+    # Fetch the book by ID
+    book = Book.query.get(book_id)
+    if not book:
+        flash("Book not found.", category='error')
+        return redirect(url_for('views.book_list'))
+
+    if request.method == 'POST':
+        # Get updated data from the form
+        book.name = request.form.get('name')
+        book.author = request.form.get('author')
+        book.genre = request.form.get('genre')
+        book.copies = int(request.form.get('copies'))
+        book.remaining_copies = int(request.form.get('remaining_copies'))  # Admin can adjust available copies
+        book.content_link = request.form.get('content_link')
+
+        # Update the book in the database
+        db.session.commit()
+        flash(f'Book "{book.name}" updated successfully!', category='success')
+        return redirect(url_for('views.book_list'))
+
+    # Render the edit page with the book's current details
+    return render_template('edit_book.html', book=book)
 
 
 

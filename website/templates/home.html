@@ -9,10 +9,8 @@ Home
 <p align="center">
     {% if is_admin %}
     <p>You are viewing the <strong>Admin Dashboard</strong>.</p>
-    <a href="/add-book"><button class="btn btn-primary">Add Book</button></a>
     {% else %}
     <p>You are viewing the <strong>User Dashboard</strong>.</p>
-    <a href="/book-list"><button class="btn btn-primary">View Available Books</button></a>
     {% endif %}
 </p>
 {% endblock %}
