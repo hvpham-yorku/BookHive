@@ -13,7 +13,7 @@ This project aims to streamline and improve the library management system for bo
 # Steps to Set Up:
 **1. Install VSCode and Install Python extension:**
 - Install VSCode and Python extention package.
-- On the terminal run the commands "pip install -flask" and "pip install flask-login" for the API.
+- On the terminal run the commands "pip install -flask", "pip install flask-login" and "pip install Flask-Mail".
 - If you get an error, it means the Python app is not installed. Go to https://www.python.org/downloads/ and download Python to your PC and add the Path of it into Environmental variables. Re-run the prompt again and flask should be installed.
  
 **2. Install MySQL:**
