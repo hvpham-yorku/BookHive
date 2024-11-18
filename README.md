@@ -9,7 +9,7 @@ This project aims to streamline and improve the library management system for bo
 **3. HTML, CSS, JavaScript** – for the frontend integration.
 **4. Flask API** - Backend and frontend connection.
 
-
+   
 # Steps to Set Up:
 **1. Install VSCode and Install Python extension:**
 - Install VSCode and Python extention package.
