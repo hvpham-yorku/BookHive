@@ -2,13 +2,13 @@
 This project aims to streamline and improve the library management system for both administrators and users. The goal is to provide a more efficient, user-friendly platform for managing library catalogs and improving the overall user experience. The system addresses common issues such as outdated catalog systems, poor user interfaces, and inefficient management practices. By creating a modern, easy-to-use system, this project enhances the management of smaller libraries and ensures a more seamless interaction for users and administrators alike.
 
 
-# Installations needed
+# Installations needed (Note that there has been a change in tools for the design! The changes are approved by the professor. For further information please review the Description provided on Project setup -> readme.file tag)
 **To run this project, you will need the following tools and software:** 
 **1. VSCode** – for writing and running the Python code.
 **2. SQL** – for database management and storing library data.
 **3. HTML, CSS, JavaScript** – for the frontend integration.
 **4. Flask API** - Backend and frontend connection.
-** Note that this project is following MVC framework**
+
 
 # Steps to Set Up:
 **1. Install VSCode and Install Python extension:**
