@@ -57,4 +57,25 @@ color: #ddd;
     border: 1px solid #ddd;
   }
    
+  /* Login and Sign-Up Specific Styles */
+#login-page .form-group,
+#sign-up-page .form-group {
+    color: #ddd;
+}
+
+#login-page h3,
+#sign-up-page h3 {
+    color: #fcfafa;
+}
+
+/* Add Book Page Specific Styles */
+#add-book-page .form-group {
+    color: black;
+}
+
+/* Book List Page Specific Styles */
+#book-list-page table {
+    border: 1px solid black;
+}
+
   
