@@ -46,16 +46,20 @@
           {% if current_user.is_authenticated %}
           <!-- Common Links for All Logged-In Users -->
           <a class="nav-item nav-link" id="home" href="/">Home</a>
-          <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
+          
+          
     
           <!-- Admin-Specific Link -->
           {% if current_user.is_admin %}
           <a class="nav-item nav-link" id="addBook" href="/add-book">Add Book</a>
+          <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
           {% endif %}
     
           <!-- User-Specific Link -->
           {% if not current_user.is_admin %}
           <a class="nav-item nav-link" id="availableBooks" href="/book-list">Available Books</a>
+          <a class="nav-item nav-link" id="contact_us" href="/contact-us">Contact Us</a>
+          <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
           {% endif %}
           
           {% else %}

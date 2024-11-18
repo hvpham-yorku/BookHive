@@ -184,6 +184,34 @@ def edit_book(book_id):
     return render_template('edit_book.html', book=book)
 
 
+@views.route('/contact-us', methods=['GET', 'POST'])
+@login_required
+def contact_us():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        email = request.form.get('email')
+        query = request.form.get('query')
+
+        # Email the query to the library management system
+        msg = Message(
+            subject=f"New Query from {name}",
+            recipients=["librarymanagementsystem59@gmail.com"],  
+            body=f"""
+            You have received a new query:
+
+            Name: {name}
+            Email: {email}
+            Query: {query}
+            """
+        )
+        mail.send(msg)
+        flash('Your query has been submitted successfully. We will get back to you soon!', category='success')
+        return redirect(url_for('views.home'))
+
+    return render_template('contact_us.html')
+
+
+
 
 
 
