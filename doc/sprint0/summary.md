@@ -7,10 +7,10 @@ The Library Management System is a full-stack web application aiming to digitize
   
 - **Key Technologies**:
   - Frontend: HTML, CSS, JavaScript
-  - Backend: Java with Spring Boot
-  - Database: MySQL
-  - API: RESTful API
-
+  - Backend: Python
+  - Database: SQL
+  - API: Flask API
+   (Changed after sprint 1 design decisions. The changes have been approved by professor. For more information please read the lable of readme.md file)
 ## Key Users
 1. **Main Users**:
    - Students
