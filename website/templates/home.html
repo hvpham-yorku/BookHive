@@ -8,9 +8,10 @@ Home
 <h1 align="center">Welcome {{ name }}!</h1>
 <p align="center">
     {% if is_admin %}
-        You are viewing the <strong>Admin Dashboard</strong>.
+    <p>You are viewing the <strong>Admin Dashboard</strong>.</p>
     {% else %}
-        You are viewing the <strong>User Dashboard</strong>.
+    <p>You are viewing the <strong>User Dashboard</strong>.</p>
+    <a href="/contact-us" class="btn btn-primary">Contact Us</a>
     {% endif %}
 </p>
 {% endblock %}

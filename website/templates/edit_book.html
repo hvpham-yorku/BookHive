@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}
+Edit Book
+{% endblock %}
+
+{% block content %}
+<h1>Edit Book</h1>
+<form method="POST">
+    <div class="form-group">
+        <label for="name">Book Name</label>
+        <input
+            type="text"
+            id="name"
+            name="name"
+            class="form-control"
+            value="{{ book.name }}"
+            required
+        />
+    </div>
+    <div class="form-group">
+        <label for="author">Author</label>
+        <input
+            type="text"
+            id="author"
+            name="author"
+            class="form-control"
+            value="{{ book.author }}"
+            required
+        />
+    </div>
+    <div class="form-group">
+        <label for="genre">Genre</label>
+        <input
+            type="text"
+            id="genre"
+            name="genre"
+            class="form-control"
+            value="{{ book.genre }}"
+        />
+    </div>
+    <div class="form-group">
+        <label for="copies">Total Copies</label>
+        <input
+            type="number"
+            id="copies"
+            name="copies"
+            class="form-control"
+            value="{{ book.copies }}"
+            required
+        />
+    </div>
+    <div class="form-group">
+        <label for="remaining_copies">Remaining Copies</label>
+        <input
+            type="number"
+            id="remaining_copies"
+            name="remaining_copies"
+            class="form-control"
+            value="{{ book.remaining_copies }}"
+            required
+        />
+    </div>
+    <div class="form-group">
+        <label for="content_link">Book Content Link</label>
+        <input
+            type="url"
+            id="content_link"
+            name="content_link"
+            class="form-control"
+            value="{{ book.content_link }}"
+        />
+    </div>
+    <br />
+    <button type="submit" class="btn btn-success">Update Book</button>
+</form>
+{% endblock %}
