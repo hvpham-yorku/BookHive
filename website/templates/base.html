@@ -34,43 +34,54 @@
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbar"
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbar"
       >
-        <span class="navbar-toggler-icon"></span>
+          <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbar">
-        <div class="navbar-nav">
-          {% if current_user.is_authenticated %}
-          <!-- Common Links for All Logged-In Users -->
-          <a class="nav-item nav-link" id="home" href="/">Home</a>
-          
-          
-    
-          <!-- Admin-Specific Link -->
-          {% if current_user.is_admin %}
-          <a class="nav-item nav-link" id="addBook" href="/add-book">Add Book</a>
-          <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
-          {% endif %}
-    
-          <!-- User-Specific Link -->
-          {% if not current_user.is_admin %}
-          <a class="nav-item nav-link" id="availableBooks" href="/book-list">Available Books</a>
-          <a class="nav-item nav-link" id="contact_us" href="/contact-us">Contact Us</a>
-          <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
-          {% endif %}
-          
-          {% else %}
-          <!-- Links for Non-Authenticated Users -->
-          <a class="nav-item nav-link" id="login" href="/login">Login</a>
-          <a class="nav-item nav-link" id="signUp" href="/sign-up">Sign Up</a>
-          {% endif %}
-        </div>
+          <div class="navbar-nav">
+              {% if current_user.is_authenticated %}
+              <!-- Common Links for All Logged-In Users -->
+              {% if request.path != '/' %}
+              <a class="nav-item nav-link" id="home" href="/">Home</a>
+              {% endif %}
+  
+              <!-- Admin-Specific Link -->
+              {% if current_user.is_admin %}
+                  {% if request.path != '/add-book' %}
+                  <a class="nav-item nav-link" id="addBook" href="/add-book">Add Book</a>
+                  {% endif %}
+                  <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
+              {% endif %}
+  
+              <!-- User-Specific Link -->
+              {% if not current_user.is_admin %}
+                  {% if request.path != '/book-list' %}
+                  <a class="nav-item nav-link" id="availableBooks" href="/book-list">Available Books</a>
+                  {% endif %}
+                  {% if request.path != '/contact-us' %}
+                  <a class="nav-item nav-link" id="contact_us" href="/contact-us">Contact Us</a>
+                  {% endif %}
+                  <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
+              {% endif %}
+  
+              {% else %}
+              <!-- Links for Non-Authenticated Users -->
+              {% if request.path != '/login' %}
+              <a class="nav-item nav-link" id="login" href="/login">Login</a>
+              {% endif %}
+              {% if request.path != '/sign-up' %}
+              <a class="nav-item nav-link" id="signUp" href="/sign-up">Sign Up</a>
+              {% endif %}
+              {% endif %}
+          </div>
       </div>
-    </nav>
-    
+  </nav>
+  
+
 
     {% with messages = get_flashed_messages(with_categories=true) %} {% if
     messages %} {% for category, message in messages %} {% if category ==
