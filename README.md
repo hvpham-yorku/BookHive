@@ -4,26 +4,28 @@ This project aims to streamline and improve the library management system for bo
 
 # Installations needed
 **To run this project, you will need the following tools and software:** 
-**1. Eclipse** – for writing and running the Java code.
-**2. MySQL** – for database management and storing library data.
-**3. HTML, CSS, JavaScript** – for the graphical user interface (GUI) of the application.
+**1. VSCode** – for writing and running the Python code.
+**2. SQL** – for database management and storing library data.
+**3. HTML, CSS, JavaScript** – for the frontend integration.
+**4. Flask API** - Backend and frontend connection.
+** Note that this project is following MVC framework**
 
 # Steps to Set Up:
-**1. Install Eclipse:**
-- Download Eclipse from https://www.eclipse.org/downloads/.
-- Install Eclipse IDE for Java Developers.
-   
+**1. Install VSCode and Install Python extension:**
+- Install VSCode and Python extention package.
+- On the terminal run the commands "pip install -flask" and "pip install flask-login" for the API.
+- If you get an error, it means the Python app is not installed. Go to https://www.python.org/downloads/ and download Python to your PC and add the Path of it into Environmental variables. Re-run the prompt again and flask should be installed.
+ 
 **2. Install MySQL:**
-- Download and install MySQL from https://dev.mysql.com/downloads/.
-- Set up a MySQL database for storing library information.
+- On the terminal, run the command pip install flask-sqlalchemy to install the database SQL to the work environment.
+- Set up SQL extention database for storing additional library information(Will be needed for list creation).
 
 **3. Set Up the Frontend:**
-- Ensure you have a web server running for the frontend files (HTML, CSS, JavaScript).
+- VSCode by default support HTML-CSS and Javascript extension.
 
 **4. Run the Project:**
-- Import the Java project into Eclipse.
-- Set up the database connection using MySQL.
-- Run the application and test the GUI in your browser.
+- Import the Python project into VScode. You can make the connection by cloning the assigned repository on github.
+- Run the amain.py file and follow the link created on the terminal. You will be redirected to a webpage where you can see the webapp.
 
 # Contribution 
 **1. Git Flow:**
