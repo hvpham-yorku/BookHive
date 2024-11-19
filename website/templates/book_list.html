@@ -1,49 +1,65 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Available Books</h1>
-<table>
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Genre</th>
-            <th>Copies</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for row in books %}
-        <tr>
-            <td>{{ row.name }}</td>
-            <td>{{ row.author }}</td>
-            <td>{{ row.genre }}</td>
-            <td>{{ row.remaining_copies }}</td>
-            <td>
-                {% if current_user.is_admin %}
-                <!-- Admin Options -->
-                <a href="/edit-book/{{ row.id }}"><button class="btn btn-warning">Edit</button></a>
-                
-                <form action="{{ url_for('views.delete_book', book_id=row.id) }}" method="POST" style="display: inline;">
-                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete {{ row.name }} from your library?');">
-                        Delete
-                    </button>
-                </form>
-                {% else %}
-                <!-- User Options -->
-                {% if row.remaining_copies <= 0 %}
-                <button class="btn btn-secondary" disabled>Out of Stock</button>
-                {% elif row.id in borrowed_book_ids %}
-                <button class="btn btn-secondary" disabled>Borrowed</button>
-                {% else %}
-                <form action="{{ url_for('views.borrow_book', book_id=row.id) }}" method="POST" style="display: inline;">
-                    <button type="submit" class="btn btn-primary">Borrow</button>
-                </form>
-                {% endif %}
-                {% endif %}
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<div class="container mt-5 pt-5">
+    <h1 class="text-center">Available Books</h1>
+    <table class="table table-striped">
+        <thead>
+            <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Genre</th>
+                <th>Copies</th>
+                <th>Action</th>
+               
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in books %}
+            <tr>
+                <td>{{ row.name }}</td>
+                <td>{{ row.author }}</td>
+                <td>{{ row.genre }}</td>
+                <td>{{ row.remaining_copies }}</td>
+                <td>
+                    {% if current_user.is_admin %}
+                    <!-- Admin Options -->
+                    <a href="/edit-book/{{ row.id }}"><button class="btn btn-warning">Edit</button></a>
+                    <form action="{{ url_for('views.delete_book', book_id=row.id) }}" method="POST" style="display: inline;">
+                        <button class="button" onclick="deleteBook(event, {{ row.id }})">
+                            <div class="trash">
+                                <div class="top">
+                                    <div class="paper"></div>
+                                </div>
+                                <div class="box"></div>
+                                <div class="check">
+                                    <svg viewBox="0 0 8 6">
+                                        <polyline points="1 3.4 2.71428571 5 7 1"></polyline>
+                                    </svg>
+                                </div>
+                            </div>
+                            <span>Delete</span>
+                        </button>
+                    </form>
+                    {% else %}
+                    <!-- User Options -->
+                    {% if row.remaining_copies <= 0 %}
+                    <button class="btn btn-secondary" disabled>Out of Stock</button>
+                    {% elif row.id in borrowed_book_ids %}
+                    <button class="btn btn-secondary" disabled>Borrowed</button>
+                    {% else %}
+                    <form action="{{ url_for('views.borrow_book', book_id=row.id) }}" method="POST" style="display: inline;">
+                        <button type="submit" class="btn btn-primary">Borrow</button>
+                    </form>
+                    {% endif %}
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+            
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+        </tbody>
+    </table>
+</div>
 {% endblock %}
