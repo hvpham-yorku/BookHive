@@ -1,21 +1,114 @@
-{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
-    %}
-    <h1 align="center">Notes</h1>
-    <ul class="list-group list-group-flush" id="notes">
-      {% for note in user.notes %}
-      <li class="list-group-item">
-        {{ note.data }}
-        <button type="button" class="close" onClick="deleteNote('{{ note.id }}')">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </li>
-      {% endfor %}
-    </ul>
-    <form method="POST">
-      <textarea name="note" id="note" class="form-control"></textarea>
-      <br />
-      <div align="center">
-        <button type="submit" class="btn btn-primary">Add Note</button>
-      </div>
-    </form>
-    {% endblock %}
+{% extends "base.html" %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookstore | Book Nook Emporium</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat&family=Open+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='Home.css') }}">
+</head>
+
+<header>
+    <div class="content-wrapper">
+        <h1>BookHives Library Management System</h1>
+        <h2>Your Gateway to Imaginative Worlds</h2>
+    </div>
+</header>
+
+<main class="content-wrapper">
+    <section class="book-section">
+        <h1 align="center">Welcome {{ name }}!</h1>
+        <p align="center">
+            {% if is_admin %}
+            <p>You are viewing the <strong>Admin Dashboard</strong>.</p>
+            <a href="/add-book"><button class="btn btn-primary">Add Book</button></a>
+            {% else %}
+            <p>You are viewing the <strong>User Dashboard</strong>.</p>
+            <a href="/book-list"><button class="btn btn-primary">View Available Books</button></a>
+            {% endif %}
+        </p>
+    </section>
+
+    <section class="book-section">
+        <h2>Welcome!</h2>
+        <p>You are at BookHive, your ultimate destination for innovative solutions, the finest selections, and the best experiences. Whether you're here to explore new trends, seek out unique items, or simply gain insights, we're delighted to guide you through a seamless journey. Join us as we embark on this adventure together, ensuring every visit leaves you inspired, satisfied, and excited for what's next.</p>
+    </section>
+
+    <section class="book-section">
+        <h2>Best of this month for you</h2>
+        <div class="work-item">
+            <div class="work-details">
+                <!-- Navigateable Blocks for Book Genres -->
+                <div class="book-genre">
+                    <h2><a href="#fantasy-genre">The Lord of the Rings</a></h2>
+                    <p>An epic tale of adventure, courage, and friendship set in the magical world of Middle-earth.</p>
+                </div>
+
+                <div class="book-genre">
+                    <h2><a href="#mystery-thriller-genre">Gone Girl</a></h2>
+                    <p>A gripping psychological thriller that delves into the complexities of marriage and deceit.</p>
+                </div>
+
+                <div class="book-genre">
+                    <h2><a href="#historical-genre">All the Light We Cannot See</a></h2>
+                    <p>A beautifully woven story set during World War II, following two intertwined lives.</p>
+                </div>
+
+                <div class="book-genre">
+                    <h2><a href="#childrens-genre">Harry Potter and the Sorcerer's Stone</a></h2>
+                    <p>An enchanting introduction to the magical world of Hogwarts and the adventures of Harry Potter.</p>
+                </div>
+
+                <div class="book-genre">
+                    <h2><a href="#science-fiction-genre">Dune</a></h2>
+                    <p>A groundbreaking science fiction epic exploring politics, religion, and humanity's future.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="book-section">
+        <h2>Author List</h2>
+        <div class="project-item">
+            <h2>J.K. Rowling</h2>
+            <p>Explore the magical world of wizardry and adventure created by J.K. Rowling, the renowned author of the Harry Potter series.</p>
+        </div>
+
+        <div class="project-item">
+            <h2>Agatha Christie</h2>
+            <p>Dive into the captivating mysteries crafted by Agatha Christie, the queen of crime fiction, and experience the thrill of solving intricate puzzles.</p>
+        </div>
+
+        <div class="project-item">
+            <h2>Ken Follett</h2>
+            <p>Embark on epic historical journeys through the novels of Ken Follett, a master storyteller known for his gripping historical chronicles.</p>
+        </div>
+
+        <div class="project-item">
+            <h2>Roald Dahl</h2>
+            <p>Celebrate the whimsical and imaginative tales of Roald Dahl, the beloved author who enchants young readers with magical and fantastical stories.</p>
+        </div>
+    </section>
+</main>
+
+<script>
+    let prevScrollPos = window.pageYOffset;
+    window.onscroll = function() {
+        let currentScrollPos = window.pageYOffset;
+        if (prevScrollPos > currentScrollPos) {
+            document.querySelector("nav").style.top = "0";
+        } else {
+            document.querySelector("nav").classList.add("scroll-hide");
+        }
+        prevScrollPos = currentScrollPos;
+    };
+</script>
+{% endblock %}

@@ -1,16 +1,30 @@
+
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <head>
       <meta charset="utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous" />
       <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+      {% block extra_styles %}{% endblock %}
       <title>{% block title %}Home{% endblock %}</title>
   </head>
-  
-  </head>
+    <style>
+      .btn-secondary {
+          background-color: grey;
+          color: white;
+          cursor: not-allowed;
+          border: none;
+          padding: 8px 16px;
+          text-align: center;
+          text-decoration: none;
+          font-size: 14px;
+      }
+      </style>
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <button
@@ -23,7 +37,7 @@
       </button>
       <div class="collapse navbar-collapse" id="navbar">
         <div class="navbar-nav">
-          {% if user.is_authenticated %}
+          {% if current_user.is_authenticated %}
           <a class="nav-item nav-link" id="home" href="/">Home</a>
           <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
           {% else %}
@@ -32,7 +46,7 @@
           {% endif %}
         </div>
       </div>
-    </nav> 
+    </nav>
 
     {% with messages = get_flashed_messages(with_categories=true) %} {% if
     messages %} {% for category, message in messages %} {% if category ==
@@ -70,15 +84,15 @@
     ></script>
 
 {% block javascript %}
-    <script type="text/javascript">
-      function deleteNote(noteId) {
-  fetch("/delete-note", {
-    method: "POST",
-    body: JSON.stringify({ noteId: noteId }),
-  }).then((_res) => {
-    window.location.href = "/";
-  });
-  }
+<script type="text/javascript">
+  //hide flashed messages after 7 seconds
+  setTimeout(function () {
+    const alerts = document.querySelectorAll(".alert");
+    alerts.forEach(alert => {
+      alert.classList.add("fade"); 
+      setTimeout(() => alert.remove(), 500); 
+    });
+  }, 7000); 
 </script>
 {% endblock %}
   </body>
