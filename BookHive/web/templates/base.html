@@ -13,6 +13,61 @@
       {% block extra_styles %}{% endblock %}
       <title>{% block title %}Home{% endblock %}</title>
   </head>
+  <style>
+    button {
+    font-family: inherit;
+    font-size: 20px;
+    background: royalblue;
+    color: white;
+    padding: 0.9em 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.2s;
+    cursor: pointer;
+    position: relative;
+    width: 180px; /* Fixed width to maintain button size */
+  }
+
+ button:hover {
+    background: darkblue;
+ }
+
+ button span {
+    display: inline-block;
+    margin-left: 0.3em;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  }
+
+ button:hover span {
+    transform: translateX(0.3em); /* Moves text to the right on hover */
+ }
+
+ button svg {
+    display: inline-block;
+    margin-right: 0.5em;
+    transform-origin: center center;
+    transition: transform 0.3s ease-in-out;
+ }
+
+ button:hover svg {
+    transform: rotate(20deg); /* Rotate icon slightly on hover */
+ }
+
+ button.clicked span {
+    transform: translateX(100%); /* Moves text completely out of view */
+    opacity: 0; /* Fade text out */
+ }
+
+ button.clicked {
+    justify-content: center; /* Keeps icon centered after text disappears */
+ }
+
+ 
+  </style>
     <style>
       .btn-secondary {
           background-color: grey;
@@ -28,25 +83,52 @@
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbar"
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbar"
       >
-        <span class="navbar-toggler-icon"></span>
+          <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbar">
-        <div class="navbar-nav">
-          {% if current_user.is_authenticated %}
-          <a class="nav-item nav-link" id="home" href="/">Home</a>
-          <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
-          {% else %}
-          <a class="nav-item nav-link" id="login" href="/login">Login</a>
-          <a class="nav-item nav-link" id="signUp" href="/sign-up">Sign Up</a>
-          {% endif %}
-        </div>
+          <div class="navbar-nav">
+              {% if current_user.is_authenticated %}
+              <!-- Common Links for All Logged-In Users -->
+              {% if request.path != '/' %}
+              <a class="nav-item nav-link" id="home" href="/">Home</a>
+              {% endif %}
+  
+              <!-- Admin-Specific Link -->
+              {% if current_user.is_admin %}
+                  {% if request.path != '/add-book' %}
+                  <a class="nav-item nav-link" id="addBook" href="/add-book">Add Book</a>
+                  {% endif %}
+                  <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
+              {% endif %}
+  
+              <!-- User-Specific Link -->
+              {% if not current_user.is_admin %}
+                  {% if request.path != '/book-list' %}
+                  <a class="nav-item nav-link" id="availableBooks" href="/book-list">Available Books</a>
+                  {% endif %}
+                  {% if request.path != '/contact-us' %}
+                  <a class="nav-item nav-link" id="contact_us" href="/contact-us">Contact Us</a>
+                  {% endif %}
+                  <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
+              {% endif %}
+  
+              {% else %}
+              <!-- Links for Non-Authenticated Users -->
+              {% if request.path != '/login' %}
+              <a class="nav-item nav-link" id="login" href="/login">Login</a>
+              {% endif %}
+              {% if request.path != '/sign-up' %}
+              <a class="nav-item nav-link" id="signUp" href="/sign-up">Sign Up</a>
+              {% endif %}
+              {% endif %}
+          </div>
       </div>
-    </nav>
+  </nav>
 
     {% with messages = get_flashed_messages(with_categories=true) %} {% if
     messages %} {% for category, message in messages %} {% if category ==
@@ -83,17 +165,28 @@
       crossorigin="anonymous"
     ></script>
 
-{% block javascript %}
-<script type="text/javascript">
-  //hide flashed messages after 7 seconds
-  setTimeout(function () {
-    const alerts = document.querySelectorAll(".alert");
-    alerts.forEach(alert => {
-      alert.classList.add("fade"); 
-      setTimeout(() => alert.remove(), 500); 
-    });
-  }, 7000); 
-</script>
+    ></script>
+
+    {% block javascript %}
+    <script type="text/javascript">
+      // Hide flashed messages after 7 seconds
+      setTimeout(function () {
+        const alerts = document.querySelectorAll(".alert");
+        alerts.forEach(alert => {
+          alert.classList.add("fade"); 
+          setTimeout(() => alert.remove(), 500); 
+        });
+      }, 7000); 
+    
+      // Button animation logic
+      document.getElementById("submit-button").addEventListener("click", function (e) {
+        const button = e.target.closest("button");
+        if (button.classList.contains("clicked")) return; // Prevent multiple clicks
+    
+        // Add the 'clicked' class to animate the text and center the icon
+        button.classList.add("clicked");
+      });
+    </script>
 {% endblock %}
   </body>
 </html>
