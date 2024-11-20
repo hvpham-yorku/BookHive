@@ -1,101 +1,117 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Available Books</h1>
+<div class="content-wrapper">
+    <header>
+        <div class="content-wrapper">
+            <h1>Available Books</h1>
+            <h2>Browse and Borrow Your Favorite Books</h2>
+        </div>
+    </header>
 
-<!-- Dropdown for the filtering feature -->
-<div class="dropdown mb-3">
-    <button class="btn btn-secondary dropdown-toggle" type="button" id="filterDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Filter
-    </button>
-    <div class="dropdown-menu" aria-labelledby="filterDropdown">
-        <a class="dropdown-item" href="#" onclick="showFilter('author')">Author</a>
-        <a class="dropdown-item" href="#" onclick="showFilter('genre')">Genre</a>
-    </div>
+    <main class="book-section">
+        <h2>Filter Options</h2>
+        <div class="filter-section">
+            <!-- Dropdown for Filters -->
+            <div id="filter-section">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="filterDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Filter
+                </button>
+                <div class="dropdown-menu" aria-labelledby="filterDropdown">
+                    <a class="dropdown-item" href="#" onclick="showFilter('author')">Author</a>
+                    <a class="dropdown-item" href="#" onclick="showFilter('genre')">Genre</a>
+                </div>
+            </div>
+
+            <!-- Dropdown (Author) -->
+            <div id="author-filter" style="display:none;">
+                <form method="GET" action="/book-list">
+                    <label for="author">Filter by Author:</label>
+                    <select id="author" name="author">
+                        <option value="">All</option>
+                        {% for author in authors %}
+                        <option value="{{ author[0] }}" {% if selected_author == author[0] %}selected{% endif %}>
+                            {{ author[0] }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                </form>
+            </div>
+
+            <!-- Dropdown (Genre) -->
+            <div id="genre-filter" style="display:none;">
+                <form method="GET" action="/book-list">
+                    <label for="genre">Filter by Genre:</label>
+                    <select id="genre" name="genre">
+                        <option value="">All</option>
+                        {% for genre in genres %}
+                        <option value="{{ genre[0] }}" {% if selected_genre == genre[0] %}selected{% endif %}>
+                            {{ genre[0] }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                </form>
+            </div>
+        </div>
+
+        <h2>Book List</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Genre</th>
+                    <th>Copies</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in books %}
+                <tr>
+                    <td>{{ row.name }}</td>
+                    <td>{{ row.author }}</td>
+                    <td>{{ row.genre }}</td>
+                    <td>{{ row.remaining_copies }}</td>
+                    <td>
+                        {% if current_user.is_admin %}
+                        <!-- Admin Options -->
+                        <a href="/edit-book/{{ row.id }}">
+                            <button class="btn btn-warning edit-button">
+                                <i class="fas fa-cog"></i> Edit
+                            </button>
+                        </a>
+                        <form action="{{ url_for('views.delete_book', book_id=row.id) }}" method="POST" style="display: inline;">
+                            <button class="button" onclick="deleteBook(event, {{ row.id }})">
+                                <div class="trash">
+                                    <span>Delete</span>
+                                </div>
+                            </button>
+                        </form>
+                        {% else %}
+                        <!-- User Options -->
+                        {% if row.remaining_copies <= 0 %}
+                        <button class="btn btn-secondary" disabled>Out of Stock</button>
+                        {% elif row.id in borrowed_book_ids %}
+                        <button class="btn btn-secondary" disabled>Borrowed</button>
+                        {% else %}
+                        <form action="{{ url_for('views.borrow_book', book_id=row.id) }}" method="POST" style="display: inline;">
+                            <button type="submit" class="btn btn-primary">Borrow</button>
+                        </form>
+                        {% endif %}
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
 </div>
-
-
-<!-- Dropdown (author) -->
-<div id="author-filter" style="display:none;">
-    <form method="GET" action="/book-list">
-        <label for="author">Filter by Author:</label>
-        <select id="author" name="author">
-            <option value="">All</option>
-            {% for author in authors %}
-                <option value="{{ author[0] }}" {% if selected_author == author[0] %}selected{% endif %}>
-                    {{ author[0] }}
-                </option>
-            {% endfor %}
-        </select>
-        <button type="submit" class="btn btn-primary">Filter</button>
-    </form>
-</div>
-
-<!-- Dropdown (genre) -->
-<div id="genre-filter" style="display:none;">
-    <form method="GET" action="/book-list">
-        <label for="genre">Filter by Genre:</label>
-        <select id="genre" name="genre">
-            <option value="">All</option>
-            {% for genre in genres %}
-                <option value="{{ genre[0] }}" {% if selected_genre == genre[0] %}selected{% endif %}>
-                    {{ genre[0] }}
-                </option>
-            {% endfor %}
-        </select>
-        <button type="submit" class="btn btn-primary">Filter</button>
-    </form>
-</div>
-
 <script>
     function showFilter(type) {
         document.getElementById('author-filter').style.display = type === 'author' ? 'block' : 'none';
         document.getElementById('genre-filter').style.display = type === 'genre' ? 'block' : 'none';
     }
 </script>
-
-<table>
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Genre</th>
-            <th>Copies</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for row in books %}
-        <tr>
-            <td>{{ row.name }}</td>
-            <td>{{ row.author }}</td>
-            <td>{{ row.genre }}</td>
-            <td>{{ row.remaining_copies }}</td>
-            <td>
-                {% if current_user.is_admin %}
-                <!-- Admin Options -->
-                <a href="/edit-book/{{ row.id }}"><button class="btn btn-warning">Edit</button></a>
-                
-                <form action="{{ url_for('views.delete_book', book_id=row.id) }}" method="POST" style="display: inline;">
-                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete {{ row.name }} from your library?');">
-                        Delete
-                    </button>
-                </form>
-                {% else %}
-                <!-- User Options -->
-                {% if row.remaining_copies <= 0 %}
-                <button class="btn btn-secondary" disabled>Out of Stock</button>
-                {% elif row.id in borrowed_book_ids %}
-                <button class="btn btn-secondary" disabled>Borrowed</button>
-                {% else %}
-                <form action="{{ url_for('views.borrow_book', book_id=row.id) }}" method="POST" style="display: inline;">
-                    <button type="submit" class="btn btn-primary">Borrow</button>
-                </form>
-                {% endif %}
-                {% endif %}
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
 {% endblock %}

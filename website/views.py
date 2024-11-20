@@ -42,6 +42,7 @@ def book_list():
     genres = db.session.query(Book.genre).distinct().all()
     authors = db.session.query(Book.author).distinct().all()
 
+    # Get the IDs of books the user has already borrowed
     borrowed_book_ids = [borrow.book_id for borrow in current_user.borrowed_books]
     return render_template('book_list.html', books=books, borrowed_book_ids=borrowed_book_ids, 
                            genres=genres, authors=authors, selected_genre=selected_genre, 

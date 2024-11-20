@@ -3,7 +3,19 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
     <style>
+      body {
+    padding-top: 70px; 
+
+.navbar {
+    z-index: 1000; /* Ensure the navbar stays above other content */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
       .btn-secondary {
           background-color: grey;
           color: white;
@@ -14,6 +26,46 @@
           text-decoration: none;
           font-size: 14px;
       }
+      </style>
+      <style>
+        button {
+    font-family: inherit;
+    font-size: 20px;
+    background: royalblue;
+    color: white;
+    padding: 0.9em 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.2s;
+    cursor: pointer;
+    position: relative;
+    width: 180px; 
+}
+
+button span {
+    display: inline-block;
+    margin-left: 0.3em;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+button:hover span {
+    transform: translateX(0.3em); 
+}
+button svg {
+    display: inline-block;
+    margin-right: 0.5em;
+    transform-origin: center center;
+    transition: transform 0.3s ease-in-out;
+}
+button:hover svg {
+    transform: rotate(20deg); 
+}
+
+
+
       </style>
       
     <link
@@ -28,78 +80,132 @@
       crossorigin="anonymous"
     />
 
+    <link rel="stylesheet" href="{{ url_for('static', filename='available_books.css') }}">
+
     <title>{% block title %}Home{% endblock %}</title>
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <button
-          class="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbar"
-      >
-          <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbar">
-          <div class="navbar-nav">
-              {% if current_user.is_authenticated %}
-              <!-- Common Links for All Logged-In Users -->
-              {% if request.path != '/' %}
-              <a class="nav-item nav-link" id="home" href="/">Home</a>
-              {% endif %}
-  
-              <!-- Admin-Specific Link -->
-              {% if current_user.is_admin %}
-                  {% if request.path != '/add-book' %}
-                  <a class="nav-item nav-link" id="addBook" href="/add-book">Add Book</a>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      
+          <div class="collapse navbar-collapse justify-content-center" id="navbar">
+              <ul class="navbar-nav">
+                  {% if current_user.is_authenticated %}
+                  <!-- Common Links for All Logged-In Users -->
+                  {% if request.path != '/' %}
+                  <li class="nav-item">
+                      <a class="nav-link {% if request.path == '/' %}active{% endif %}" id="home" href="/">Home</a>
+                  </li>
                   {% endif %}
-                  <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
-              {% endif %}
-  
-              <!-- User-Specific Link -->
-              {% if not current_user.is_admin %}
                   {% if request.path != '/book-list' %}
-                  <a class="nav-item nav-link" id="availableBooks" href="/book-list">Available Books</a>
+                  <li class="nav-item">
+                      <a class="nav-link {% if request.path == '/book-list' %}active{% endif %}" id="availableBooks" href="/book-list">Available Books</a>
+                  </li>
                   {% endif %}
+    
+                  <!-- Admin-Specific Link -->
+                  {% if current_user.is_admin %}
+                  {% if request.path != '/add-book' %}
+                  <li class="nav-item">
+                      <a class="nav-link {% if request.path == '/add-book' %}active{% endif %}" id="addBook" href="/add-book">Add Book</a>
+                  </li>
+                  {% endif %}
+                  
+                  <li class="nav-item">
+                      <a class="nav-link" id="logout" href="/logout">Logout</a>
+                  </li>
+                  {% endif %}
+    
+                  <!-- User-Specific Link -->
+                  {% if not current_user.is_admin %}
+                  
                   {% if request.path != '/contact-us' %}
-                  <a class="nav-item nav-link" id="contact_us" href="/contact-us">Contact Us</a>
+                  <li class="nav-item">
+                      <a class="nav-link {% if request.path == '/contact-us' %}active{% endif %}" id="contact_us" href="/contact-us">Contact Us</a>
+                  </li>
                   {% endif %}
-                  <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
-              {% endif %}
-  
-              {% else %}
-              <!-- Links for Non-Authenticated Users -->
-              {% if request.path != '/login' %}
-              <a class="nav-item nav-link" id="login" href="/login">Login</a>
-              {% endif %}
-              {% if request.path != '/sign-up' %}
-              <a class="nav-item nav-link" id="signUp" href="/sign-up">Sign Up</a>
-              {% endif %}
-              {% endif %}
+                  <li class="nav-item">
+                      <a class="nav-link" id="logout" href="/logout">Logout</a>
+                  </li>
+                  {% endif %}
+    
+                  {% else %}
+                  <!-- Links for Non-Authenticated Users -->
+                  {% if request.path != '/login' %}
+                  <li class="nav-item">
+                      <a class="nav-link {% if request.path == '/login' %}active{% endif %}" id="login" href="/login">Login</a>
+                  </li>
+                  {% endif %}
+                  {% if request.path != '/sign-up' %}
+                  <li class="nav-item">
+                      <a class="nav-link {% if request.path == '/sign-up' %}active{% endif %}" id="signUp" href="/sign-up">Sign Up</a>
+                  </li>
+                  {% endif %}
+                  {% endif %}
+              </ul>
           </div>
-      </div>
+      
   </nav>
   
+  
+  
+<style>
+  #flash-messages {
+    position: fixed;
+    top: 70px; /* Adjust based on navbar height */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1050;
+    width: 50%; /* Adjust width as needed */
+    max-width: 600px;
+    text-align: center;
+}
+
+.alert {
+    padding: 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    display: inline-block;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+}
+
+.alert .close {
+    margin-left: 10px;
+    color: gray; 
+    cursor: pointer;
+}
 
 
-    {% with messages = get_flashed_messages(with_categories=true) %} {% if
-    messages %} {% for category, message in messages %} {% if category ==
-    'error' %}
-    <div class="alert alert-danger alter-dismissable fade show" role="alert">
-      {{ message }}
-      <button type="button" class="close" data-dismiss="alert">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    {% else %}
-    <div class="alert alert-success alter-dismissable fade show" role="alert">
-      {{ message }}
-      <button type="button" class="close" data-dismiss="alert">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    {% endif %} {% endfor %} {% endif %} {% endwith %}
+</style>
 
+  
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div id="flash-messages">
+            {% for category, message in messages %}
+                <div class="alert alert-{{ 'success' if category == 'success' else 'error' }} alert-dismissable">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+
+  
     <div class="container">{% block content %} {% endblock %}</div>
     <script
       src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
@@ -117,17 +223,23 @@
       crossorigin="anonymous"
     ></script>
 
-{% block javascript %}
-<script type="text/javascript">
-  //hide flashed messages after 7 seconds
-  setTimeout(function () {
-    const alerts = document.querySelectorAll(".alert");
-    alerts.forEach(alert => {
-      alert.classList.add("fade"); 
-      setTimeout(() => alert.remove(), 500); 
-    });
-  }, 7000); 
-</script>
-{% endblock %}
+    {% block javascript %}
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+          // Auto-dismiss flash messages after 5 seconds
+          setTimeout(() => {
+              const alerts = document.querySelectorAll("#flash-messages .alert");
+              alerts.forEach(alert => {
+                  alert.style.opacity = "0";
+                  setTimeout(() => alert.remove(), 600); 
+              });
+          }, 3000); // 3 seconds
+      });
+  </script>
+  
+  
+    {% endblock %}
+    
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
   </body>
 </html>
