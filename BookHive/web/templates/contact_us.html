@@ -1,28 +1,126 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Contact Us</h1>
-<form action="/contact-us" method="POST">
-    <div class="form-group">
-        <label for="name">Name</label>
-        <input type="text" class="form-control" id="name" name="name" required>
-    </div>
-    <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" class="form-control" id="email" name="email" required>
-    </div>
-    <div class="form-group">
-        <label for="query">Please leave your inquiries or feedback below, and we will get back to you as soon as possible.</label>
-        <textarea class="form-control" id="query" name="query" rows="5" required></textarea>
-    </div>    
-    <button id="submit-button">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" width="24" height="24">
-          <path d="M4 4l16 8-16 8V4z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-        </svg>
-        <span id="submit-text">Submit</span>
-      </button>
-      
-    
-      
-</form>
+<div class="container">
+    <h1>Contact Us</h1>
+    <style>
+        body {
+  background:  url("{{ url_for('static', filename='white.jpg') }}") center;
+  background-size: cover;
+  margin: 0;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+        .container {
+            background-color: white; 
+            padding: 30px; 
+            margin: 20px auto;
+            max-width: 800px; 
+            border-radius: 10px; 
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); 
+        }
+
+        .wrap {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .submit-button {
+            min-width: 300px;
+            min-height: 60px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 22px;
+            text-transform: uppercase;
+            letter-spacing: 1.3px;
+            font-weight: 700;
+            color: #313133;
+            background: linear-gradient(90deg, rgba(129,230,217,1) 0%, rgba(79,209,197,1) 100%);
+            border: none;
+            border-radius: 1000px;
+            box-shadow: 12px 12px 24px rgba(79,209,197, 0.64);
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+            outline: none;
+            position: relative;
+            padding: 10px;
+        }
+
+        .submit-button::before {
+            content: '';
+            border-radius: 1000px;
+            width: calc(100% + 12px);
+            height: calc(100% + 12px);
+            border: 6px solid #00FFCB;
+            box-shadow: 0 0 60px rgba(0, 255, 203, 0.64);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .submit-button:hover,
+        .submit-button:focus {
+            color: #313133;
+            transform: translateY(-6px);
+        }
+
+        .submit-button:hover::before,
+        .submit-button:focus::before {
+            opacity: 1;
+        }
+
+        .submit-button::after {
+            content: '';
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 6px solid #00FFCB;
+            position: absolute;
+            z-index: -1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: ring 1.5s infinite;
+        }
+
+        .submit-button:hover::after,
+        .submit-button:focus::after {
+            animation: none;
+            display: none;
+        }
+
+        @keyframes ring {
+            0% {
+                width: 30px;
+                height: 30px;
+                opacity: 1;
+            }
+            100% {
+                width: 300px;
+                height: 300px;
+                opacity: 0;
+            }
+        }
+    </style>
+
+    <form action="/contact-us" method="POST">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label for="query">Please leave your inquiries or feedback below, and we will get back to you as soon as possible.</label>
+            <textarea class="form-control" id="query" name="query" rows="5" required></textarea>
+        </div>
+        <div class="wrap">
+            <button class="submit-button">Submit</button>
+        </div>
+    </form>
+</div>
 {% endblock %}

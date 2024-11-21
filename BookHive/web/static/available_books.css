@@ -1,138 +1,67 @@
-/* General body styles */
 body {
-    background: url(add.jpg) center;
-    background-size: cover;
-    margin: 0;
- 
-  }
-  
-  /* Page title */
-h1 {
+  background: url('L.jpg') center;
+  background-size: cover;
+  margin: 0;
+}
+
+.content-wrapper {
+  margin: 70px auto 0;
+  padding: 30px;
+  max-width: 1000px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+header h1 {
   font-size: 36px;
   color: #333;
-  text-align: center;
-  background-color: white; /* White box background */
-  padding: 20px;
-  margin: 20px auto; 
-  width: fit-content; 
-  border-radius: 10px; 
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
-  
-  /* Table container */
-  table {
-    width: 90%;
-    margin: 0 auto; /* Center the table horizontally */
-    border-collapse: collapse; /* Remove space between cells */
-    background-color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    border-radius: 10px; /* Rounded corners */
-    overflow: hidden; /* Prevent content from spilling out of rounded corners */
-  }
-  
-  /* Table headers */
-  table thead th {
-    background-color: #004d99; /* Header background color */
-    color: white; /* Header text color */
-    font-size: 18px;
-    padding: 15px;
-    text-align: left;
-    border-bottom: 2px solid #ddd;
-  }
-  
-  /* Table rows */
-  table tbody tr {
-    transition: background-color 0.3s ease; /* Smooth hover effect */
-  }
-  
-  table tbody tr:hover {
-    background-color: #f1f1f1; /* Light gray on hover */
-  }
-  
-  /* Table cells */
-  table td {
-    padding: 15px;
-    border-bottom: 1px solid #ddd;
-    font-size: 16px;
-  }
-  
-  /* Action buttons */
-  .btn {
-    padding: 8px 16px;
-    font-size: 14px;
-    font-weight: bold;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    text-align: center;
-  }
-  
-  /* Primary button (Borrow) */
-  .btn-primary {
-    background-color: #28a745; /* Green */
-  }
-  
-  .btn-primary:hover {
-    background-color: #218838; /* Darker green on hover */
-  }
-  
-  /* Warning button (Edit) */
-  .btn-warning {
-    background-color: #ffc107; /* Yellow */
-    color: #333;
-  }
-  
-  .btn-warning:hover {
-    background-color: #e0a800; /* Darker yellow on hover */
-  }
-  
-  /* Danger button (Delete) */
-  .btn-danger {
-    background-color: #dc3545; /* Red */
-  }
-  
-  .btn-danger:hover {
-    background-color: #c82333; /* Darker red on hover */
-  }
-  
-  /* Secondary button (Out of Stock / Borrowed) */
-  .btn-secondary {
-    background-color: #6c757d; /* Gray */
-  }
-  
-  .btn-secondary:hover {
-    background-color: #5a6268; /* Darker gray on hover */
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    table {
-      width: 100%;
-      font-size: 14px;
-    }
-  
-    table thead {
-      display: none; /* Hide the header for small screens */
-    }
-  
-    table tbody tr {
-      display: block; /* Stack rows for mobile view */
-      margin-bottom: 10px;
-    }
-  
-    table tbody td {
-      display: flex;
-      justify-content: space-between;
-      padding: 10px;
-      font-size: 14px;
-    }
-  
-    table tbody td::before {
-      content: attr(data-label); /* Add labels to each cell */
-      font-weight: bold;
-      color: #004d99;
-      margin-right: 10px;
-    }
-  }
-  
+
+header h2 {
+  font-size: 24px;
+  color: #666;
+}
+
+.book-section {
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.table {
+  margin-top: 20px;
+  border-collapse: collapse;
+  width: 100%;
+  background: white;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.table thead {
+  background: #450303;
+  color: white;
+}
+
+.table th, .table td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.filter-section {
+  margin-bottom: 20px;
+  text-align: center;
+}

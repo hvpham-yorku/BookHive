@@ -37,4 +37,4 @@ class BorrowedBook(db.Model):
     book_id = db.Column(db.Integer, db.ForeignKey('book.id'))  
     borrow_date = db.Column(db.DateTime, default=func.now())   
     due_date = db.Column(db.DateTime)                         
-    returned = db.Column(db.Boolean, default=False)  
+    returned = db.Column(db.Boolean, default=False)
