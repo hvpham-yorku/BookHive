@@ -200,28 +200,39 @@ def edit_book(book_id):
 @views.route('/search-books', methods=['GET', 'POST'])
 @login_required
 def search_books():
-    search_query = request.args.get('search_query', '').strip()
-    selected_genre = request.args.get('genre', '').strip()
-    genres = db.session.query(Book.genre).distinct().all()
+    # Get the search query parameter from the request, stripping any leading/trailing whitespace
+    search_query = request.args.get('search_query', '').strip()  
+    
+    # Get the selected genre parameter from the request, stripping any leading/trailing whitespace
+    selected_genre = request.args.get('genre', '').strip()  
+    
+    # Retrieve a distinct list of genres from the database for the filter dropdown
+    genres = db.session.query(Book.genre).distinct().all()  
+    
+    # Initialize an empty list to store the filtered books
     books = []
 
-    # Filter books by title and/or genre
-    if search_query and selected_genre:
+    # Filter books based on the search query and/or the selected genre
+    if search_query and selected_genre:  
+        # If both search query and genre are provided, filter books matching both conditions
         books = Book.query.filter(
-            Book.name.ilike(f"%{search_query}%"),
-            Book.genre == selected_genre
+            Book.name.ilike(f"%{search_query}%"),  # Case-insensitive match for book title
+            Book.genre == selected_genre           # Match the selected genre
         ).all()
-    elif search_query:
+    elif search_query:  
+        # If only the search query is provided, filter books by title
         books = Book.query.filter(Book.name.ilike(f"%{search_query}%")).all()
-    elif selected_genre:
+    elif selected_genre:  
+        # If only the genre is provided, filter books by genre
         books = Book.query.filter(Book.genre == selected_genre).all()
 
+    # Render the search results page with the filtered books, search query, genres, and selected genre
     return render_template(
         'search_books.html',
-        books=books,
-        search_query=search_query,
-        genres=genres,
-        selected_genre=selected_genre
+        books=books,               # Filtered list of books to display
+        search_query=search_query, # Original search query to pre-fill the input field
+        genres=genres,             # List of distinct genres for the genre filter
+        selected_genre=selected_genre  # The currently selected genre to pre-select in the dropdown
     )
 
 @views.route('/contact-us', methods=['GET', 'POST'])

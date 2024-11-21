@@ -1,58 +1,68 @@
-{% extends "base.html" %}
+{% extends "base.html" %} <!-- Extend the base template to maintain a consistent layout -->
 
 {% block title %}
-Search Books
+Search Books <!-- Define the title for the page -->
 {% endblock %}
 
 {% block content %}
 <div class="content-wrapper">
     <h1>Search Books</h1>
+    <!-- Search form to filter books by title and genre -->
     <form method="GET" action="/search-books" class="form-inline">
+        <!-- Input field for entering the search query (book title) -->
         <div class="form-group mx-sm-3 mb-2">
             <input
                 type="text"
-                name="search_query"
+                name="search_query" <!-- Name of the search query parameter -->
                 class="form-control"
-                placeholder="Enter book title"
-                value="{{ search_query }}"
+                placeholder="Enter book title" <!-- Placeholder text in the input field -->
+                value="{{ search_query }}" <!-- Pre-fill the input with the current search query -->
             />
         </div>
+
+        <!-- Dropdown for selecting a genre -->
         <div class="form-group mx-sm-3 mb-2">
             <select name="genre" class="form-control" style="font-size: 16px;">
                 <option value="" disabled selected style="font-size: 12px;">Select Genre</option>
                 {% for genre in genres %}
+                <!-- Populate dropdown options dynamically with genres from the database -->
                 <option value="{{ genre[0] }}" {% if selected_genre == genre[0] %}selected{% endif %}>
-                    {{ genre[0] }}
+                    {{ genre[0] }} <!-- Display the genre name -->
                 </option>
                 {% endfor %}
             </select>
         </div>        
+
+        <!-- Submit button to trigger the search -->
         <button type="submit" class="btn btn-primary mb-2">Search</button>
     </form>
 
     <h2>Search Results</h2>
+    <!-- Display the search results if any books are found -->
     {% if books %}
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Genre</th>
-                <th>Copies</th>
+                <th>Title</th> <!-- Column for book titles -->
+                <th>Author</th> <!-- Column for book authors -->
+                <th>Genre</th> <!-- Column for book genres -->
+                <th>Copies</th> <!-- Column for available copies -->
             </tr>
         </thead>
         <tbody>
             {% for book in books %}
             <tr>
-                <td>{{ book.name }}</td>
-                <td>{{ book.author }}</td>
-                <td>{{ book.genre }}</td>
-                <td>{{ book.remaining_copies }}</td>
+                <!-- Display book details for each result -->
+                <td>{{ book.name }}</td> <!-- Book title -->
+                <td>{{ book.author }}</td> <!-- Book author -->
+                <td>{{ book.genre }}</td> <!-- Book genre -->
+                <td>{{ book.remaining_copies }}</td> <!-- Number of remaining copies -->
             </tr>
             {% endfor %}
         </tbody>
     </table>
     {% else %}
+    <!-- Display a message if no books match the search criteria -->
     <p>No books found matching your search criteria.</p>
     {% endif %}
 </div>
