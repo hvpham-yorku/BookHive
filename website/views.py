@@ -26,13 +26,27 @@ def home():
 
 
 
-@views.route('/book-list')
+@views.route('/book-list', methods=['GET', 'POST'])
 @login_required
 def book_list():
-    books = Book.query.all()
+    selected_author = request.args.get('author')
+    selected_genre = request.args.get('genre')
+    
+    if selected_author:
+        books = Book.query.filter_by(author=selected_author).all()
+    elif selected_genre:
+        books = Book.query.filter_by(genre=selected_genre).all()
+    else:
+        books = Book.query.all()
+
+    genres = db.session.query(Book.genre).distinct().all()
+    authors = db.session.query(Book.author).distinct().all()
+
     # Get the IDs of books the user has already borrowed
     borrowed_book_ids = [borrow.book_id for borrow in current_user.borrowed_books]
-    return render_template('book_list.html', books=books, borrowed_book_ids=borrowed_book_ids)
+    return render_template('book_list.html', books=books, borrowed_book_ids=borrowed_book_ids, 
+                           genres=genres, authors=authors, selected_genre=selected_genre, 
+                           selected_author=selected_author)
 
 
 @views.route('/delete-book/<int:book_id>', methods=['POST'])
@@ -209,9 +223,3 @@ def contact_us():
         return redirect(url_for('views.home'))
 
     return render_template('contact_us.html')
-
-
-
-
-
-

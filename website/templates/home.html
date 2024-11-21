@@ -5,18 +5,21 @@ Home
 {% endblock %}
 
 {% block content %}
+
 <style>
     /* Center the content horizontally below the navbar */
     .content-container {
         display: flex;
         align-items: center; /* Align book and text vertically */
         justify-content: center; /* Center content horizontally */
-        position: fixed; /* Fix content below the navbar */
+        /*position: fixed; /* Fix content below the navbar */
         top: 70px; /* Move slightly closer to the navbar */
         left: 50%; /* Center horizontally */
         transform: translateX(-50%); /* Adjust for horizontal centering */
         gap: 20px; /* Space between the book and text */
         padding: 10px; /* Optional padding */
+        position: fixed; /* Ensure the text scrolls naturally */
+    margin-top: 120px;
     }
 
     /* Text content styles */
@@ -40,29 +43,47 @@ Home
     .animation-container {
         flex-shrink: 0; /* Prevent the book from shrinking */
     }
-
+    .content-wrapper {
+    flex: 1; /* Prevent it from stretching */
+    max-width: 600px; /* Keep the title box width fixed */
+    margin-left: 60px; /* Move the title closer to the animated book */
+    text-align: left; /* Align text to the left */
+    margin-top: 50px;
+}
     .book {
+        margin-left: auto; /* Push the book to the right side */
+        margin-right: 50px;
         width: 6em; /* Adjust as needed */
         height: 4em;
+        
     }
 </style>
 
 <style>
     
     .animation-container * {
-        border: 0;
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
+        .animation-container {
+    position: fixed; /* Keeps the book in a fixed position */
+    top: 0; /* Adjust to position it below the navbar */
+    left: 0%; /* Center horizontally */
+    transform: translateX(-50%); /* Adjust for horizontal centering */
+    z-index: 1000; /* Ensure it stays on top of other elements */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
     }
     
     .animation-container {
         --hue: 223;
         --bg: hsl(var(--hue), 10%, 90%);
         --fg: hsl(var(--hue), 10%, 10%);
-        --primary: hsl(var(--hue), 90%, 55%);
+        --primary: brown; /* Book cover color */
+        --primary-l: #A0522D; /* Light brown (Sienna) */
+        --primary-d: #8B4513; /* Darker brown (SaddleBrown) */
+        /*--primary: hsl(var(--hue), 90%, 55%);
         --primary-l: hsl(var(--hue), 90%, 65%);
-        --primary-d: hsl(var(--hue), 90%, 45%);
+        --primary-d: hsl(var(--hue), 90%, 45%);*/
         --white: hsl(var(--hue), 10%, 100%);
         --white-d: hsl(var(--hue), 10%, 45%);
         font-size: calc(16px + (24 - 16) * (100vw - 320px) / (1280 - 320));
@@ -72,6 +93,9 @@ Home
         display: flex;
         justify-content: center;
         align-items: center;
+        background-color: transparent; /* Ensure no background color */
+    border: none; /* Remove any unintended border */
+    box-shadow: none; /* Remove any box shadows */
     }
 
     
@@ -91,6 +115,7 @@ Home
         height: 4em;
         transform: translate3d(0, 0, 0);
         transform-style: preserve-3d;
+        margin-right: 20px
     }
    
     
@@ -299,27 +324,126 @@ Home
 </style>
 
 
-<div class="content-container">
-    <div class="animation-container">
-        <div class="book">
-            <div class="book__pg-shadow"></div>
-            <div class="book__pg book__pg--1"></div>
-            <div class="book__pg book__pg--2"></div>
-            <div class="book__pg book__pg--3"></div>
-            <div class="book__pg book__pg--4"></div>
-            <div class="book__pg book__pg--5"></div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat&family=Open+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='Home.css') }}">
+</head>
+
+
+    <header>
+        <!-- Fixed Container for Both Book and Text -->
+            <div class="animation-container">
+            <div class="book">
+                <div class="book__pg-shadow"></div>
+                <div class="book__pg book__pg--1"></div>
+                <div class="book__pg book__pg--2"></div>
+                <div class="book__pg book__pg--3"></div>
+                <div class="book__pg book__pg--4"></div>
+                <div class="book__pg book__pg--5"></div>
+            </div>
+            <div class="title-wrapper">
+                <div class="title-box">
+                <h1>BookHives Library Management System</h1>
+                <h2>Your Gateway to Imaginative Worlds</h2>
+            </div>
         </div>
-    </div>
-    <div class="text-content">
-        <h1>Welcome {{ name }}!</h1>
-        <p>
+        </div>
+    
+</header>
+
+<main class="content-wrapper">
+    <section class="book-section">
+        <h1 align="center">Welcome {{ name }}!</h1>
+        <p align="center">
             {% if is_admin %}
-            You are viewing the <strong>Admin Dashboard</strong>.
+            <p>You are viewing the <strong>Admin Dashboard</strong>.</p>
+            <a href="/add-book"><button class="btn btn-primary dashboard-btn">Add Book</button></a>
+
             {% else %}
-            You are viewing the <strong>User Dashboard</strong>.
-            <a href="/contact-us" class="btn btn-primary">Contact Us</a>
+            <p>You are viewing the <strong>User Dashboard</strong>.</p>
+            <a href="/book-list"><button class="btn btn-primary dashboard-btn">View Available Books</button></a>
+
             {% endif %}
         </p>
-    </div>
-</div>
+    </section>
+
+    <section class="book-section">
+        <h2>Welcome!</h2>
+        <p>You are at BookHive, your ultimate destination for innovative solutions, the finest selections, and the best experiences. Whether you're here to explore new trends, seek out unique items, or simply gain insights, we're delighted to guide you through a seamless journey. Join us as we embark on this adventure together, ensuring every visit leaves you inspired, satisfied, and excited for what's next.</p>
+    </section>
+
+    <section class="book-section">
+        <h2>Best of this month for you</h2>
+        <div class="work-item">
+            <div class="work-details">
+                <!-- Navigateable Blocks for Book Genres -->
+                <div class="book-genre">
+                    <h2><a href="#fantasy-genre">The Lord of the Rings</a></h2>
+                    <p>An epic tale of adventure, courage, and friendship set in the magical world of Middle-earth.</p>
+                </div>
+
+                <div class="book-genre">
+                    <h2><a href="#mystery-thriller-genre">Gone Girl</a></h2>
+                    <p>A gripping psychological thriller that delves into the complexities of marriage and deceit.</p>
+                </div>
+
+                <div class="book-genre">
+                    <h2><a href="#historical-genre">All the Light We Cannot See</a></h2>
+                    <p>A beautifully woven story set during World War II, following two intertwined lives.</p>
+                </div>
+
+                <div class="book-genre">
+                    <h2><a href="#childrens-genre">Harry Potter and the Sorcerer's Stone</a></h2>
+                    <p>An enchanting introduction to the magical world of Hogwarts and the adventures of Harry Potter.</p>
+                </div>
+
+                <div class="book-genre">
+                    <h2><a href="#science-fiction-genre">Dune</a></h2>
+                    <p>A groundbreaking science fiction epic exploring politics, religion, and humanity's future.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="book-section">
+        <h2>Author List</h2>
+        <div class="project-item">
+            <h2>J.K. Rowling</h2>
+            <p>Explore the magical world of wizardry and adventure created by J.K. Rowling, the renowned author of the Harry Potter series.</p>
+        </div>
+
+        <div class="project-item">
+            <h2>Agatha Christie</h2>
+            <p>Dive into the captivating mysteries crafted by Agatha Christie, the queen of crime fiction, and experience the thrill of solving intricate puzzles.</p>
+        </div>
+
+        <div class="project-item">
+            <h2>Ken Follett</h2>
+            <p>Embark on epic historical journeys through the novels of Ken Follett, a master storyteller known for his gripping historical chronicles.</p>
+        </div>
+
+        <div class="project-item">
+            <h2>Roald Dahl</h2>
+            <p>Celebrate the whimsical and imaginative tales of Roald Dahl, the beloved author who enchants young readers with magical and fantastical stories.</p>
+        </div>
+    </section>
+</main>
+
+<script>
+    let prevScrollPos = window.pageYOffset;
+    window.onscroll = function() {
+        let currentScrollPos = window.pageYOffset;
+        if (prevScrollPos > currentScrollPos) {
+            document.querySelector("nav").style.top = "0";
+        } else {
+            document.querySelector("nav").classList.add("scroll-hide");
+        }
+        prevScrollPos = currentScrollPos;
+    };
+</script>
 {% endblock %}

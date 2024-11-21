@@ -1,45 +1,47 @@
+
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- Your Custom Styles -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-
-    
-    <style>
-      body {
-    padding-top: 70px; 
-
-    .navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 60px; /* Fixed height */
-    background-color: #333; /* Navbar background color */
-    z-index: 1000; /* Ensure it's above other content */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional shadow */
+    <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous" />
+      <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+      {% block extra_styles %}{% endblock %}
+      
+  <style>
+  .navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px; /* Fixed height */
+  background-color: #333; /* Navbar background color */
+  z-index: 1000; /* Ensure it's above other content */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional shadow */
 }
 
 
-   /* position: fixed; /* Ensure the navbar doesn't overlay content */
-   /* z-index: 10; /* Make sure it stays on top */
-   /* margin-bottom: 0; /* Avoid unnecessary spacing */
+ /* position: fixed; /* Ensure the navbar doesn't overlay content */
+ /* z-index: 10; /* Make sure it stays on top */
+ /* margin-bottom: 0; /* Avoid unnecessary spacing */
 
 
-      .btn-secondary {
-          background-color: grey;
-          color: white;
-          cursor: not-allowed;
-          border: none;
-          padding: 8px 16px;
-          text-align: center;
-          text-decoration: none;
-          font-size: 14px;
-      }
-      </style>
-      <style>
+    .btn-secondary {
+        background-color: grey;
+        color: white;
+        cursor: not-allowed;
+        border: none;
+        padding: 8px 16px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 14px;
+    }
+    </style>
+     <style>
         button {
     font-family: inherit;
     font-size: 20px;
@@ -75,70 +77,81 @@ button svg {
 button:hover svg {
     transform: rotate(20deg); 
 }
+</style>
 
 
-
+    <style>
+      .btn-secondary {
+          background-color: grey;
+          color: white;
+          cursor: not-allowed;
+          border: none;
+          padding: 8px 16px;
+          text-align: center;
+          text-decoration: none;
+          font-size: 14px;
+      }
       </style>
-      
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-      crossorigin="anonymous"
-    />
 
-    <title>{% block title %}Home{% endblock %}</title>
+<link
+rel="stylesheet"
+href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+crossorigin="anonymous"
+/>
+<link
+rel="stylesheet"
+href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+crossorigin="anonymous"
+/>
+
+<title>{% block title %}Home{% endblock %}</title>
   </head>
+
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
       
-          <div class="collapse navbar-collapse justify-content-center" id="navbar">
-              <ul class="navbar-nav">
-                  {% if current_user.is_authenticated %}
-                  <!-- Common Links for All Logged-In Users -->
-                  {% if request.path != '/' %}
-                  <li class="nav-item">
-                      <a class="nav-link {% if request.path == '/' %}active{% endif %}" id="home" href="/">Home</a>
-                  </li>
-                  {% endif %}
-                  {% if request.path != '/book-list' %}
-                  <li class="nav-item">
-                      <a class="nav-link {% if request.path == '/book-list' %}active{% endif %}" id="availableBooks" href="/book-list">Available Books</a>
-                  </li>
-                  {% endif %}
-    
-                  <!-- Admin-Specific Link -->
-                  {% if current_user.is_admin %}
-                  {% if request.path != '/add-book' %}
-                  <li class="nav-item">
-                      <a class="nav-link {% if request.path == '/add-book' %}active{% endif %}" id="addBook" href="/add-book">Add Book</a>
-                  </li>
-                  {% endif %}
-                  
-                  <li class="nav-item">
-                      <a class="nav-link" id="logout" href="/logout">Logout</a>
-                  </li>
-                  {% endif %}
-    
-                  <!-- User-Specific Link -->
-                  {% if not current_user.is_admin %}
-                  
-                  {% if request.path != '/contact-us' %}
-                  <li class="nav-item">
-                      <a class="nav-link {% if request.path == '/contact-us' %}active{% endif %}" id="contact_us" href="/contact-us">Contact Us</a>
-                  </li>
-                  {% endif %}
-                  <li class="nav-item">
-                      <a class="nav-link" id="logout" href="/logout">Logout</a>
-                  </li>
-                  {% endif %}
-    
-                  {% else %}
+        <div class="collapse navbar-collapse justify-content-center" id="navbar">
+            <ul class="navbar-nav">
+                {% if current_user.is_authenticated %}
+                <!-- Common Links for All Logged-In Users -->
+                {% if request.path != '/' %}
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/' %}active{% endif %}" id="home" href="/">Home</a>
+                </li>
+                {% endif %}
+                {% if request.path != '/book-list' %}
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/book-list' %}active{% endif %}" id="availableBooks" href="/book-list">Available Books</a>
+                </li>
+                {% endif %}
+  
+                <!-- Admin-Specific Link -->
+                {% if current_user.is_admin %}
+                {% if request.path != '/add-book' %}
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/add-book' %}active{% endif %}" id="addBook" href="/add-book">Add Book</a>
+                </li>
+                {% endif %}
+                
+                <li class="nav-item">
+                    <a class="nav-link" id="logout" href="/logout">Logout</a>
+                </li>
+                {% endif %}
+  
+                <!-- User-Specific Link -->
+                {% if not current_user.is_admin %}
+                
+                {% if request.path != '/contact-us' %}
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/contact-us' %}active{% endif %}" id="contact_us" href="/contact-us">Contact Us</a>
+                </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" id="logout" href="/logout">Logout</a>
+                </li>
+                {% endif %}
+                {% else %}
                   <!-- Links for Non-Authenticated Users -->
                   {% if request.path != '/login' %}
                   <li class="nav-item">
@@ -155,68 +168,63 @@ button:hover svg {
           </div>
       
   </nav>
+
+  <style>
+    #flash-messages {
+      position: fixed;
+      top: 70px; /* Adjust based on navbar height */
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1050;
+      width: 50%; /* Adjust width as needed */
+      max-width: 600px;
+      text-align: center;
+  }
+  
+  .alert {
+      padding: 15px;
+      border-radius: 5px;
+      font-size: 14px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      display: inline-block;
+  }
+  
+  .alert-success {
+      background-color: #d4edda;
+      border-color: #c3e6cb;
+      color: #155724;
+  }
+  
+  .alert-error {
+      background-color: #f8d7da;
+      border-color: #f5c6cb;
+      color: #721c24;
+  }
+  
+  .alert .close {
+      margin-left: 10px;
+      color: gray; 
+      cursor: pointer;
+  }
   
   
-  
-<style>
-  #flash-messages {
-    position: fixed;
-    top: 70px; /* Adjust based on navbar height */
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1050;
-    width: 50%; /* Adjust width as needed */
-    max-width: 600px;
-    text-align: center;
-}
+  </style>
 
-.alert {
-    padding: 15px;
-    border-radius: 5px;
-    font-size: 14px;
-    margin-bottom: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    display: inline-block;
-}
-
-.alert-success {
-    background-color: #d4edda;
-    border-color: #c3e6cb;
-    color: #155724;
-}
-
-.alert-error {
-    background-color: #f8d7da;
-    border-color: #f5c6cb;
-    color: #721c24;
-}
-
-.alert .close {
-    margin-left: 10px;
-    color: gray; 
-    cursor: pointer;
-}
-
-
-</style>
-
-  
-  {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-        <div id="flash-messages">
-            {% for category, message in messages %}
-                <div class="alert alert-{{ 'success' if category == 'success' else 'error' }} alert-dismissable">
-                    {{ message }}
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                </div>
-            {% endfor %}
-        </div>
-    {% endif %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+    <div id="flash-messages">
+        {% for category, message in messages %}
+            <div class="alert alert-{{ 'success' if category == 'success' else 'error' }} alert-dismissable">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
 {% endwith %}
 
-
-  
-    <div class="container">{% block content %} {% endblock %}</div>
+<div class="container">{% block content %} {% endblock %}</div>
     <script
       src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
       integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
