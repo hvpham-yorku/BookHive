@@ -103,7 +103,12 @@
                   {% if request.path != '/add-book' %}
                   <a class="nav-item nav-link" id="addBook" href="/add-book">Add Book</a>
                   {% endif %}
+                  <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/search-books' %}active{% endif %}" href="/search-books">Search Books</a>
+                </li>
                   <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
+                  
+                
               {% endif %}
   
               <!-- User-Specific Link -->
@@ -114,7 +119,12 @@
                   {% if request.path != '/contact-us' %}
                   <a class="nav-item nav-link" id="contact_us" href="/contact-us">Contact Us</a>
                   {% endif %}
+                  <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/search-books' %}active{% endif %}" href="/search-books">Search Books</a>
+                </li>
                   <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
+                  
+                
               {% endif %}
   
               {% else %}

@@ -197,6 +197,22 @@ def edit_book(book_id):
     # Render the edit page with the book's current details
     return render_template('edit_book.html', book=book)
 
+@views.route('/search-books', methods=['GET', 'POST'])
+@login_required
+def search_books():
+    search_query = request.args.get('search_query', '').strip()
+    books = []
+
+    if search_query:
+        # Query books based on a case-insensitive match of the title
+        books = Book.query.filter(Book.name.ilike(f"%{search_query}%")).all()
+
+    return render_template(
+        'search_books.html',
+        books=books,
+        search_query=search_query
+    )
+
 
 @views.route('/contact-us', methods=['GET', 'POST'])
 @login_required
