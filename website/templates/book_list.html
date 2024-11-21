@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base2.html" %}
 
 {% block content %}
 <div class="content-wrapper">
@@ -83,7 +83,7 @@
                             </button>
                         </a>
                         <form action="{{ url_for('views.delete_book', book_id=row.id) }}" method="POST" style="display: inline;">
-                            <button class="button" onclick="deleteBook(event, {{ row.id }})">
+                            <button class="button" onclick="deleteBook(event,{{ row.id }})">
                                 <div class="trash">
                                     <span>Delete</span>
                                 </div>
