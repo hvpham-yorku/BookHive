@@ -201,18 +201,28 @@ def edit_book(book_id):
 @login_required
 def search_books():
     search_query = request.args.get('search_query', '').strip()
+    selected_genre = request.args.get('genre', '').strip()
+    genres = db.session.query(Book.genre).distinct().all()
     books = []
 
-    if search_query:
-        # Query books based on a case-insensitive match of the title
+    # Filter books by title and/or genre
+    if search_query and selected_genre:
+        books = Book.query.filter(
+            Book.name.ilike(f"%{search_query}%"),
+            Book.genre == selected_genre
+        ).all()
+    elif search_query:
         books = Book.query.filter(Book.name.ilike(f"%{search_query}%")).all()
+    elif selected_genre:
+        books = Book.query.filter(Book.genre == selected_genre).all()
 
     return render_template(
         'search_books.html',
         books=books,
-        search_query=search_query
+        search_query=search_query,
+        genres=genres,
+        selected_genre=selected_genre
     )
-
 
 @views.route('/contact-us', methods=['GET', 'POST'])
 @login_required
