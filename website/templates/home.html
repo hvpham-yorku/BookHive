@@ -5,19 +5,321 @@ Home
 {% endblock %}
 
 {% block content %}
-<h1 align="center">Welcome {{ name }}!</h1>
-<p align="center">
-    {% if is_admin %}
-    <p>You are viewing the <strong>Admin Dashboard</strong>.</p>
-    {% else %}
-    <p>You are viewing the <strong>User Dashboard</strong>.</p>
-    <a href="/contact-us" class="btn btn-primary">Contact Us</a>
-    {% endif %}
-</p>
-{% endblock %}
+<style>
+    /* Center the content horizontally below the navbar */
+    .content-container {
+        display: flex;
+        align-items: center; /* Align book and text vertically */
+        justify-content: center; /* Center content horizontally */
+        position: fixed; /* Fix content below the navbar */
+        top: 70px; /* Move slightly closer to the navbar */
+        left: 50%; /* Center horizontally */
+        transform: translateX(-50%); /* Adjust for horizontal centering */
+        gap: 20px; /* Space between the book and text */
+        padding: 10px; /* Optional padding */
+    }
+
+    /* Text content styles */
+    .text-content {
+        text-align: left; /* Align text to the left */
+    }
+
+    .text-content h1 {
+        font-size: 2rem;
+        margin-bottom: 10px;
+        color: #333;
+    }
+
+    .text-content p {
+        font-size: 1rem;
+        color: #666;
+        margin: 0;
+    }
+
+    /* Animated Book Container */
+    .animation-container {
+        flex-shrink: 0; /* Prevent the book from shrinking */
+    }
+
+    .book {
+        width: 6em; /* Adjust as needed */
+        height: 4em;
+    }
+</style>
+
+<style>
+    
+    .animation-container * {
+        border: 0;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .animation-container {
+        --hue: 223;
+        --bg: hsl(var(--hue), 10%, 90%);
+        --fg: hsl(var(--hue), 10%, 10%);
+        --primary: hsl(var(--hue), 90%, 55%);
+        --primary-l: hsl(var(--hue), 90%, 65%);
+        --primary-d: hsl(var(--hue), 90%, 45%);
+        --white: hsl(var(--hue), 10%, 100%);
+        --white-d: hsl(var(--hue), 10%, 45%);
+        font-size: calc(16px + (24 - 16) * (100vw - 320px) / (1280 - 320));
+        background-color: var(--bg);
+        color: var(--fg);
+        flex-shrink: 0; /* Prevent the book from shrinking */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
     
+    .book,
+    .book__pg-shadow,
+    .book__pg{
+        animation: cover 7s ease-in-out infinte;
+    }
 
-    
-
+    .book {
+        background-color: var(--primary-l);
+        border-radius: 0.25em;
+        padding: 0.25em;
+        perspective: 37.5em;
+        position: relative;
+        width: 6em;
+        height: 4em;
+        transform: translate3d(0, 0, 0);
+        transform-style: preserve-3d;
+    }
    
+    
+            .book__pg-shadow,
+            .book__pg{
+                position: absolute;
+                left: 0.25em;
+                width: calc(50% - 0.25em);
+            }
+            .book__pg-shadow{
+                animation-name: shadow;
+                background-image: linear-gradient(-45deg, hsla(0, 0%, 0%, 0) 50%, hsla(0, 0%, 0%, 0.3) 50%);
+                filter: blur(0.25em);
+                top: calc(100% - 0.25em);
+                height: 3.75em;
+                transform: scaleY(0);
+                transform-origin: 100% 0%;
+            }
+    
+            .book__pg {
+                animation: pg1 7s ease-in-out infinite;
+                z-index: 5; 
+                animation-delay: 0s;
+                position: absolute;
+                width: calc(50% - 0.25em);
+                height: calc(100% - 0.5em);
+                left: 0.25em;
+                transform-origin: 100% 50%;
+                background-color: var(--white);
+                background-image: linear-gradient(
+                    90deg,
+                    hsla(var(--hue), 10%, 90%, 0) 87.5%,
+                    hsla(var(--hue), 10%, 90%)
+                );
+            }
+    
+    .book__pg--2,
+    .book__pg--3,
+    .book__pg--4{
+        background: repeating-linear-gradient(hs1(var(--hue), 10%, 10%) 0 0.125em, hsla(var(--hue), 10%, 10%, 0) 0.125em 0.5em),
+          linear-gradient(90deg, hsla(var(--heu), 10%,90%,0) 87.5%, hsla(var(--hue), 10%, 90%));
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 2.5em 4.125em, 100% 100%;
+    }
+    .book__pg--2::before,
+.book__pg--3::before,
+.book__pg--4::before {
+    content: '';
+    display: block;
+    width: 80%; /* Adjust line width */
+    height: 2px; /* Thickness of the lines */
+    background-color: var(--fg); /* Line color */
+    margin: 0.2em auto; /* Space between lines */
+    border-radius: 1px; /* Optional: round the edges */
+    box-shadow: 
+        0 6px 0 var(--fg), 
+        0 12px 0 var(--fg), 
+        0 18px 0 var(--fg), 
+        0 24px 0 var(--fg), 
+        0 30px 0 var(--fg), 
+        0 36px 0 var(--fg), 
+        0 42px 0 var(--fg), 
+        0 48px 0 var(--fg), 
+        0 54px 0 var(--fg), 
+        0 62px 0 var(--fg), 
+        0 70px 0 var(--fg); /* Creates 8 lines */
+}
+
+    
+
+     .book__pg--2{
+        z-index: 4;
+        animation-name: pg2 7s ease-in-out infinite;
+        animation-delay: 1.4s; 
+    }
+    .book__pg--3{
+        z-index: 3;
+        animation-name: pg3 7s ease-in-out infinite;
+        animation-delay: 2.8s; 
+    }
+    .book__pg--4{
+        z-index: 2;
+        animation-name: pg4 7s ease-in-out infinite;
+        animation-delay: 4.2s;
+    }
+    .book__pg--5{
+        z-index: 1;
+        animation-name: pg5 7s ease-in-out infinite;
+        animation-delay: 5.6s; 
+    } 
+
+    
+    @media(prefers-color-scheme: dark){
+        :root{
+            --bg: hs1(var(--hue), 10%, 30%);
+            --fg: hs1(var(--hue), 10%, 90%);
+        }
+    }
+    
+   
+   @keyframes cover{
+    from, 5%, 45%, 55%, 95%, to {
+        animation-timing-function: ease-out;
+        background-color: var(--primary-l);
+    }
+    10%, 40%, 60%, 90%{
+        animation-timing-function: ease-in;
+        background-color: var(--primary--d);
+    }
+ }
+    @keyframes shadow{
+        from 10.01%, 20.01%, 30.01%, 40.01%{
+            animation-timing-function: ease-in;
+            transform: translate3d(0,0,1px) scaleY(0) rotateY(0);
+        }
+        5%, 15%, 25%, 35%, 45%, 55%, 65%, 75%, 85%, 95%{
+            animation-timing-function: ease-out;
+            transform: translate3d(0,0,1px) scaleY(0.2) rotateY(90deg);
+        }
+        10%, 20%, 30%, 40%, 50%, to{
+            animation-timing-function: ease-out;
+            transform: translate3d(0,0,1px) scaleY(0) rotateY(180deg);
+        }
+        50.01%, 60.01%, 70.01%, 80.01%, 90.01%{
+            animation-timing-function: ease-in;
+            transform: translate3d(0,0,1px) scaleY(0) rotateY(180deg);
+        }
+        60%, 70%, 80%, 90%, to{
+            animation-timing-function: ease-out;
+            transform: translate3d(0,0,1px) scaleY(0) rotateY(0);
+
+        }
+     }
+    
+
+     @keyframes pg1 {
+        0%,
+        10% {
+            transform: translate3d(0, 0, 1px) rotateY(0deg);
+        }
+        20%,
+        90% {
+            transform: translate3d(0, 0, 1px) rotateY(180deg);
+        }
+        100% {
+            transform: translate3d(0, 0, 1px) rotateY(0deg);
+        }
+    }
+    
+    @keyframes pg2 {
+        0%,
+        20% {
+            transform: translate3d(0, 0, 1px) rotateY(0deg);
+        }
+        30%,
+        80% {
+            transform: translate3d(0, 0, 1px) rotateY(180deg);
+        }
+        100% {
+            transform: translate3d(0, 0, 1px) rotateY(0deg);
+        }
+    }
+    
+    @keyframes pg3 {
+        0%,
+        30% {
+            transform: translate3d(0, 0, 1px) rotateY(0deg);
+        }
+        40%,
+        70% {
+            transform: translate3d(0, 0, 1px) rotateY(180deg);
+        }
+        100% {
+            transform: translate3d(0, 0, 1px) rotateY(0deg);
+        }
+    }
+    
+    @keyframes pg4 {
+        0%,
+        40% {
+            transform: translate3d(0, 0, 1px) rotateY(0deg);
+        }
+        50%,
+        60% {
+            transform: translate3d(0, 0, 1px) rotateY(180deg);
+        }
+        100% {
+            transform: translate3d(0, 0, 1px) rotateY(0deg);
+        }
+    }
+    
+    @keyframes pg5 {
+        0%,
+        50% {
+            transform: translate3d(0, 0, 1px) rotateY(0deg);
+        }
+        60%,
+        50% {
+            transform: translate3d(0, 0, 1px) rotateY(180deg);
+        }
+        100% {
+            transform: translate3d(0, 0, 1px) rotateY(0deg);
+        }
+    } 
+</style>
+
+
+<div class="content-container">
+    <div class="animation-container">
+        <div class="book">
+            <div class="book__pg-shadow"></div>
+            <div class="book__pg book__pg--1"></div>
+            <div class="book__pg book__pg--2"></div>
+            <div class="book__pg book__pg--3"></div>
+            <div class="book__pg book__pg--4"></div>
+            <div class="book__pg book__pg--5"></div>
+        </div>
+    </div>
+    <div class="text-content">
+        <h1>Welcome {{ name }}!</h1>
+        <p>
+            {% if is_admin %}
+            You are viewing the <strong>Admin Dashboard</strong>.
+            {% else %}
+            You are viewing the <strong>User Dashboard</strong>.
+            <a href="/contact-us" class="btn btn-primary">Contact Us</a>
+            {% endif %}
+        </p>
+    </div>
+</div>
+{% endblock %}
