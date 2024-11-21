@@ -7,21 +7,17 @@ Home
 {% block content %}
 
 <style>
-    /* Center the content horizontally below the navbar */
     .content-container {
-        display: flex;
-        align-items: center; /* Align book and text vertically */
-        justify-content: center; /* Center content horizontally */
-        /*position: fixed; /* Fix content below the navbar */
-        top: 70px; /* Move slightly closer to the navbar */
-        left: 50%; /* Center horizontally */
-        transform: translateX(-50%); /* Adjust for horizontal centering */
-        gap: 20px; /* Space between the book and text */
-        padding: 10px; /* Optional padding */
-        position: fixed; /* Ensure the text scrolls naturally */
-    margin-top: 120px;
-    }
-
+    display: flex;
+    align-items: center; /* Aligns book and text vertically */
+    justify-content: flex-start; /* Positions elements next to each other */
+    gap: 20px; /* Space between book and text */
+    padding: 0 20px; /* Optional padding for horizontal space */
+    flex-wrap: wrap; /* Adjusts for smaller screens */
+    margin-top: 80px; /* Pushes content below the fixed navbar */
+    position: relative; /* Ensures proper stacking context */
+    z-index: 1; /* Keeps the content below the navbar */
+}
     /* Text content styles */
     .text-content {
         text-align: left; /* Align text to the left */
@@ -40,63 +36,61 @@ Home
     }
 
     /* Animated Book Container */
-    .animation-container {
-        flex-shrink: 0; /* Prevent the book from shrinking */
-    }
+    
+       /* Adjust animation-container */
+       .animation-container {
+    display: flex;
+    align-items: flex-start; /* Align the book and title properly */
+    justify-content: flex-start; /* Keep the book and title side by side */
+    gap: 20px; /* Space between the book and title */
+    margin-top: 60px; /* Adjust this value to move the container closer to the top */
+    position: relative; /* Ensure proper positioning */
+    z-index: 1; /* Prevent overlapping */
+}
+
+
+
+    
     .content-wrapper {
     flex: 1; /* Prevent it from stretching */
     max-width: 600px; /* Keep the title box width fixed */
     margin-left: 60px; /* Move the title closer to the animated book */
     text-align: left; /* Align text to the left */
-    margin-top: 50px;
+    margin-bottom: 50px;
 }
-    .book {
-        margin-left: auto; /* Push the book to the right side */
-        margin-right: 50px;
-        width: 6em; /* Adjust as needed */
-        height: 4em;
+    
+        .book {
+    margin-top: 10px; /* Move the book slightly down */
+    width: 6em; /* Width of the animated book */
+    height: 4em; /* Height of the animated book */
+    flex-shrink: 0; /* Prevent the book from shrinking */
+}
         
-    }
+    
 </style>
 
 <style>
     
-    .animation-container * {
-        .animation-container {
-    position: fixed; /* Keeps the book in a fixed position */
-    top: 0; /* Adjust to position it below the navbar */
-    left: 0%; /* Center horizontally */
-    transform: translateX(-50%); /* Adjust for horizontal centering */
-    z-index: 1000; /* Ensure it stays on top of other elements */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-    }
+   
     
     .animation-container {
-        --hue: 223;
-        --bg: hsl(var(--hue), 10%, 90%);
-        --fg: hsl(var(--hue), 10%, 10%);
-        --primary: brown; /* Book cover color */
-        --primary-l: #A0522D; /* Light brown (Sienna) */
-        --primary-d: #8B4513; /* Darker brown (SaddleBrown) */
-        /*--primary: hsl(var(--hue), 90%, 55%);
-        --primary-l: hsl(var(--hue), 90%, 65%);
-        --primary-d: hsl(var(--hue), 90%, 45%);*/
-        --white: hsl(var(--hue), 10%, 100%);
-        --white-d: hsl(var(--hue), 10%, 45%);
-        font-size: calc(16px + (24 - 16) * (100vw - 320px) / (1280 - 320));
-        background-color: var(--bg);
-        color: var(--fg);
-        flex-shrink: 0; /* Prevent the book from shrinking */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: transparent; /* Ensure no background color */
-    border: none; /* Remove any unintended border */
-    box-shadow: none; /* Remove any box shadows */
-    }
+    --hue: 223;
+    --bg: hsl(var(--hue), 10%, 90%);
+    --fg: hsl(var(--hue), 10%, 10%);
+    --primary: brown; /* Book cover color */
+    --primary-l: #A0522D; /* Light brown (Sienna) */
+    --primary-d: #8B4513; /* Darker brown (SaddleBrown) */
+    --white: hsl(var(--hue), 10%, 100%);
+    --white-d: hsl(var(--hue), 10%, 45%);
+    font-size: calc(16px + (24 - 16) * (100vw - 320px) / (1280 - 320));
+    background-color: var(--bg);
+    color: var(--fg);
+    background-color: transparent; 
+    border: none; 
+    box-shadow: none; 
+    
+}
+
 
     
     .book,

@@ -9,20 +9,29 @@
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous" />
-      <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+      <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
       {% block extra_styles %}{% endblock %}
       
   <style>
-  .navbar {
+  /* .navbar {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  height: 60px; /* Fixed height */
-  background-color: #333; /* Navbar background color */
-  z-index: 1000; /* Ensure it's above other content */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional shadow */
+  height: 60px; 
+  background-color: #333; 
+  z-index: 1000; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+} */
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000; /* Ensures navbar stays above everything */
 }
+
 
 
  /* position: fixed; /* Ensure the navbar doesn't overlay content */
