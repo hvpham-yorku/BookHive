@@ -11,7 +11,7 @@ from flask_login import login_required, current_user
 from threading import Thread
 
 
-
+ 
 views = Blueprint('views', __name__)
 
 @views.route('/')
