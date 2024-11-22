@@ -26,7 +26,7 @@
     transform: scale(var(--scale, 1));
     transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
 }
-
+ 
 .button span {
     font-size: 14px; 
     line-height: 18px;
