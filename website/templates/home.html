@@ -5,20 +5,439 @@ Home
 {% endblock %}
 
 {% block content %}
-<h1 align="center">Welcome {{ name }}!</h1>
-<p align="center">
-    {% if is_admin %}
-    <p>You are viewing the <strong>Admin Dashboard</strong>.</p>
-    <a href="/add-book"><button class="btn btn-primary">Add Book</button></a>
-    {% else %}
-    <p>You are viewing the <strong>User Dashboard</strong>.</p>
-    <a href="/book-list"><button class="btn btn-primary">View Available Books</button></a>
-    {% endif %}
-</p>
-{% endblock %}
+
+<style>
+    .content-container {
+    display: flex;
+    align-items: center; /* Aligns book and text vertically */
+    justify-content: flex-start; /* Positions elements next to each other */
+    gap: 20px; /* Space between book and text */
+    padding: 0 20px; /* Optional padding for horizontal space */
+    flex-wrap: wrap; /* Adjusts for smaller screens */
+    margin-top: 80px; /* Pushes content below the fixed navbar */
+    position: relative; /* Ensures proper stacking context */
+    z-index: 1; /* Keeps the content below the navbar */
+}
+    /* Text content styles */
+    .text-content {
+        text-align: left; /* Align text to the left */
+    }
+
+    .text-content h1 {
+        font-size: 2rem;
+        margin-bottom: 10px;
+        color: #333;
+    }
+
+    .text-content p {
+        font-size: 1rem;
+        color: #666;
+        margin: 0;
+    }
+
+    /* Animated Book Container */
+    
+       /* Adjust animation-container */
+       .animation-container {
+    display: flex;
+    align-items: flex-start; /* Align the book and title properly */
+    justify-content: flex-start; /* Keep the book and title side by side */
+    gap: 20px; /* Space between the book and title */
+    margin-top: 60px; /* Adjust this value to move the container closer to the top */
+    position: relative; /* Ensure proper positioning */
+    z-index: 1; /* Prevent overlapping */
+}
+
+
 
     
-
+    .content-wrapper {
+    flex: 1; /* Prevent it from stretching */
+    max-width: 600px; /* Keep the title box width fixed */
+    margin-left: 60px; /* Move the title closer to the animated book */
+    text-align: left; /* Align text to the left */
+    margin-bottom: 50px;
+}
     
+        .book {
+    margin-top: 10px; /* Move the book slightly down */
+    width: 6em; /* Width of the animated book */
+    height: 4em; /* Height of the animated book */
+    flex-shrink: 0; /* Prevent the book from shrinking */
+}
+        
+    
+</style>
 
+<style>
+    
    
+    
+    .animation-container {
+    --hue: 223;
+    --bg: hsl(var(--hue), 10%, 90%);
+    --fg: hsl(var(--hue), 10%, 10%);
+    --primary: brown; /* Book cover color */
+    --primary-l: #A0522D; /* Light brown (Sienna) */
+    --primary-d: #8B4513; /* Darker brown (SaddleBrown) */
+    --white: hsl(var(--hue), 10%, 100%);
+    --white-d: hsl(var(--hue), 10%, 45%);
+    font-size: calc(16px + (24 - 16) * (100vw - 320px) / (1280 - 320));
+    background-color: var(--bg);
+    color: var(--fg);
+    background-color: transparent; 
+    border: none; 
+    box-shadow: none; 
+    
+}
+
+
+    
+    .book,
+    .book__pg-shadow,
+    .book__pg{
+        animation: cover 7s ease-in-out infinte;
+    }
+
+    .book {
+        background-color: var(--primary-l);
+        border-radius: 0.25em;
+        padding: 0.25em;
+        perspective: 37.5em;
+        position: relative;
+        width: 6em;
+        height: 4em;
+        transform: translate3d(0, 0, 0);
+        transform-style: preserve-3d;
+        margin-right: 20px
+    }
+   
+    
+            .book__pg-shadow,
+            .book__pg{
+                position: absolute;
+                left: 0.25em;
+                width: calc(50% - 0.25em);
+            }
+            .book__pg-shadow{
+                animation-name: shadow;
+                background-image: linear-gradient(-45deg, hsla(0, 0%, 0%, 0) 50%, hsla(0, 0%, 0%, 0.3) 50%);
+                filter: blur(0.25em);
+                top: calc(100% - 0.25em);
+                height: 3.75em;
+                transform: scaleY(0);
+                transform-origin: 100% 0%;
+            }
+    
+            .book__pg {
+                animation: pg1 7s ease-in-out infinite;
+                z-index: 5; 
+                animation-delay: 0s;
+                position: absolute;
+                width: calc(50% - 0.25em);
+                height: calc(100% - 0.5em);
+                left: 0.25em;
+                transform-origin: 100% 50%;
+                background-color: var(--white);
+                background-image: linear-gradient(
+                    90deg,
+                    hsla(var(--hue), 10%, 90%, 0) 87.5%,
+                    hsla(var(--hue), 10%, 90%)
+                );
+            }
+    
+    .book__pg--2,
+    .book__pg--3,
+    .book__pg--4{
+        background: repeating-linear-gradient(hs1(var(--hue), 10%, 10%) 0 0.125em, hsla(var(--hue), 10%, 10%, 0) 0.125em 0.5em),
+          linear-gradient(90deg, hsla(var(--heu), 10%,90%,0) 87.5%, hsla(var(--hue), 10%, 90%));
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 2.5em 4.125em, 100% 100%;
+    }
+    .book__pg--2::before,
+.book__pg--3::before,
+.book__pg--4::before {
+    content: '';
+    display: block;
+    width: 80%; /* Adjust line width */
+    height: 2px; /* Thickness of the lines */
+    background-color: var(--fg); /* Line color */
+    margin: 0.2em auto; /* Space between lines */
+    border-radius: 1px; /* Optional: round the edges */
+    box-shadow: 
+        0 6px 0 var(--fg), 
+        0 12px 0 var(--fg), 
+        0 18px 0 var(--fg), 
+        0 24px 0 var(--fg), 
+        0 30px 0 var(--fg), 
+        0 36px 0 var(--fg), 
+        0 42px 0 var(--fg), 
+        0 48px 0 var(--fg), 
+        0 54px 0 var(--fg), 
+        0 62px 0 var(--fg), 
+        0 70px 0 var(--fg); /* Creates 8 lines */
+}
+
+    
+
+     .book__pg--2{
+        z-index: 4;
+        animation-name: pg2 7s ease-in-out infinite;
+        animation-delay: 1.4s; 
+    }
+    .book__pg--3{
+        z-index: 3;
+        animation-name: pg3 7s ease-in-out infinite;
+        animation-delay: 2.8s; 
+    }
+    .book__pg--4{
+        z-index: 2;
+        animation-name: pg4 7s ease-in-out infinite;
+        animation-delay: 4.2s;
+    }
+    .book__pg--5{
+        z-index: 1;
+        animation-name: pg5 7s ease-in-out infinite;
+        animation-delay: 5.6s; 
+    } 
+
+    
+    @media(prefers-color-scheme: dark){
+        :root{
+            --bg: hs1(var(--hue), 10%, 30%);
+            --fg: hs1(var(--hue), 10%, 90%);
+        }
+    }
+    
+   
+   @keyframes cover{
+    from, 5%, 45%, 55%, 95%, to {
+        animation-timing-function: ease-out;
+        background-color: var(--primary-l);
+    }
+    10%, 40%, 60%, 90%{
+        animation-timing-function: ease-in;
+        background-color: var(--primary--d);
+    }
+ }
+    @keyframes shadow{
+        from 10.01%, 20.01%, 30.01%, 40.01%{
+            animation-timing-function: ease-in;
+            transform: translate3d(0,0,1px) scaleY(0) rotateY(0);
+        }
+        5%, 15%, 25%, 35%, 45%, 55%, 65%, 75%, 85%, 95%{
+            animation-timing-function: ease-out;
+            transform: translate3d(0,0,1px) scaleY(0.2) rotateY(90deg);
+        }
+        10%, 20%, 30%, 40%, 50%, to{
+            animation-timing-function: ease-out;
+            transform: translate3d(0,0,1px) scaleY(0) rotateY(180deg);
+        }
+        50.01%, 60.01%, 70.01%, 80.01%, 90.01%{
+            animation-timing-function: ease-in;
+            transform: translate3d(0,0,1px) scaleY(0) rotateY(180deg);
+        }
+        60%, 70%, 80%, 90%, to{
+            animation-timing-function: ease-out;
+            transform: translate3d(0,0,1px) scaleY(0) rotateY(0);
+
+        }
+     }
+    
+
+     @keyframes pg1 {
+        0%,
+        10% {
+            transform: translate3d(0, 0, 1px) rotateY(0deg);
+        }
+        20%,
+        90% {
+            transform: translate3d(0, 0, 1px) rotateY(180deg);
+        }
+        100% {
+            transform: translate3d(0, 0, 1px) rotateY(0deg);
+        }
+    }
+    
+    @keyframes pg2 {
+        0%,
+        20% {
+            transform: translate3d(0, 0, 1px) rotateY(0deg);
+        }
+        30%,
+        80% {
+            transform: translate3d(0, 0, 1px) rotateY(180deg);
+        }
+        100% {
+            transform: translate3d(0, 0, 1px) rotateY(0deg);
+        }
+    }
+    
+    @keyframes pg3 {
+        0%,
+        30% {
+            transform: translate3d(0, 0, 1px) rotateY(0deg);
+        }
+        40%,
+        70% {
+            transform: translate3d(0, 0, 1px) rotateY(180deg);
+        }
+        100% {
+            transform: translate3d(0, 0, 1px) rotateY(0deg);
+        }
+    }
+    
+    @keyframes pg4 {
+        0%,
+        40% {
+            transform: translate3d(0, 0, 1px) rotateY(0deg);
+        }
+        50%,
+        60% {
+            transform: translate3d(0, 0, 1px) rotateY(180deg);
+        }
+        100% {
+            transform: translate3d(0, 0, 1px) rotateY(0deg);
+        }
+    }
+    
+    @keyframes pg5 {
+        0%,
+        50% {
+            transform: translate3d(0, 0, 1px) rotateY(0deg);
+        }
+        60%,
+        50% {
+            transform: translate3d(0, 0, 1px) rotateY(180deg);
+        }
+        100% {
+            transform: translate3d(0, 0, 1px) rotateY(0deg);
+        }
+    } 
+</style>
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat&family=Open+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='Home.css') }}">
+</head>
+
+
+    <header>
+        <!-- Fixed Container for Both Book and Text -->
+            <div class="animation-container">
+            <div class="book">
+                <div class="book__pg-shadow"></div>
+                <div class="book__pg book__pg--1"></div>
+                <div class="book__pg book__pg--2"></div>
+                <div class="book__pg book__pg--3"></div>
+                <div class="book__pg book__pg--4"></div>
+                <div class="book__pg book__pg--5"></div>
+            </div>
+            <div class="title-wrapper">
+                <div class="title-box">
+                <h1>BookHives Library Management System</h1>
+                <h2>Your Gateway to Imaginative Worlds</h2>
+            </div>
+        </div>
+        </div>
+    
+</header>
+
+<main class="content-wrapper">
+    <section class="book-section">
+        <h1 align="center">Welcome {{ name }}!</h1>
+        <p align="center">
+            {% if is_admin %}
+            <p>You are viewing the <strong>Admin Dashboard</strong>.</p>
+            <a href="/add-book"><button class="btn btn-primary dashboard-btn">Add Book</button></a>
+
+            {% else %}
+            <p>You are viewing the <strong>User Dashboard</strong>.</p>
+            <a href="/book-list"><button class="btn btn-primary dashboard-btn">View Available Books</button></a>
+
+            {% endif %}
+        </p>
+    </section>
+
+    <section class="book-section">
+        <h2>Welcome!</h2>
+        <p>You are at BookHive, your ultimate destination for innovative solutions, the finest selections, and the best experiences. Whether you're here to explore new trends, seek out unique items, or simply gain insights, we're delighted to guide you through a seamless journey. Join us as we embark on this adventure together, ensuring every visit leaves you inspired, satisfied, and excited for what's next.</p>
+    </section>
+
+    <section class="book-section">
+        <h2>Best of this month for you</h2>
+        <div class="work-item">
+            <div class="work-details">
+                <!-- Navigateable Blocks for Book Genres -->
+                <div class="book-genre">
+                    <h2><a href="#fantasy-genre">The Lord of the Rings</a></h2>
+                    <p>An epic tale of adventure, courage, and friendship set in the magical world of Middle-earth.</p>
+                </div>
+
+                <div class="book-genre">
+                    <h2><a href="#mystery-thriller-genre">Gone Girl</a></h2>
+                    <p>A gripping psychological thriller that delves into the complexities of marriage and deceit.</p>
+                </div>
+
+                <div class="book-genre">
+                    <h2><a href="#historical-genre">All the Light We Cannot See</a></h2>
+                    <p>A beautifully woven story set during World War II, following two intertwined lives.</p>
+                </div>
+
+                <div class="book-genre">
+                    <h2><a href="#childrens-genre">Harry Potter and the Sorcerer's Stone</a></h2>
+                    <p>An enchanting introduction to the magical world of Hogwarts and the adventures of Harry Potter.</p>
+                </div>
+
+                <div class="book-genre">
+                    <h2><a href="#science-fiction-genre">Dune</a></h2>
+                    <p>A groundbreaking science fiction epic exploring politics, religion, and humanity's future.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="book-section">
+        <h2>Author List</h2>
+        <div class="project-item">
+            <h2>J.K. Rowling</h2>
+            <p>Explore the magical world of wizardry and adventure created by J.K. Rowling, the renowned author of the Harry Potter series.</p>
+        </div>
+
+        <div class="project-item">
+            <h2>Agatha Christie</h2>
+            <p>Dive into the captivating mysteries crafted by Agatha Christie, the queen of crime fiction, and experience the thrill of solving intricate puzzles.</p>
+        </div>
+
+        <div class="project-item">
+            <h2>Ken Follett</h2>
+            <p>Embark on epic historical journeys through the novels of Ken Follett, a master storyteller known for his gripping historical chronicles.</p>
+        </div>
+
+        <div class="project-item">
+            <h2>Roald Dahl</h2>
+            <p>Celebrate the whimsical and imaginative tales of Roald Dahl, the beloved author who enchants young readers with magical and fantastical stories.</p>
+        </div>
+    </section>
+</main>
+
+<script>
+    let prevScrollPos = window.pageYOffset;
+    window.onscroll = function() {
+        let currentScrollPos = window.pageYOffset;
+        if (prevScrollPos > currentScrollPos) {
+            document.querySelector("nav").style.top = "0";
+        } else {
+            document.querySelector("nav").classList.add("scroll-hide");
+        }
+        prevScrollPos = currentScrollPos;
+    };
+</script>
+{% endblock %}

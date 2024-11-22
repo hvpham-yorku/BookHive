@@ -1,0 +1,142 @@
+/* styles.css */
+
+body {
+    height: 100vh;
+    margin: 0; 
+  }
+  
+  .background-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1; 
+  }
+  
+    
+    .navbar-custom {
+      background-color: #004d99;
+    }
+    
+    .form-group {
+  color: #ddd;
+    }
+    
+    .form-control {
+      width: 100%;
+    padding: 15px; 
+    font-size: 22px; 
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    }
+    
+    .btn-primary {
+      display: block;
+      width: 100%; 
+      margin: 20px auto; 
+      padding: 15px; 
+      background-color: #cc0000;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    
+    /* styles for the dashboard button */
+  .dashboard-btn {
+    width: auto; 
+    padding: 10px 20px; 
+    font-size: 16px; 
+    background-color: #ff9900; 
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    display: inline-block; 
+  }
+  
+  .dashboard-btn:hover {
+    background-color: #cc7a00; 
+  }
+  
+   
+    
+    /* Styling form inputs */
+    input[type="email"],
+    input[type="password"],
+    input[type="text"],
+    textarea {
+      font-size: 15px; /* Inside box text size */
+      color: #000000; /* Set text color to black for visibility */
+      background-color: #ffffff; /* Ensure a white background for the input */
+      border: 1px solid #aaa;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 10px; /* Optional: Add some padding for better usability */
+  }
+  input:focus,
+  textarea:focus {
+      outline: none; /* Remove default focus outline */
+      border: 2px solid #007bff; /* Optional: Highlight border on focus */
+      background-color: #f8f9fa; /* Optional: Slightly different background on focus */
+  }  
+    label {
+      font-size: 25px; 
+      font-weight:500;
+      color: #000000; 
+      text-shadow: none;
+    }
+    h3 {
+      font-size: 40px; 
+      font-weight: bold;
+      color: #fcfafa; 
+      text-align: center;
+      text-shadow: 7px 7px 7px rgba(0,0,0,0.5);
+    }
+    
+    /* Customizing list items */
+    .list-group-item {
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+    }
+     
+    /* Login and Sign-Up Specific Styles */
+    .login-container {
+      width: 700px;
+      height: auto; 
+    
+      padding: 20px;
+      margin: 100px auto; /* Centers the container vertically and horizontally */
+      padding: 50px;
+      background-color: white; /* White background */
+      border: 1px solid #ddd; /* Light gray border */
+      border-radius: 8px; /* Rounded corners */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    }
+    
+    form h2 {
+      margin-bottom: 50px;
+      margin-top: 15px;
+      font-size: 33px;
+      color: #333; 
+      text-align: center; /* Center align the title */
+      text-shadow: none;
+    }
+    
+  /* Centering the Login Button */
+  .login-button {
+    display: block; 
+    margin: 0 auto; /* Automatically centers the button horizontally */
+    z-index: 10; 
+    margin-bottom: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    font-size: large;
+  }

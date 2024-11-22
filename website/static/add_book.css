@@ -1,0 +1,64 @@
+body {
+    background: url(add.jpg) center;
+    background-size: cover;
+    margin: 0;
+ 
+  }
+
+#add-book-page {
+    position:relative;
+    top: 150px;
+    bottom: 50px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#add-book-page h1 {
+    color: #333;
+    text-align: center;
+}
+
+#add-book-page .form-group label {
+    font-weight: bold;
+    color: #555;
+    text-shadow: none;
+}
+
+/* Button Styles */
+.btn-success {
+    background: linear-gradient(90deg, #cf850d, #584303); 
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease; /* Smooth transition for hover effect */
+    position: relative;
+    overflow: hidden; /* Prevent hover effects from spilling outside the button */
+}
+
+.btn-success::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2); /* Light overlay */
+    transition: all 0.3s ease; /* Smooth transition for the hover overlay */
+    z-index: 1;
+}
+
+.btn-success:hover::before {
+    left: 100%; /* Slide the overlay from left to right */
+}
+
+.btn-success:hover {
+    background: linear-gradient(90deg, #523402, #895205); /* Reverse the gradient on hover */
+    transform: translateY(-2px); /* Slightly lift the button */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
+}
