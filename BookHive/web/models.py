@@ -19,7 +19,6 @@ class Book(db.Model):
     borrowed_books = db.relationship('BorrowedBook', backref='book')# relationship to track borrow records for this book
 
 
- 
 
 class User2(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
