@@ -1,7 +1,7 @@
 # BookHive: Library Management System
 
 BookHive is a modern library management system designed to streamline the management of books, authors, and users while providing an intuitive interface for both administrators and readers. The platform serves as a gateway to a world of knowledge and imagination, featuring seamless book management, interactive dashboards, and an elegant design.
-
+ 
 ## Features
 
 ### User Features
