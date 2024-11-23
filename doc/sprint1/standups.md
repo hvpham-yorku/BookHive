@@ -4,7 +4,7 @@
 3. What do you commit to next?
 4. When do you think you'll be done?
 5. Do you have any blockers?
-
+ 
 
 | Names      |  Work since last Stand up                                                                        | Next Commit           | Expected Time | Issues Faced                                      |
 |------------|--------------------------------------------------------------------------------------------------|-----------------------|---------------|---------------------------------------------------|
