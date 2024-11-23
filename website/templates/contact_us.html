@@ -1,125 +1,143 @@
 {% extends "base.html" %}
 
 {% block content %}
+<!-- Main content block that extends a base template -->
+
 <h1 class="contact-title">Contact Us</h1>
+<!-- Header for the contact page with a custom style class -->
 
 <style>
+/* Inline CSS styles specifically for the Contact Us page */
 
+/* Set a background image for the body with a dark overlay */
 body {
-  background:  url("{{ url_for('static', filename='white.jpg') }}") center;
+  background: url("{{ url_for('static', filename='white.jpg') }}") center;
   background-size: cover;
   margin: 0;
   overflow-x: hidden; /* Prevent horizontal scrolling */
 }
-  body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.3); /* Dark overlay */
-    z-index: -1;
-
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3); /* Dark overlay for better readability */
+  z-index: -1; /* Ensures the overlay is behind other content */
 }
-    /* Center the "Contact Us" title */
-    .contact-title {
-        text-align: center;
-    font-size: 2.5rem;
-    font-weight: bold;
-    margin-bottom: 20px;
-    color: #6b4423; /* Brownish-orange color for the title */
-    text-shadow: 
-        1px 1px 0px #fff, /* White shadow for the border */
-        -1px -1px 0px #fff, 
-        1px -1px 0px #fff, 
-        -1px 1px 0px #fff;
-    }
 
-    /* Simplified and elegant submit button styles */
-    .contact-page .submit-button {
-        min-width: 300px;
-        min-height: 60px;
-        font-family: 'Nunito', sans-serif;
-        font-size: 22px;
-        text-transform: uppercase;
-        letter-spacing: 1.3px;
-        font-weight: 700;
-        color: #fff;
-        background: linear-gradient(90deg, #a0522d 0%, #d2691e 100%); /* Brownish-orange gradient */
-        border: none;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-        transition: all 0.3s ease;
-        cursor: pointer;
-        outline: none;
-        position: relative;
-    }
+/* Styling for the "Contact Us" title */
+.contact-title {
+  text-align: center; /* Center aligns the title */
+  font-size: 2.5rem; /* Font size for large title text */
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #6b4423; /* Brownish-orange color */
+  text-shadow: 
+    1px 1px 0px #fff, 
+    -1px -1px 0px #fff, 
+    1px -1px 0px #fff, 
+    -1px 1px 0px #fff; /* White border-like shadow effect */
+}
 
-    .contact-page .submit-button:hover {
-        background: linear-gradient(90deg, #cd853f 0%, #d2691e 100%); /* Lighter hover effect */
-        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
-        transform: translateY(-2px);
-    }
+/* Styling for the submit button */
+.contact-page .submit-button {
+  min-width: 300px; /* Minimum width for the button */
+  min-height: 60px; /* Minimum height for the button */
+  font-family: 'Nunito', sans-serif; /* Elegant sans-serif font */
+  font-size: 22px; /* Font size for readability */
+  text-transform: uppercase; /* Converts text to uppercase */
+  letter-spacing: 1.3px; /* Slightly spaced-out letters */
+  font-weight: 700; /* Bold font weight */
+  color: #fff; /* White text color */
+  background: linear-gradient(90deg, #a0522d 0%, #d2691e 100%); /* Gradient background */
+  border: none; /* Removes border */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Slight shadow for depth */
+  transition: all 0.3s ease; /* Smooth hover animation */
+  cursor: pointer; /* Pointer cursor for button hover */
+  outline: none; /* Removes default outline */
+  position: relative; /* Ensures proper layering */
+}
 
-    .contact-page .submit-button:active {
-        background: linear-gradient(90deg, #8b4513 0%, #a0522d 100%); /* Darker click effect */
-        box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
-        transform: translateY(1px);
-    }
+/* Hover effect for the submit button */
+.contact-page .submit-button:hover {
+  background: linear-gradient(90deg, #cd853f 0%, #d2691e 100%); /* Lighter gradient */
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3); /* Larger shadow on hover */
+  transform: translateY(-2px); /* Slight lift effect */
+}
 
-    .contact-page {
-        margin: 20px auto;
-        max-width: 600px;
-    }
+/* Active (pressed) state for the submit button */
+.contact-page .submit-button:active {
+  background: linear-gradient(90deg, #8b4513 0%, #a0522d 100%); /* Darker gradient */
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2); /* Reduced shadow on click */
+  transform: translateY(1px); /* Slight press effect */
+}
 
-    .form-group {
-        margin-bottom: 15px;
-    }
+/* Container for the contact form */
+.contact-page {
+  margin: 20px auto; /* Centers the form with auto margins */
+  max-width: 600px; /* Restricts the form width */
+}
 
-    .form-group label {
-        color: #333; /* Darker gray for readability */
-    text-shadow: 
-        1px 1px 0px #fff,
-        -1px -1px 0px #fff,
-        1px -1px 0px #fff,
-        -1px 1px 0px #fff;
-    }
+/* Individual form groups (label and input/textarea pairs) */
+.form-group {
+  margin-bottom: 15px; /* Spacing between form elements */
+}
 
-    .form-group input,
-    .form-group textarea {
-        width: 100%;
-        padding: 10px;
-        font-size: 16px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
+/* Styling for the form labels */
+.form-group label {
+  color: #333; /* Dark gray for text */
+  text-shadow: 
+    1px 1px 0px #fff, 
+    -1px -1px 0px #fff, 
+    1px -1px 0px #fff, 
+    -1px 1px 0px #fff; /* Text shadow for better readability */
+}
 
-    .form-group textarea {
-        resize: vertical;
-    }
+/* Styling for text input and textarea elements */
+.form-group input,
+.form-group textarea {
+  width: 100%; /* Full width of the container */
+  padding: 10px; /* Internal padding for better usability */
+  font-size: 16px; /* Font size for readability */
+  border: 1px solid #ccc; /* Light gray border */
+  border-radius: 4px; /* Slightly rounded corners */
+}
 
-    .wrap {
-        display: flex;
-        justify-content: center;
-        margin-top: 20px;
-    }
+/* Allow vertical resizing of textareas */
+.form-group textarea {
+  resize: vertical;
+}
+
+/* Wrapper for centering the submit button */
+.wrap {
+  display: flex; /* Flexbox for alignment */
+  justify-content: center; /* Centers the button horizontally */
+  margin-top: 20px; /* Adds spacing above the button */
+}
 </style>
 
+<!-- Contact form structure -->
 <div class="contact-page">
     <form action="/contact-us" method="POST">
+        <!-- Name input field -->
         <div class="form-group">
             <label for="name">Name</label>
             <input type="text" class="form-control" id="name" name="name" required>
         </div>
+        <!-- Email input field -->
         <div class="form-group">
             <label for="email">Email</label>
             <input type="email" class="form-control" id="email" name="email" required>
         </div>
+        <!-- Textarea for user inquiries or feedback -->
         <div class="form-group">
             <label for="query">Please leave your inquiries or feedback below, and we will get back to you as soon as possible.</label>
             <textarea class="form-control" id="query" name="query" rows="5" required></textarea>
         </div>
+        <!-- Submit button wrapped in a flex container -->
         <div class="wrap">
             <button class="submit-button">Submit</button>
         </div>
