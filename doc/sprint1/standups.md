@@ -14,7 +14,7 @@
 | Raha       |Flask API in Python integration, SQL DB, HTML,CSS,JS, Home page + system connectivity test        | User story 2          | 11/15/2024    | push to the main branch instead of individual one |
 | Noran      |Flask API in Python integration, SQL DB, HTML,CSS,JS, Home page + system connectivity test        | User Story 22         | 11/15/2024    | Flask mail configuration issue                    |
 
-
+ 
 
 11/16/2024] - Sprint 1 Standup 2
 
