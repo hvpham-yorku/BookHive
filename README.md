@@ -42,7 +42,7 @@ Contact Us: Submit inquiries or feedback.
 ## Setup and Installation
 Follow these steps to set up the project locally:
 
-1. Clone the Repository
+1. Clone the Repository:
 git clone https://github.com/hvpham-yorku/BookHive.git
 cd BookHive
 
@@ -50,10 +50,10 @@ cd BookHive
 Make sure you have Python installed. Then, install the required packages:
 pip install -r requirements.txt
 
-3. Configure the Databasse and Tables:
+3. Configure the Database and Tables:
   1. Start the Flask Shell
    flask shell
-  2. Inside the shell, inintialize the database:
+  2. Inside the shell, initialize the database:
      from website import db
       db.create_all()
      
@@ -68,7 +68,7 @@ Visit the app at http://127.0.0.1:5000.
 Enhanced Search: Implement a robust search functionality for books and authors.
 User Activity Tracking: Allow users to borrow and return books, with history tracking.
 Recommendations: Add personalized book recommendations based on user preferences.
-In site Messaging features for Admin and regular Users.
+In-site Messaging features for Admin and regular Users.
 Enabling users to rate books and displaying Book of Month on the Home Page.
 Mobile App: Extend the functionality to mobile platforms.
 
