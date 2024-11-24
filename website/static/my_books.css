@@ -1,0 +1,90 @@
+/* Table Styles */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.table th, .table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+/* Ensure Consistent Button Size */
+.btn {
+    display: inline-block; /* Inline-block to apply consistent dimensions */
+    width: 160px; /* Fixed width for all buttons */
+    height: 45px; /* Fixed height for all buttons */
+    line-height: 45px; /* Align text vertically in the middle */
+    text-align: center; /* Center align text horizontally */
+    vertical-align: middle; /* Align the buttons properly in table cells */
+    font-size: 14px; /* Font size consistency */
+    font-weight: bold; /* Bold text for visibility */
+    border-radius: 5px; /* Rounded edges for all buttons */
+    cursor: pointer; /* Pointer cursor for better UX */
+    margin: 5px; /* Spacing between buttons */
+    padding: 0; /* Remove padding to prevent size inconsistencies */
+}
+
+/* Icons inside buttons */
+.btn i {
+    margin-right: 5px; /* Space between icon and text */
+    vertical-align: middle;
+}
+
+/* Primary Button */
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    text-decoration: none; /* Remove underline for anchor links */
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+/* Danger Button */
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-danger:hover {
+    background-color: #bd2130;
+}
+
+/* Video Styling */
+.background-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    opacity: 0.5; /* Adjust transparency for better readability */
+}
+
+/* Content Wrapper Styling */
+.content-wrapper {
+    position: relative;
+    z-index: 1;
+    background-color: rgba(255, 255, 255, 0.9); /* Add a semi-transparent background */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}

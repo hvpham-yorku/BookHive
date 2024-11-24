@@ -41,12 +41,9 @@ def book_list():
 
     genres = db.session.query(Book.genre).distinct().all()
     authors = db.session.query(Book.author).distinct().all()
+    borrowed_book_ids = [borrow.book_id for borrow in BorrowedBook.query.filter_by(user_id=current_user.id, returned=False).all()]
+    return render_template('book_list.html', books=books, borrowed_book_ids=borrowed_book_ids)
 
-    # Get the IDs of books the user has already borrowed
-    borrowed_book_ids = [borrow.book_id for borrow in current_user.borrowed_books]
-    return render_template('book_list.html', books=books, borrowed_book_ids=borrowed_book_ids, 
-                           genres=genres, authors=authors, selected_genre=selected_genre, 
-                           selected_author=selected_author)
 
 
 @views.route('/delete-book/<int:book_id>', methods=['POST'])
@@ -91,7 +88,7 @@ def borrow_book(book_id):
         return redirect(url_for('views.book_list'))
 
     # Borrow the book
-    due_date = datetime.now() + timedelta(days=14)  # 14-day loan period
+    due_date = datetime.now() + timedelta(days = 14)  # 14-day loan period
     new_borrow = BorrowedBook(
         user_id=current_user.id,
         book_id=book.id,
@@ -223,3 +220,44 @@ def contact_us():
         return redirect(url_for('views.home'))
 
     return render_template('contact_us.html')
+
+
+
+@views.route('/my-books', methods=['GET', 'POST'])
+@login_required
+def my_books():
+    # Fetch all borrowed books by the user
+    borrowed_books = BorrowedBook.query.filter_by(user_id=current_user.id).all()
+    
+    # Separate borrowed books into two categories
+    in_progress_books = []
+    overdue_books = []
+
+    for borrow in borrowed_books:
+        if borrow.returned:
+            continue  # Skip returned books
+
+        book_data = {
+            'id': borrow.id,
+            'name': borrow.book.name,
+            'author': borrow.book.author,
+            'due_date': borrow.due_date,
+            'content_link': borrow.book.content_link
+        }
+
+        if borrow.due_date < datetime.now():
+            # Calculate fine for overdue books
+            overdue_days = (datetime.now() - borrow.due_date).days
+            fine = overdue_days * 0.10  # Fine is 10 cents per day
+            overdue_books.append({
+                **book_data,
+                'fine': round(fine, 2)  # Round fine to two decimal places
+            })
+        else:
+            in_progress_books.append(book_data)
+    
+    return render_template(
+        'my_books.html',
+        in_progress_books=in_progress_books,
+        overdue_books=overdue_books
+    )

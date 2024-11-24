@@ -18,6 +18,8 @@
 
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
       <!-- Includes Bootstrap CSS for styling -->
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
 
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous" />
       <!-- Includes Font Awesome for icons -->
@@ -133,6 +135,7 @@
               <a class="nav-link {% if request.path == '/book-list' %}active{% endif %}" id="availableBooks" href="/book-list">Available Books</a>
             </li>
             {% endif %}
+            
 
             {% if current_user.is_admin %}
             <!-- Links specific to admin users -->
@@ -151,6 +154,11 @@
             {% if request.path != '/contact-us' %}
             <li class="nav-item">
               <a class="nav-link {% if request.path == '/contact-us' %}active{% endif %}" id="contact_us" href="/contact-us">Contact Us</a>
+            </li>
+            {% endif %}
+            {% if request.path != '/my-books' %}
+            <li class="nav-item">
+              <a class="nav-link {% if request.path == '/my-books' %}active{% endif %}" id="my-books" href="/my-books">My Books</a>
             </li>
             {% endif %}
             <li class="nav-item">
