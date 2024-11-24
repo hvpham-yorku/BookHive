@@ -261,3 +261,21 @@ def my_books():
         in_progress_books=in_progress_books,
         overdue_books=overdue_books
     )
+
+
+@views.route('/return-book/<int:borrow_id>', methods=['POST'])
+@login_required
+def return_book(borrow_id):
+    borrowed_book = BorrowedBook.query.get(borrow_id)
+    if not borrowed_book or borrowed_book.user_id != current_user.id:
+        flash('Invalid request.', category='error')
+        return redirect(url_for('views.my_books'))
+
+    # Mark as returned
+    borrowed_book.returned = True
+    borrowed_book.book.remaining_copies += 1
+    db.session.commit()
+
+    flash(f'You have successfully returned "{borrowed_book.book.name}".', category='success')
+
+    return redirect(url_for('views.book_list'))  # Redirect to "Available Books"
