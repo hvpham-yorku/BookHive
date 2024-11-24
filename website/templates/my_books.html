@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+<video class="background-video" src="{{ url_for('static', filename='v2.mp4') }}" autoplay muted loop></video>
+<h1 class="text-center">My Books</h1>
+
+<div class="content-wrapper">
+    <!-- In Progress Books -->
+    <h2>In Progress</h2>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='my_books.css') }}">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Book Title</th>
+                <th>Author</th>
+                <th>Due Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for book in in_progress_books %}
+            <tr>
+                <td>{{ book['name'] }}</td>
+                <td>{{ book['author'] }}</td>
+                <td>{{ book['due_date'].strftime('%Y-%m-%d') }}</td>
+                <td>
+                    <a href="{{ book['content_link'] }}" target="_blank" class="btn btn-primary">
+                        <i class="fa fa-eye"></i> View Book
+                    </a>
+                </td>
+                              
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+    <div class="content-wrapper">
+    <!-- Overdue Books -->
+    <h2>Overdue Books</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Book Title</th>
+                <th>Author</th>
+                <th>Due Date</th>
+                <th>Fine (CAD)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for book in overdue_books %}
+            <tr>
+                <td>{{ book['name'] }}</td>
+                <td>{{ book['author'] }}</td>
+                <td>{{ book['due_date'].strftime('%Y-%m-%d') }}</td>
+                <td>${{ book['fine'] }}</td>
+                <td>
+                        <a href="{{ book['content_link'] }}" target="_blank" class="btn btn-primary">
+                            <i class="fa fa-eye"></i> View Book
+                        </a>
+                    </form>
+
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

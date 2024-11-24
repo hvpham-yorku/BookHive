@@ -131,6 +131,11 @@
             <a class="nav-link {% if request.path == '/contact-us' %}active{% endif %}" id="contact_us" href="/contact-us">Contact Us</a>
           </li>
           {% endif %}
+          {% if request.path != '/my-books' %}
+            <li class="nav-item">
+              <a class="nav-link {% if request.path == '/my-books' %}active{% endif %}" id="my-books" href="/my-books">My Books</a>
+            </li>
+            {% endif %}
           <li class="nav-item">
             <a class="nav-link" id="logout" href="/logout">Logout</a>
           </li>
