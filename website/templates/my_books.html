@@ -25,6 +25,11 @@
                 <td>{{ book['author'] }}</td>
                 <td>{{ book['due_date'].strftime('%Y-%m-%d') }}</td>
                 <td>
+                    <form method="POST" action="{{ url_for('views.return_book', borrow_id=book['id']) }}" style="display:inline-block;">
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fa fa-undo"></i> Return Book
+                        </button>
+                    </form>
                     <a href="{{ book['content_link'] }}" target="_blank" class="btn btn-primary">
                         <i class="fa fa-eye"></i> View Book
                     </a>
@@ -58,6 +63,10 @@
                 <td>{{ book['due_date'].strftime('%Y-%m-%d') }}</td>
                 <td>${{ book['fine'] }}</td>
                 <td>
+                    <form method="POST" action="{{ url_for('views.return_book', borrow_id=book['id']) }}" style="display:inline-block;">
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fa fa-undo"></i> Return Book
+                        </button>
                         <a href="{{ book['content_link'] }}" target="_blank" class="btn btn-primary">
                             <i class="fa fa-eye"></i> View Book
                         </a>
