@@ -119,70 +119,35 @@ crossorigin="anonymous"
 
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-      
         <div class="collapse navbar-collapse justify-content-center" id="navbar">
             <ul class="navbar-nav">
                 {% if current_user.is_authenticated %}
-                <!-- Common Links for All Logged-In Users -->
-                {% if request.path != '/' %}
                 <li class="nav-item">
-                    <a class="nav-link {% if request.path == '/' %}active{% endif %}" id="home" href="/">Home</a>
+                    <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    {% if request.path != '/book-list' %}
+                    <a class="nav-link {% if request.path == '/book-list' %}active{% endif %}" href="/book-list">Available Books</a>
+                    {% endif %}
+                </li>
+                <li class="nav-item">
+                    {% if request.path != '/search-books' %}
+                    <a class="nav-link {% if request.path == '/search-books' %}active{% endif %}" href="/search-books">Search Books</a>
+                    {% endif %}
+                </li>
+                <li class="nav-item">
+                    {% if request.path != '/contact-us' %}
+                    <a class="nav-link {% if request.path == '/contact-us' %}active{% endif %}" href="/contact-us">Contact Us</a>
+                    {% endif %}
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Logout</a>
                 </li>
                 {% endif %}
-                {% if request.path != '/book-list' %}
-                <li class="nav-item">
-                    <a class="nav-link {% if request.path == '/book-list' %}active{% endif %}" id="availableBooks" href="/book-list">Available Books</a>
-                </li>
-                {% endif %}
-
-                {% if current_user.is_authenticated %}
-                <li class="nav-item">
-                <a class="nav-link {% if request.path == '/search-books' %}active{% endif %}" href="/search-books">Search Books</a>
-                </li>
-                {% endif %}
-  
-                <!-- Admin-Specific Link -->
-                {% if current_user.is_admin %}
-                {% if request.path != '/add-book' %}
-                <li class="nav-item">
-                    <a class="nav-link {% if request.path == '/add-book' %}active{% endif %}" id="addBook" href="/add-book">Add Book</a>
-                </li>
-                {% endif %}
-                
-                <li class="nav-item">
-                    <a class="nav-link" id="logout" href="/logout">Logout</a>
-                </li>
-                {% endif %}
-  
-                <!-- User-Specific Link -->
-                {% if not current_user.is_admin %}
-                
-                {% if request.path != '/contact-us' %}
-                <li class="nav-item">
-                    <a class="nav-link {% if request.path == '/contact-us' %}active{% endif %}" id="contact_us" href="/contact-us">Contact Us</a>
-                </li>
-                {% endif %}
-                <li class="nav-item">
-                    <a class="nav-link" id="logout" href="/logout">Logout</a>
-                </li>
-                {% endif %}
-                {% else %}
-                  <!-- Links for Non-Authenticated Users -->
-                  {% if request.path != '/login' %}
-                  <li class="nav-item">
-                      <a class="nav-link {% if request.path == '/login' %}active{% endif %}" id="login" href="/login">Login</a>
-                  </li>
-                  {% endif %}
-                  {% if request.path != '/sign-up' %}
-                  <li class="nav-item">
-                      <a class="nav-link {% if request.path == '/sign-up' %}active{% endif %}" id="signUp" href="/sign-up">Sign Up</a>
-                  </li>
-                  {% endif %}
-                  {% endif %}
-              </ul>
-          </div>
-      
-  </nav>
+            </ul>
+        </div>
+    </nav>
+    
 
   <style>
     #flash-messages {

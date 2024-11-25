@@ -200,22 +200,20 @@ def edit_book(book_id):
 @views.route('/search-books', methods=['GET', 'POST'])
 @login_required
 def search_books():
-    search_query = request.form.get('query', '').strip()  # Retrieve query from form
-    results = []
+    books = []
+    query = request.args.get('query', '').strip()
 
-    if search_query:
-        # Search for books matching the query in name, author, or genre
-        results = Book.query.filter(
-            (Book.name.ilike(f"%{search_query}%")) |
-            (Book.author.ilike(f"%{search_query}%")) |
-            (Book.genre.ilike(f"%{search_query}%"))
-        ).all()
-        if not results:
-            flash('No books found matching your query.', category='error')
-    else:
-        flash('Please enter a search query.', category='error')
+    if request.method == 'POST':  # Only flash messages when the form is submitted
+        if not query:
+            flash('Please enter a search query.', category='error')
+        else:
+            books = Book.query.filter(
+                (Book.name.ilike(f'%{query}%')) |
+                (Book.author.ilike(f'%{query}%')) |
+                (Book.genre.ilike(f'%{query}%'))
+            ).all()
 
-    return render_template('search_books.html', results=results, query=search_query)
+    return render_template('search_books.html', books=books, query=query)
 
 
 
