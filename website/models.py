@@ -26,9 +26,9 @@ class User2(db.Model, UserMixin):
     email = db.Column(db.String(150), unique=True)
     password = db.Column(db.String(150))
     first_name = db.Column(db.String(150))
-    is_admin = db.Column(db.Boolean, default=False)  # whether the user is an admin
-    # relationship with BorrowedBook: Books borrowed by the user
+    is_admin = db.Column(db.Boolean, default=False)
     borrowed_books = db.relationship('BorrowedBook', backref='user', lazy=True)
+    messages = db.relationship('UserMessage', backref='user', lazy=True)
 
 
 class BorrowedBook(db.Model):
@@ -38,3 +38,10 @@ class BorrowedBook(db.Model):
     borrow_date = db.Column(db.DateTime, default=func.now())   
     due_date = db.Column(db.DateTime)                         
     returned = db.Column(db.Boolean, default=False)
+
+class UserMessage(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user2.id'))
+    content = db.Column(db.String(500), nullable=False)
+    is_read = db.Column(db.Boolean, default=False)  # To track if the message is read
+    timestamp = db.Column(db.DateTime, default=func.now())

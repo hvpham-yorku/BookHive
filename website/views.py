@@ -4,6 +4,7 @@ from .models import Book, BorrowedBook
 from . import db
 import json
 from flask_mail import Message
+from .models import UserMessage  
 from datetime import datetime, timedelta
 from . import mail
 from flask import Blueprint, render_template, redirect, url_for
@@ -100,12 +101,24 @@ def borrow_book(book_id):
     )
     book.remaining_copies -= 1
     db.session.add(new_borrow)
+
+    # Create a notification message for the Messages Tab
+    message_content = f'You have successfully borrowed "{book.name}" by {book.author}. It is due on {due_date.strftime("%b %d, %Y")}.'
+    new_message = UserMessage(
+    user_id=current_user.id,
+    content=message_content,
+)
+    db.session.add(new_message)
+
+    # Commit changes to the database
     db.session.commit()
 
     # Send Loan Receipt Email
     send_loan_receipt(current_user.email, book.name, book.author, new_borrow.borrow_date, new_borrow.due_date)
 
+    # Flash success message
     flash(f'You have successfully borrowed "{book.name}". A loan receipt has been emailed to you.', category='success')
+
     return redirect(url_for('views.book_list'))
 
 
@@ -215,6 +228,30 @@ def search_books():
     # Pass the books and query back to the template
     return render_template('search_books.html', results=books, query=query)
 
+@views.route('/message/<int:message_id>')
+@login_required
+def view_message(message_id):
+    message = UserMessage.query.filter_by(id=message_id, user_id=current_user.id).first()
+    if not message:
+        flash('Message not found', category='error')
+        return redirect(url_for('views.home'))
+
+    # Mark the message as read
+    if not message.is_read:
+        message.is_read = True
+        db.session.commit()
+
+
+    return render_template('view_message.html', message=message)
+
+@views.context_processor
+def inject_messages():
+    if current_user.is_authenticated:
+        user_messages = UserMessage.query.filter_by(user_id=current_user.id).order_by(UserMessage.timestamp.desc()).all()
+        unread_count = UserMessage.query.filter_by(user_id=current_user.id, is_read=False).count()
+
+        return {'user_messages': user_messages, 'unread_count': unread_count}
+    return {}
 
 
 @views.route('/contact-us', methods=['GET', 'POST'])
