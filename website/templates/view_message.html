@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}View Message{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Message Details</h2>
+    <p><strong>Message:</strong> {{ message.content }}</p>
+    <p><strong>Date:</strong> {{ message.timestamp.strftime('%b %d, %Y %I:%M %p') }}</p>
+    <a href="/" class="btn btn-primary">Back to Home</a>
+</div>
+{% endblock %}
