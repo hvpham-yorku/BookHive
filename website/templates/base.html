@@ -134,6 +134,12 @@ crossorigin="anonymous"
                     <a class="nav-link {% if request.path == '/book-list' %}active{% endif %}" id="availableBooks" href="/book-list">Available Books</a>
                 </li>
                 {% endif %}
+
+                {% if current_user.is_authenticated %}
+                <li class="nav-item">
+                <a class="nav-link {% if request.path == '/search-books' %}active{% endif %}" href="/search-books">Search Books</a>
+                </li>
+                {% endif %}
   
                 <!-- Admin-Specific Link -->
                 {% if current_user.is_admin %}

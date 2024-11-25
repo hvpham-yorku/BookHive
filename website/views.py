@@ -197,6 +197,27 @@ def edit_book(book_id):
     # Render the edit page with the book's current details
     return render_template('edit_book.html', book=book)
 
+@views.route('/search-books', methods=['GET', 'POST'])
+@login_required
+def search_books():
+    search_query = request.form.get('query', '').strip()  # Retrieve query from form
+    results = []
+
+    if search_query:
+        # Search for books matching the query in name, author, or genre
+        results = Book.query.filter(
+            (Book.name.ilike(f"%{search_query}%")) |
+            (Book.author.ilike(f"%{search_query}%")) |
+            (Book.genre.ilike(f"%{search_query}%"))
+        ).all()
+        if not results:
+            flash('No books found matching your query.', category='error')
+    else:
+        flash('Please enter a search query.', category='error')
+
+    return render_template('search_books.html', results=results, query=search_query)
+
+
 
 @views.route('/contact-us', methods=['GET', 'POST'])
 @login_required
