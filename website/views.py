@@ -197,23 +197,23 @@ def edit_book(book_id):
     # Render the edit page with the book's current details
     return render_template('edit_book.html', book=book)
 
-@views.route('/search-books', methods=['GET', 'POST'])
+@views.route('/search-books', methods=['GET'])
 @login_required
 def search_books():
+    query = request.args.get('query', '').strip()  # Extract the query from the URL
     books = []
-    query = request.args.get('query', '').strip()
 
-    if request.method == 'POST':  # Only flash messages when the form is submitted
-        if not query:
-            flash('Please enter a search query.', category='error')
-        else:
-            books = Book.query.filter(
-                (Book.name.ilike(f'%{query}%')) |
-                (Book.author.ilike(f'%{query}%')) |
-                (Book.genre.ilike(f'%{query}%'))
-            ).all()
+    if query:  # Only perform the search if there's a query
+        books = Book.query.filter(
+            (Book.name.ilike(f'%{query}%')) |
+            (Book.author.ilike(f'%{query}%')) |
+            (Book.genre.ilike(f'%{query}%'))
+        ).all()
+    else:
+        flash('Please enter a search term.', category='error')
 
-    return render_template('search_books.html', books=books, query=query)
+    # Pass the books and query back to the template
+    return render_template('search_books.html', results=books, query=query)
 
 
 
