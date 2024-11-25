@@ -231,34 +231,41 @@ def my_books():
     
     # Separate borrowed books into two categories
     in_progress_books = []
+    past_books = []
     overdue_books = []
 
     for borrow in borrowed_books:
         if borrow.returned:
-            continue  # Skip returned books
-
-        book_data = {
-            'id': borrow.id,
-            'name': borrow.book.name,
-            'author': borrow.book.author,
-            'due_date': borrow.due_date,
-            'content_link': borrow.book.content_link
-        }
-
-        if borrow.due_date < datetime.now():
-            # Calculate fine for overdue books
-            overdue_days = (datetime.now() - borrow.due_date).days
-            fine = overdue_days * 0.10  # Fine is 10 cents per day
-            overdue_books.append({
-                **book_data,
-                'fine': round(fine, 2)  # Round fine to two decimal places
+            past_books.append({
+                'id': borrow.id,
+                'name': borrow.book.name,
+                'author': borrow.book.author,
+                'return_date': borrow.return_date
             })
         else:
-            in_progress_books.append(book_data)
+            book_data = {
+                'id': borrow.id,
+                'name': borrow.book.name,
+                'author': borrow.book.author,
+                'due_date': borrow.due_date,
+                'content_link': borrow.book.content_link
+            }
+
+            if borrow.due_date < datetime.now():
+                # Calculate fine for overdue books
+                overdue_days = (datetime.now() - borrow.due_date).days
+                fine = overdue_days * 0.10  # Fine is 10 cents per day
+                overdue_books.append({
+                    **book_data,
+                    'fine': round(fine, 2)  # Round fine to two decimal places
+                })
+            else:
+                in_progress_books.append(book_data)
     
     return render_template(
         'my_books.html',
         in_progress_books=in_progress_books,
+        past_books=past_books,
         overdue_books=overdue_books
     )
 
@@ -274,8 +281,9 @@ def return_book(borrow_id):
     # Mark as returned
     borrowed_book.returned = True
     borrowed_book.book.remaining_copies += 1
+    borrowed_book.return_date = datetime.now() # Set the return date
     db.session.commit()
 
     flash(f'You have successfully returned "{borrowed_book.book.name}".', category='success')
 
-    return redirect(url_for('views.book_list'))  # Redirect to "Available Books"
+    return redirect(url_for('views.my_books'))  # Redirect to "Available Books"
