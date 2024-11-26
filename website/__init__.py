@@ -16,6 +16,7 @@ def create_app():
     # App configurations
     app.config['SECRET_KEY'] = 'nono'
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
+    app.config['TEMPLATES_AUTO_RELOAD'] = True
 
     #Flask Mail Configuration
     app.config['MAIL_SERVER'] = 'smtp.gmail.com'
