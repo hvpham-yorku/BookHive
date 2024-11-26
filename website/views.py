@@ -6,7 +6,7 @@ import json
 from flask_mail import Message
 from datetime import datetime, timedelta
 from . import mail
-from flask import Blueprint, render_template, redirect, url_for
+from flask import redirect, url_for
 from flask_login import login_required, current_user
 from threading import Thread
 from .models import User2
@@ -244,9 +244,17 @@ def contact_us():
 
     return render_template('contact_us.html')
 
-@views.route('/report', methods=['GET'])
+
+@views.route('/reports', methods=['GET'])
 @login_required
-def report():
+def report_page():
+    # Renders the reports.html page
+    return render_template('reports.html', user=current_user)
+
+@views.route('/reports/data', methods=['GET'])
+@login_required
+def report_data():
+    # Generate JSON data for reports
     most_borrowed_books = db.session.query(
         Book.name,
         db.func.count(BorrowedBook.id).label('borrow_count')
@@ -255,13 +263,11 @@ def report():
      .group_by(Book.id)\
      .order_by(db.desc('borrow_count')).limit(5).all()
 
-    # Fetch total active users (users with at least one unreturned book)
     active_users = db.session.query(
         db.func.count(User2.id)
     ).join(BorrowedBook, BorrowedBook.user_id == User2.id)\
      .filter(BorrowedBook.returned == False).scalar()
 
-    # Fetch borrowing trends over the last 30 days
     borrowing_trends = db.session.query(
         db.func.strftime('%Y-%m-%d', BorrowedBook.borrow_date).label('borrow_date'),
         db.func.count(BorrowedBook.id).label('borrow_count')
