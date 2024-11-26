@@ -141,8 +141,16 @@ crossorigin="anonymous"
                 <li class="nav-item">
                     <a class="nav-link {% if request.path == '/add-book' %}active{% endif %}" id="addBook" href="/add-book">Add Book</a>
                 </li>
+
                 {% endif %}
-                
+                {% if current_user.is_admin %}
+<li class="nav-item">
+    <a class="nav-link {% if request.path == '/report' %}active{% endif %}" href="/report">
+        Manage Books
+    </a>
+</li>
+{% endif %}
+
                 <li class="nav-item">
                     <a class="nav-link" id="logout" href="/logout">Logout</a>
                 </li>
@@ -156,6 +164,7 @@ crossorigin="anonymous"
                     <a class="nav-link {% if request.path == '/contact-us' %}active{% endif %}" id="contact_us" href="/contact-us">Contact Us</a>
                 </li>
                 {% endif %}
+                
                 <li class="nav-item">
                     <a class="nav-link" id="logout" href="/logout">Logout</a>
                 </li>

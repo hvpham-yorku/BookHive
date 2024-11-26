@@ -1,0 +1,43 @@
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        fetch('report')
+            .then(response => response.json())
+            .then(data => {
+                // Handle Most Borrowed Books
+                const mostBorrowedList = document.getElementById('most-borrowed-books');
+                mostBorrowedList.innerHTML = ''; // Clear any existing data
+                data.most_borrowed_books.forEach(book => {
+                    const li = document.createElement('li');
+                    li.textContent = `${book.name} - ${book.count} borrows`;
+                    mostBorrowedList.appendChild(li);
+                });
+
+                // Handle Active Users
+                const activeUsersElement = document.getElementById('active-users');
+                activeUsersElement.textContent = `Total Active Users: ${data.active_users}`;
+
+                // Handle Borrowing Trends Chart
+                const ctx = document.getElementById('borrowing-trends-chart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: data.borrowing_trends.map(trend => trend.date),
+                        datasets: [{
+                            label: 'Books Borrowed',
+                            data: data.borrowing_trends.map(trend => trend.count),
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            fill: false
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching report data:', error);
+            });
+    });
+</script>

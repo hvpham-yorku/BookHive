@@ -9,6 +9,7 @@ from . import mail
 from flask import Blueprint, render_template, redirect, url_for
 from flask_login import login_required, current_user
 from threading import Thread
+from .models import User2
 
 
 
@@ -197,6 +198,25 @@ def edit_book(book_id):
     # Render the edit page with the book's current details
     return render_template('edit_book.html', book=book)
 
+@views.route('/search-books', methods=['GET'])
+@login_required
+def search_books():
+    query = request.args.get('query', '').strip()  # Extract the query from the URL
+    books = []
+
+    if query:  # Only perform the search if there's a query
+        books = Book.query.filter(
+            (Book.name.ilike(f'%{query}%')) |
+            (Book.author.ilike(f'%{query}%')) |
+            (Book.genre.ilike(f'%{query}%'))
+        ).all()
+    else:
+        flash('Please enter a search term.', category='error')
+
+    # Pass the books and query back to the template
+    return render_template('search_books.html', results=books, query=query)
+
+
 
 @views.route('/contact-us', methods=['GET', 'POST'])
 @login_required
@@ -223,3 +243,34 @@ def contact_us():
         return redirect(url_for('views.home'))
 
     return render_template('contact_us.html')
+
+@views.route('/report', methods=['GET'])
+@login_required
+def report():
+    most_borrowed_books = db.session.query(
+        Book.name,
+        db.func.count(BorrowedBook.id).label('borrow_count')
+    ).join(BorrowedBook, BorrowedBook.book_id == Book.id)\
+     .filter(BorrowedBook.returned == False)\
+     .group_by(Book.id)\
+     .order_by(db.desc('borrow_count')).limit(5).all()
+
+    # Fetch total active users (users with at least one unreturned book)
+    active_users = db.session.query(
+        db.func.count(User2.id)
+    ).join(BorrowedBook, BorrowedBook.user_id == User2.id)\
+     .filter(BorrowedBook.returned == False).scalar()
+
+    # Fetch borrowing trends over the last 30 days
+    borrowing_trends = db.session.query(
+        db.func.strftime('%Y-%m-%d', BorrowedBook.borrow_date).label('borrow_date'),
+        db.func.count(BorrowedBook.id).label('borrow_count')
+    ).filter(
+        BorrowedBook.borrow_date >= datetime.now() - timedelta(days=30)
+    ).group_by('borrow_date').order_by('borrow_date').all()
+
+    return jsonify({
+        'most_borrowed_books': [{'name': book[0], 'count': book[1]} for book in most_borrowed_books],
+        'active_users': active_users,
+        'borrowing_trends': [{'date': trend[0], 'count': trend[1]} for trend in borrowing_trends]
+    })
