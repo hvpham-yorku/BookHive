@@ -4,7 +4,7 @@ from flask_login import LoginManager
 from flask_mail import Mail  # Import Flask-Mail
 from os import path, getenv
 
- 
+
 db = SQLAlchemy()
 DB_NAME = "database.db"
 mail = Mail()  # Initialize Flask-Mail
@@ -16,6 +16,7 @@ def create_app():
     # App configurations
     app.config['SECRET_KEY'] = 'nono'
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
+    app.config['TEMPLATES_AUTO_RELOAD'] = True
 
     #Flask Mail Configuration
     app.config['MAIL_SERVER'] = 'smtp.gmail.com'
