@@ -143,14 +143,14 @@ crossorigin="anonymous"
                 </li>
 
                 {% endif %}
+
                 {% if current_user.is_admin %}
 <li class="nav-item">
-    <a class="nav-link {% if request.path == '/report' %}active{% endif %}" href="/report">
-        Manage Books
-    </a>
+    <a class="nav-link {% if request.path == '/reports' %}active{% endif %}" href="/reports">
+        Report
+    </a> 
 </li>
 {% endif %}
-
                 <li class="nav-item">
                     <a class="nav-link" id="logout" href="/logout">Logout</a>
                 </li>
@@ -273,7 +273,7 @@ crossorigin="anonymous"
       });
   </script>
   
-   
+  
     {% endblock %}
     
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
