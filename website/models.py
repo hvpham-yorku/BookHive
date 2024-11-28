@@ -29,6 +29,8 @@ class User2(db.Model, UserMixin):
     is_admin = db.Column(db.Boolean, default=False)
     borrowed_books = db.relationship('BorrowedBook', backref='user', lazy=True)
     messages = db.relationship('UserMessage', backref='user', lazy=True)
+    is_active = db.Column(db.Boolean, default=True)  # To check if the account is active
+
 
 
 class BorrowedBook(db.Model):
