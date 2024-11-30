@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash, jsonify
 from flask_login import login_required, current_user
-from .models import Book, BorrowedBook
+from .models import Book, BorrowedBook, User2
 from . import db
 import json
 from flask_mail import Message
@@ -279,3 +279,38 @@ def contact_us():
         return redirect(url_for('views.home'))
 
     return render_template('contact_us.html')
+
+
+# For the admin to manage the users 
+@views.route('/manage_users', methods=['GET', 'POST'])
+@login_required
+def manage_users():
+    if not current_user.is_admin:
+        flash('Access denied. Admins only.', category='error')
+        return redirect(url_for('views.home'))
+
+    users = User2.query.filter(User2.id != current_user.id).all()  # Exclude the current admin
+    print(users)
+    return render_template('manage_users.html', users=users)
+
+
+@views.route('/toggle_user/<int:user_id>', methods=['POST'])
+@login_required
+def toggle_user(user_id):
+    if not current_user.is_admin:
+        flash("Access denied. Admins only.", category="error")
+        return redirect(url_for('views.home'))
+
+    user = User2.query.get(user_id)
+    if not user:
+        flash("User not found.", category="error")
+        return redirect(url_for('views.manage_users'))
+
+    # Toggle activation status
+    user.is_active = not user.is_active
+    db.session.commit()
+    status = "activated" if user.is_active else "deactivated"
+    flash(f"User {user.first_name} has been {status}.", category="success")
+
+    return redirect(url_for('views.manage_users'))
+

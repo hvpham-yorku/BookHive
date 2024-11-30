@@ -21,9 +21,13 @@ def login():
 
         user = User2.query.filter_by(email=email).first()
         if user:
+            # To check if the user is active
+            if not user.is_active:
+                flash("Your account is deactivated. Please contact admin.", category="error")
+                return redirect(url_for('auth.login'))
             if check_password_hash(user.password, password):
-                flash('Logged in successfully!', category='success')
                 login_user(user, remember=True)
+                flash('Logged in successfully!', category='success')
                 return redirect(url_for('views.home'))
             else:
                 flash('Incorrect password, try again.', category='error')

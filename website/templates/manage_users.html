@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block title %}
+Manage Users Account
+{% endblock %}
+
+{% block content %}
+<h1 style="text-align: center;">Manage Users</h1> 
+<style>
+    /* Table styling */
+    table {
+        width: 80%;
+        margin: 20px auto;
+        border-collapse: collapse;
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    th, td {
+        padding: 12px 15px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #4CAF50;
+        color: white;
+        text-transform: uppercase;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    tr:hover {
+        background-color: #eaf1f5;
+    }
+
+    /* Button styling */
+    button {
+        padding: 8px 15px;
+        font-size: 14px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    /* Disabled button styling */
+    button:disabled {
+        background-color: #dcdcdc; /* Grey */
+        color: #a9a9a9; /* Light grey text */
+        cursor: not-allowed;
+    }
+
+    /* Activate button */
+    button.activate {
+        background-color: #4CAF50; /* Green */
+        color: white;
+    }
+
+    button.activate:disabled {
+        background-color: #dcdcdc; /* Grey when disabled */
+    }
+
+    button.activate:hover:not(:disabled) {
+        background-color: #45a049; /* Darker green */
+    }
+
+    /* Deactivate button */
+    button.deactivate {
+        background-color: #f44336; /* Red */
+        color: white;
+    }
+
+    button.deactivate:disabled {
+        background-color: #dcdcdc; /* Grey when disabled */
+    }
+
+    button.deactivate:hover:not(:disabled) {
+        background-color: #d32f2f; /* Darker red */
+    }
+</style>
+
+<h1 style="text-align: center;">Manage Users</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.first_name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ "Active" if user.is_active else "Inactive" }}</td>
+            <td>
+                <!-- Activate button -->
+                <form action="{{ url_for('views.toggle_user', user_id=user.id) }}" method="POST" style="display: inline;">
+                    <button type="submit" 
+                            class="activate" 
+                            {% if user.is_active %} disabled {% endif %}>
+                        Activate
+                    </button>
+                </form>
+                <!-- Deactivate button -->
+                <form action="{{ url_for('views.toggle_user', user_id=user.id) }}" method="POST" style="display: inline;">
+                    <button type="submit" 
+                            class="deactivate" 
+                            {% if not user.is_active %} disabled {% endif %}>
+                        Deactivate
+                    </button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
