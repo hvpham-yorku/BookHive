@@ -142,6 +142,11 @@ crossorigin="anonymous"
                     <a class="nav-link {% if request.path == '/add-book' %}active{% endif %}" id="addBook" href="/add-book">Add Book</a>
                 </li>
                 {% endif %}
+                 
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/manage_users' %} active{%endif%}" href="/manage_users">Manage Users</a>
+                </li>
+                
                 
                 <li class="nav-item">
                     <a class="nav-link" id="logout" href="/logout">Logout</a>

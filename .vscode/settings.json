@@ -1,0 +1,11 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "BookHiveDB",
+            "database": "C:\\Users\\amira\\OneDrive\\Desktop\\BookHive\\instance\\database.db"
+        }
+    ],
+    "sqltools.useNodeRuntime": true
+}

@@ -1,9 +1,10 @@
 from flask import Blueprint, render_template, request, flash, jsonify
 from flask_login import login_required, current_user
-from .models import Book, BorrowedBook
+from .models import Book, BorrowedBook, User2
 from . import db
 import json
 from flask_mail import Message
+from .models import UserMessage  
 from datetime import datetime, timedelta
 from . import mail
 from flask import Blueprint, render_template, redirect, url_for
@@ -100,12 +101,24 @@ def borrow_book(book_id):
     )
     book.remaining_copies -= 1
     db.session.add(new_borrow)
+
+    # Create a notification message for the Messages Tab
+    message_content = f'You have successfully borrowed "{book.name}" by {book.author}. It is due on {due_date.strftime("%b %d, %Y")}.'
+    new_message = UserMessage(
+    user_id=current_user.id,
+    content=message_content,
+)
+    db.session.add(new_message)
+
+    # Commit changes to the database
     db.session.commit()
 
     # Send Loan Receipt Email
     send_loan_receipt(current_user.email, book.name, book.author, new_borrow.borrow_date, new_borrow.due_date)
 
+    # Flash success message
     flash(f'You have successfully borrowed "{book.name}". A loan receipt has been emailed to you.', category='success')
+
     return redirect(url_for('views.book_list'))
 
 
@@ -197,6 +210,49 @@ def edit_book(book_id):
     # Render the edit page with the book's current details
     return render_template('edit_book.html', book=book)
 
+@views.route('/search-books', methods=['GET'])
+@login_required
+def search_books():
+    query = request.args.get('query', '').strip()  # Extract the query from the URL
+    books = []
+
+    if query:  # Only perform the search if there's a query
+        books = Book.query.filter(
+            (Book.name.ilike(f'%{query}%')) |
+            (Book.author.ilike(f'%{query}%')) |
+            (Book.genre.ilike(f'%{query}%'))
+        ).all()
+    else:
+        flash('Please enter a search term.', category='error')
+
+    # Pass the books and query back to the template
+    return render_template('search_books.html', results=books, query=query)
+
+@views.route('/message/<int:message_id>')
+@login_required
+def view_message(message_id):
+    message = UserMessage.query.filter_by(id=message_id, user_id=current_user.id).first()
+    if not message:
+        flash('Message not found', category='error')
+        return redirect(url_for('views.home'))
+
+    # Mark the message as read
+    if not message.is_read:
+        message.is_read = True
+        db.session.commit()
+
+
+    return render_template('view_message.html', message=message)
+
+@views.context_processor
+def inject_messages():
+    if current_user.is_authenticated:
+        user_messages = UserMessage.query.filter_by(user_id=current_user.id).order_by(UserMessage.timestamp.desc()).all()
+        unread_count = UserMessage.query.filter_by(user_id=current_user.id, is_read=False).count()
+
+        return {'user_messages': user_messages, 'unread_count': unread_count}
+    return {}
+
 
 @views.route('/contact-us', methods=['GET', 'POST'])
 @login_required
@@ -223,3 +279,38 @@ def contact_us():
         return redirect(url_for('views.home'))
 
     return render_template('contact_us.html')
+
+
+# For the admin to manage the users 
+@views.route('/manage_users', methods=['GET', 'POST'])
+@login_required
+def manage_users():
+    if not current_user.is_admin:
+        flash('Access denied. Admins only.', category='error')
+        return redirect(url_for('views.home'))
+
+    users = User2.query.filter(User2.id != current_user.id).all()  # Exclude the current admin
+    print(users)
+    return render_template('manage_users.html', users=users)
+
+
+@views.route('/toggle_user/<int:user_id>', methods=['POST'])
+@login_required
+def toggle_user(user_id):
+    if not current_user.is_admin:
+        flash("Access denied. Admins only.", category="error")
+        return redirect(url_for('views.home'))
+
+    user = User2.query.get(user_id)
+    if not user:
+        flash("User not found.", category="error")
+        return redirect(url_for('views.manage_users'))
+
+    # Toggle activation status
+    user.is_active = not user.is_active
+    db.session.commit()
+    status = "activated" if user.is_active else "deactivated"
+    flash(f"User {user.first_name} has been {status}.", category="success")
+
+    return redirect(url_for('views.manage_users'))
+

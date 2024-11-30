@@ -1,7 +1,7 @@
 
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from .models import User2
-from flask_mail import Message
+from flask_mail import Message, Mail
 from itsdangerous import URLSafeTimedSerializer
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db, mail  
@@ -11,6 +11,7 @@ from flask_login import login_user, login_required, logout_user, current_user
 auth = Blueprint('auth', __name__)
 s = URLSafeTimedSerializer('nono')  
 
+mail = Mail()
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -20,9 +21,13 @@ def login():
 
         user = User2.query.filter_by(email=email).first()
         if user:
+            # To check if the user is active
+            if not user.is_active:
+                flash("Your account is deactivated. Please contact admin.", category="error")
+                return redirect(url_for('auth.login'))
             if check_password_hash(user.password, password):
-                flash('Logged in successfully!', category='success')
                 login_user(user, remember=True)
+                flash('Logged in successfully!', category='success')
                 return redirect(url_for('views.home'))
             else:
                 flash('Incorrect password, try again.', category='error')
