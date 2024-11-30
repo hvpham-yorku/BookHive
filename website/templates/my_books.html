@@ -41,6 +41,29 @@
     </table>
 </div>
 
+<div class="content-wrapper">
+    <!-- Past Books -->
+    <h2>Past Books</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Book Title</th>
+                <th>Author</th>
+                <th>Date Returned</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for book in past_books %}
+            <tr>
+                <td>{{ book['name'] }}</td>
+                <td>{{ book['author'] }}</td>
+                <td>{{ book['return_date'].strftime('%Y-%m-%d') }}</td>
+ 
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 
     <div class="content-wrapper">
     <!-- Overdue Books -->

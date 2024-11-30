@@ -1,6 +1,8 @@
 from . import db
 from flask_login import UserMixin
 from sqlalchemy.sql import func
+from datetime import datetime
+
 
 class Note(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -33,8 +35,12 @@ class User2(db.Model, UserMixin):
 
 class BorrowedBook(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user2.id'))  
-    book_id = db.Column(db.Integer, db.ForeignKey('book.id'))  
-    borrow_date = db.Column(db.DateTime, default=func.now())   
-    due_date = db.Column(db.DateTime)                         
+    book_id = db.Column(db.Integer, db.ForeignKey('book.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user2.id'), nullable=False)
+    borrowed_date = db.Column(db.DateTime, default=datetime.now)
+    due_date = db.Column(db.DateTime, nullable=False)
     returned = db.Column(db.Boolean, default=False)
+    rating = db.Column(db.Integer, nullable=True)  # New field for rating
+
+
+
