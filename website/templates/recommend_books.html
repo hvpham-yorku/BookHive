@@ -1,0 +1,39 @@
+{% extends "base2.html" %}
+
+{% block content %}
+<style>
+    body {
+        background: none !important;
+    }
+</style>
+
+<div class="content-wrapper">
+    <h1>Recommended Books</h1>
+    <p>These books are recommended based on your previously borrowed books, or randomly if you have never borrowed!</p>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Genre</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for book in books %}
+            <tr>
+                <td>{{ book.name }}</td>
+                <td>{{ book.author }}</td>
+                <td>{{ book.genre }}</td>
+                <td>
+                    <form action="{{ url_for('views.borrow_book', book_id=book.id) }}" method="POST">
+                        <button type="submit" class="btn btn-primary">Borrow</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

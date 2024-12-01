@@ -9,6 +9,7 @@ from . import mail
 from flask import Blueprint, render_template, redirect, url_for
 from flask_login import login_required, current_user
 from threading import Thread
+from sqlalchemy.sql.expression import func
 
 
 
@@ -42,7 +43,7 @@ def book_list():
     genres = db.session.query(Book.genre).distinct().all()
     authors = db.session.query(Book.author).distinct().all()
     borrowed_book_ids = [borrow.book_id for borrow in BorrowedBook.query.filter_by(user_id=current_user.id, returned=False).all()]
-    return render_template('book_list.html', books=books, borrowed_book_ids=borrowed_book_ids)
+    return render_template('book_list.html', books=books, borrowed_book_ids=borrowed_book_ids, genres=genres, authors=authors, selected_author=selected_author, selected_genre=selected_genre)
 
 
 
@@ -287,3 +288,26 @@ def return_book(borrow_id):
     flash(f'You have successfully returned "{borrowed_book.book.name}".', category='success')
 
     return redirect(url_for('views.my_books'))  # Redirect to "Available Books"
+
+
+@views.route('/recommendations', methods=['GET'])
+@login_required
+def recommendations():
+    user_id = current_user.id
+
+    borrowed_books = BorrowedBook.query.filter_by(user_id=user_id, returned=False).all()
+
+    borrowed_book_ids = [borrow.book_id for borrow in borrowed_books]
+
+    if borrowed_books:
+        genres = [borrow.book.genre for borrow in borrowed_books if borrow.book]
+        authors = [borrow.book.author for borrow in borrowed_books if borrow.book]
+
+        recommended_books = Book.query.filter(
+            (Book.genre.in_(genres)) | (Book.author.in_(authors)),
+            Book.id.notin_(borrowed_book_ids)  # Exclude books the user has already borrowed
+        ).all()
+    else:
+        recommended_books = Book.query.order_by(func.random()).limit(5).all()
+
+    return render_template('recommend_books.html', books=recommended_books, name=current_user.first_name, borrowed_book_ids=borrowed_book_ids)

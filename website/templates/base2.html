@@ -112,7 +112,6 @@
             <a class="nav-link {% if request.path == '/book-list' %}active{% endif %}" id="availableBooks" href="/book-list">Available Books</a>
           </li>
           {% endif %}
-
           {% if current_user.is_admin %}
           <!-- Admin-specific links -->
           {% if request.path != '/add-book' %}

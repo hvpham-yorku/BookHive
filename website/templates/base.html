@@ -135,8 +135,11 @@
               <a class="nav-link {% if request.path == '/book-list' %}active{% endif %}" id="availableBooks" href="/book-list">Available Books</a>
             </li>
             {% endif %}
-            
-
+            {% if request.path != '/recommended-books' %}
+            <li class="nav-item">
+              <a class="nav-link {% if request.path == '/recommended-books' %}active{% endif %}" id="recommendedBooks" href="{{ url_for('views.recommendations') }}">Recommended Books</a>
+            </li>
+            {% endif %}
             {% if current_user.is_admin %}
             <!-- Links specific to admin users -->
             {% if request.path != '/add-book' %}
