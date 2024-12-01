@@ -9,21 +9,42 @@ from . import mail
 from flask import Blueprint, render_template, redirect, url_for
 from flask_login import login_required, current_user
 from threading import Thread
-
-
+from sqlalchemy import extract,func
+from datetime import datetime
 
 views = Blueprint('views', __name__)
+
+def get_best_books():
+    current_month = datetime.now().month
+    current_year = datetime.now().year
+
+    best_books = db.session.query(
+        Book.id,
+        Book.name,
+        Book.author,
+        func.avg(BorrowedBook.rating).label('avg_rating')
+    ).join(BorrowedBook, Book.id == BorrowedBook.book_id)\
+    .filter(
+        BorrowedBook.rating.isnot(None),
+        BorrowedBook.returned == True,
+        extract('month', BorrowedBook.borrowed_date) == current_month,
+        extract('year', BorrowedBook.borrowed_date) == current_year
+    ).group_by(Book.id)\
+    .order_by(func.avg(BorrowedBook.rating).desc())\
+    .limit(5).all()
+
+    return best_books
 
 @views.route('/')
 @login_required
 def home():
+    best_books = get_best_books()
     return render_template(
         'home.html',
         name=current_user.first_name,
-        is_admin=current_user.is_admin
+        is_admin=current_user.is_admin,
+        best_books=best_books
     )
-
-
 
 
 @views.route('/book-list', methods=['GET', 'POST'])
