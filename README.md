@@ -1,5 +1,6 @@
-**User story 18**
+**User story 15**
 Assigned to: Parmoun
-Topic: As a user, I want to see the list of the most popular books of the month.
+Topic: As an admin, I want to generate reports on borrowing statistics so that I can analyze library usage.
 
-Modified files: home.html, views.py
+Modified files: base.html, views.py, reports.html, reports.css
+v12 added
