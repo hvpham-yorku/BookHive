@@ -3,15 +3,25 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
+<!-- Background Video -->
+<!-- Embeds a video as the background of the login page -->
 <video class="background-video" src="{{ url_for('static', filename='v3.mp4') }}" muted loop autoplay>
+    <!-- Fallback text if the browser does not support the video tag -->
     My browser does not support the video tag.
 </video>
 
+<!-- Login Form Container -->
 <div class="login-container">
+  <!-- Login Form -->
+  <!-- This form uses the POST method to securely send user credentials to the server -->
   <form method="POST">
+    <!-- Page Title -->
     <h1 align="center">Login</h1>
+
+    <!-- Email Input Field -->
     <div class="form-group">
       <label for="email">Email Address</label>
+      <!-- Input for user email -->
       <input
         type="email"
         class="form-control"
@@ -21,8 +31,11 @@
         required
       />
     </div>
+
+    <!-- Password Input Field -->
     <div class="form-group">
       <label for="password">Password</label>
+      <!-- Input for user password -->
       <input
         type="password"
         class="form-control"
@@ -32,9 +45,13 @@
         required
       />
     </div>
+    
+    <!-- Submit Button -->
     <br />
     <button type="submit" class="btn btn-primary login-button">Login</button>
   </form>
+
+  <!-- Forgot Password Link -->
   <p align="center">
     <a href="/forgot-password">Forgot Password?</a>
   </p>

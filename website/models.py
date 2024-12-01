@@ -38,3 +38,4 @@ class BorrowedBook(db.Model):
     borrow_date = db.Column(db.DateTime, default=func.now())   
     due_date = db.Column(db.DateTime)                         
     returned = db.Column(db.Boolean, default=False)
+    return_date = db.Column(db.DateTime, nullable=True)

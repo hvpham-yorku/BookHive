@@ -3,70 +3,85 @@
 {% block title %}Sign Up{% endblock %}
 
 {% block content %}
+<!-- Video background element -->
 <video class="background-video" src="{{ url_for('static', filename='v4.mp4') }}" muted loop autoplay>
+    <!-- Fallback message for browsers that don't support video -->
     Your browser does not support the video tag.
 </video>
 
+<!-- Main container for the sign-up form -->
 <div class="login-container">
+    <!-- Sign-up form that uses POST method to send data -->
     <form method="POST">
+        <!-- Form heading -->
         <h2 align="center">Sign Up</h2>
         
+        <!-- Email input field -->
         <div class="form-group">
             <label for="email">Email Address</label>
             <input 
-            type="email" 
-            class="form-control" 
-            id="email" 
-            name="email" 
-            placeholder="Enter email"
-            required />
+                type="email" 
+                class="form-control" 
+                id="email" 
+                name="email" 
+                placeholder="Enter email"
+                required 
+            />
         </div>
         
+        <!-- First name input field -->
         <div class="form-group">
             <label for="firstName">First Name</label>
             <input 
-            type="text" 
-            class="form-control" 
-            id="firstName" 
-            name="firstName" 
-            placeholder="Enter First Name"
-            required />
+                type="text" 
+                class="form-control" 
+                id="firstName" 
+                name="firstName" 
+                placeholder="Enter First Name"
+                required 
+            />
         </div>
         
+        <!-- Password input field -->
         <div class="form-group">
             <label for="password1">Password</label>
             <input 
-            type="password" 
-            class="form-control" 
-            id="password1" 
-            name="password1" 
-            placeholder="Enter password"
-            required />
+                type="password" 
+                class="form-control" 
+                id="password1" 
+                name="password1" 
+                placeholder="Enter password"
+                required 
+            />
         </div>
         
+        <!-- Password confirmation input field -->
         <div class="form-group">
             <label for="password2">Password (Confirm)</label>
             <input 
-            type="password" 
-            class="form-control" 
-            id="password2" 
-            name="password2" 
-            placeholder="Confirm password"
-            required />
+                type="password" 
+                class="form-control" 
+                id="password2" 
+                name="password2" 
+                placeholder="Confirm password"
+                required 
+            />
         </div>
 
+        <!-- Optional passcode field for admin access -->
         <div class="form-group">
             <label for="passcode">Admin Passcode (Optional)</label>
             <input 
-            type="text" 
-            class="form-control" 
-            id="passcode" 
-            name="passcode" 
-            placeholder="Enter Admin Passcode"
+                type="text" 
+                class="form-control" 
+                id="passcode" 
+                name="passcode" 
+                placeholder="Enter Admin Passcode"
             />
         </div>
         
         <br />
+        <!-- Submit button for the form -->
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
