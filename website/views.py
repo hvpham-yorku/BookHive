@@ -9,40 +9,87 @@ from . import mail
 from flask import Blueprint, render_template, redirect, url_for
 from flask_login import login_required, current_user
 from threading import Thread
-
-
-
+from sqlalchemy import extract,func
+from datetime import datetime
+from .models import User2
 views = Blueprint('views', __name__)
+
+def get_best_books():
+    current_month = datetime.now().month
+    current_year = datetime.now().year
+
+    best_books = db.session.query(
+        Book.id,
+        Book.name,
+        Book.author,
+        func.avg(BorrowedBook.rating).label('avg_rating')
+    ).join(BorrowedBook, Book.id == BorrowedBook.book_id)\
+    .filter(
+        BorrowedBook.rating.isnot(None),
+        BorrowedBook.returned == True,
+        extract('month', BorrowedBook.borrowed_date) == current_month,
+        extract('year', BorrowedBook.borrowed_date) == current_year
+    ).group_by(Book.id)\
+    .order_by(func.avg(BorrowedBook.rating).desc())\
+    .limit(5).all()
+
+    return best_books
 
 @views.route('/')
 @login_required
 def home():
+    best_books = get_best_books()
     return render_template(
         'home.html',
         name=current_user.first_name,
-        is_admin=current_user.is_admin
+        is_admin=current_user.is_admin,
+        best_books=best_books
     )
 
 
+from sqlalchemy import func
 
+from sqlalchemy import func
 
 @views.route('/book-list', methods=['GET', 'POST'])
 @login_required
 def book_list():
     selected_author = request.args.get('author')
     selected_genre = request.args.get('genre')
-    
-    if selected_author:
-        books = Book.query.filter_by(author=selected_author).all()
-    elif selected_genre:
-        books = Book.query.filter_by(genre=selected_genre).all()
-    else:
-        books = Book.query.all()
 
+    # Base query to fetch books
+    base_query = db.session.query(
+        Book.id,
+        Book.name,
+        Book.author,
+        Book.genre,
+        Book.remaining_copies,
+        func.coalesce(func.avg(BorrowedBook.rating), 0).label('average_rating')
+    ).outerjoin(BorrowedBook, Book.id == BorrowedBook.book_id)
+
+    if selected_author:
+        base_query = base_query.filter(Book.author == selected_author)
+    elif selected_genre:
+        base_query = base_query.filter(Book.genre == selected_genre)
+
+    # Group by book and fetch all results
+    books = base_query.group_by(Book.id).all()
+
+    # Fetch distinct genres and authors for filtering
     genres = db.session.query(Book.genre).distinct().all()
     authors = db.session.query(Book.author).distinct().all()
+
+    # Fetch borrowed books to disable borrowing for current user
     borrowed_book_ids = [borrow.book_id for borrow in BorrowedBook.query.filter_by(user_id=current_user.id, returned=False).all()]
-    return render_template('book_list.html', books=books, borrowed_book_ids=borrowed_book_ids)
+
+    return render_template(
+        'book_list.html',
+        books=books,
+        borrowed_book_ids=borrowed_book_ids,
+        genres=genres,
+        authors=authors
+    )
+
 
 
 
@@ -288,4 +335,64 @@ def rate_book(borrow_id):
     return render_template('rate_book.html', borrowed_book=borrowed_book)
 
 
+@views.route('/reports', methods=['GET'])
+@login_required
+def report_page():
+    # Renders the reports.html page
+    return render_template('reports.html', user=current_user)
 
+@views.route('/reports/data', methods=['GET'])
+@login_required
+def report_data():
+    # Fetch Most Borrowed Books
+    most_borrowed_books = db.session.query(
+        Book.name,
+        db.func.count(BorrowedBook.id).label('borrow_count')
+    ).join(BorrowedBook, BorrowedBook.book_id == Book.id)\
+     .filter(BorrowedBook.returned == False)\
+     .group_by(Book.id)\
+     .order_by(db.desc('borrow_count')).limit(5).all()
+
+    # Fetch Active Users
+    active_users = db.session.query(
+        db.func.count(User2.id)
+    ).join(BorrowedBook, BorrowedBook.user_id == User2.id)\
+     .filter(BorrowedBook.returned == False).scalar()
+
+    # Fetch Borrowing Trends (Date Formatting Adjusted)
+    borrowing_trends = db.session.query(
+        BorrowedBook.borrowed_date.label('borrow_date'),
+        db.func.count(BorrowedBook.id).label('borrow_count')
+    ).filter(
+        BorrowedBook.borrowed_date >= datetime.now() - timedelta(days=30)
+    ).group_by(BorrowedBook.borrowed_date).order_by(BorrowedBook.borrowed_date).all()
+
+    # Adjust data formatting for trends to include formatted dates
+    trends = [{'date': trend.borrow_date.strftime('%Y-%m-%d'), 'count': trend.borrow_count} for trend in borrowing_trends]
+
+    # Return JSON response
+    return jsonify({
+        'most_borrowed_books': [{'name': book[0], 'count': book[1]} for book in most_borrowed_books],
+        'active_users': active_users,
+        'borrowing_trends': trends
+    })
+
+# @views.route('/available-books')
+# def book_list():
+#     books = Book.query.all()
+#     books_data = []
+#     for book in books:
+#         # Calculate the average rating for each book
+#         borrowed_books = BorrowedBook.query.filter_by(book_id=book.id).all()
+#         total_ratings = sum([b.rating for b in borrowed_books if b.rating])
+#         rating_count = len([b.rating for b in borrowed_books if b.rating])
+#         average_rating = total_ratings / rating_count if rating_count > 0 else 0
+#         books_data.append({
+#             'id': book.id,
+#             'name': book.name,
+#             'author': book.author,
+#             'genre': book.genre,
+#             'copies': book.remaining_copies,
+#             'average_rating': average_rating
+#         })
+#     return render_template('book_list.html', books=books_data)
