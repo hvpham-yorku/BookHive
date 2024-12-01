@@ -1,266 +1,281 @@
+
 <!DOCTYPE html>
 <html>
-  <!-- Root of the HTML document -->
   <head>
-    <!-- Head section containing metadata and resource links -->
-
     <meta charset="utf-8" />
-    <!-- Specifies the character encoding for the document -->
-
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- Ensures proper scaling and responsiveness for different screen sizes -->
-
     <head>
-      <!-- Additional head elements -->
-
       <meta charset="utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
-
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
-      <!-- Includes Bootstrap CSS for styling -->
-      <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-
-
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous" />
-      <!-- Includes Font Awesome for icons -->
-
       <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-      <!-- Links a custom stylesheet -->
-
       {% block extra_styles %}{% endblock %}
-      <!-- Block for adding extra styles in child templates -->
+      
+  <style>
+  /* .navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px; 
+  background-color: #333; 
+  z-index: 1000; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+} */
 
-      <style>
-        /* Styling for the navigation bar */
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000; /* Ensures navbar stays above everything */
-        }
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000; /* Ensures navbar stays above everything */
+}
 
-        /* Styling for disabled secondary buttons */
-        .btn-secondary {
-            background-color: grey;
-            color: white;
-            cursor: not-allowed;
-            border: none;
-            padding: 8px 16px;
-            text-align: center;
-            text-decoration: none;
-            font-size: 14px;
-        }
-      </style>
 
-      <style>
-        /* Styling for interactive buttons */
+
+ /* position: fixed; /* Ensure the navbar doesn't overlay content */
+ /* z-index: 10; /* Make sure it stays on top */
+ /* margin-bottom: 0; /* Avoid unnecessary spacing */
+
+
+    .btn-secondary {
+        background-color: grey;
+        color: white;
+        cursor: not-allowed;
+        border: none;
+        padding: 8px 16px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 14px;
+    }
+    </style>
+     <style>
         button {
-            font-family: inherit;
-            font-size: 20px;
-            background: royalblue;
-            color: white;
-            padding: 0.9em 1.5em;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: none;
-            border-radius: 16px;
-            overflow: hidden;
-            transition: all 0.2s;
-            cursor: pointer;
-            position: relative;
-            width: 180px; 
-        }
+    font-family: inherit;
+    font-size: 20px;
+    background: royalblue;
+    color: white;
+    padding: 0.9em 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.2s;
+    cursor: pointer;
+    position: relative;
+    width: 180px; 
+}
 
-        /* Animation for button text on hover */
-        button span {
-            display: inline-block;
-            margin-left: 0.3em;
-            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-        }
+button span {
+    display: inline-block;
+    margin-left: 0.3em;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+button:hover span {
+    transform: translateX(0.3em); 
+}
+button svg {
+    display: inline-block;
+    margin-right: 0.5em;
+    transform-origin: center center;
+    transition: transform 0.3s ease-in-out;
+}
+button:hover svg {
+    transform: rotate(20deg); 
+}
+</style>
 
-        button:hover span {
-            transform: translateX(0.3em); 
-        }
 
-        /* Animation for button icons on hover */
-        button svg {
-            display: inline-block;
-            margin-right: 0.5em;
-            transform-origin: center center;
-            transition: transform 0.3s ease-in-out;
-        }
-
-        button:hover svg {
-            transform: rotate(20deg); 
-        }
+    <style>
+      .btn-secondary {
+          background-color: grey;
+          color: white;
+          cursor: not-allowed;
+          border: none;
+          padding: 8px 16px;
+          text-align: center;
+          text-decoration: none;
+          font-size: 14px;
+      }
       </style>
 
-      <style>
-        /* Duplicate styling for disabled buttons */
-        .btn-secondary {
-            background-color: grey;
-            color: white;
-            cursor: not-allowed;
-            border: none;
-            padding: 8px 16px;
-            text-align: center;
-            text-decoration: none;
-            font-size: 14px;
-        }
-      </style>
+<link
+rel="stylesheet"
+href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+crossorigin="anonymous"
+/>
+<link
+rel="stylesheet"
+href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+crossorigin="anonymous"
+/>
 
-      <title>{% block title %}Home{% endblock %}</title>
-      <!-- Dynamic title block for the page -->
+<title>{% block title %}Home{% endblock %}</title>
   </head>
 
   <body>
-    <!-- Body content -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-      <!-- Fixed navigation bar styled with Bootstrap classes -->
       
         <div class="collapse navbar-collapse justify-content-center" id="navbar">
-          <!-- Navbar content collapses on smaller screens -->
-          <ul class="navbar-nav">
-            {% if current_user.is_authenticated %}
-            <!-- Links visible to authenticated users -->
-            {% if request.path != '/' %}
-            <li class="nav-item">
-              <a class="nav-link {% if request.path == '/' %}active{% endif %}" id="home" href="/">Home</a>
-            </li>
-            {% endif %}
-            {% if request.path != '/book-list' %}
-            <li class="nav-item">
-              <a class="nav-link {% if request.path == '/book-list' %}active{% endif %}" id="availableBooks" href="/book-list">Available Books</a>
-            </li>
-            {% endif %}
-            
+            <ul class="navbar-nav">
+                {% if current_user.is_authenticated %}
+                <!-- Common Links for All Logged-In Users -->
+                {% if request.path != '/' %}
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/' %}active{% endif %}" id="home" href="/">Home</a>
+                </li>
+                {% endif %}
+                {% if request.path != '/book-list' %}
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/book-list' %}active{% endif %}" id="availableBooks" href="/book-list">Available Books</a>
+                </li>
+                {% endif %}
+  
+                <!-- Admin-Specific Link -->
+                {% if current_user.is_admin %}
+                {% if request.path != '/add-book' %}
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/add-book' %}active{% endif %}" id="addBook" href="/add-book">Add Book</a>
+                </li>
 
-            {% if current_user.is_admin %}
-            <!-- Links specific to admin users -->
-            {% if request.path != '/add-book' %}
-            <li class="nav-item">
-              <a class="nav-link {% if request.path == '/add-book' %}active{% endif %}" id="addBook" href="/add-book">Add Book</a>
-            </li>
-            {% endif %}
-            <li class="nav-item">
-              <a class="nav-link" id="logout" href="/logout">Logout</a>
-            </li>
-            {% endif %}
+                {% endif %}
 
-            {% if not current_user.is_admin %}
-            <!-- Links specific to regular users -->
-            {% if request.path != '/contact-us' %}
-            <li class="nav-item">
-              <a class="nav-link {% if request.path == '/contact-us' %}active{% endif %}" id="contact_us" href="/contact-us">Contact Us</a>
-            </li>
-            {% endif %}
-            {% if request.path != '/my-books' %}
-            <li class="nav-item">
-              <a class="nav-link {% if request.path == '/my-books' %}active{% endif %}" id="my-books" href="/my-books">My Books</a>
-            </li>
-            {% endif %}
-            <li class="nav-item">
-              <a class="nav-link" id="logout" href="/logout">Logout</a>
-            </li>
-            {% endif %}
-            {% else %}
-            <!-- Links for non-authenticated users -->
-            {% if request.path != '/login' %}
-            <li class="nav-item">
-              <a class="nav-link {% if request.path == '/login' %}active{% endif %}" id="login" href="/login">Login</a>
-            </li>
-            {% endif %}
-            {% if request.path != '/sign-up' %}
-            <li class="nav-item">
-              <a class="nav-link {% if request.path == '/sign-up' %}active{% endif %}" id="signUp" href="/sign-up">Sign Up</a>
-            </li>
-            {% endif %}
-            {% endif %}
-          </ul>
-        </div>
-    </nav>
+                {% if current_user.is_admin %}
+<li class="nav-item">
+    <a class="nav-link {% if request.path == '/reports' %}active{% endif %}" href="/reports">
+        Report
+    </a> 
+</li>
+{% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" id="logout" href="/logout">Logout</a>
+                </li>
+                {% endif %}
+  
+                <!-- User-Specific Link -->
+                {% if not current_user.is_admin %}
+                
+                {% if request.path != '/contact-us' %}
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/contact-us' %}active{% endif %}" id="contact_us" href="/contact-us">Contact Us</a>
+                </li>
+                {% endif %}
+                
+                <li class="nav-item">
+                    <a class="nav-link" id="logout" href="/logout">Logout</a>
+                </li>
+                {% endif %}
+                {% else %}
+                  <!-- Links for Non-Authenticated Users -->
+                  {% if request.path != '/login' %}
+                  <li class="nav-item">
+                      <a class="nav-link {% if request.path == '/login' %}active{% endif %}" id="login" href="/login">Login</a>
+                  </li>
+                  {% endif %}
+                  {% if request.path != '/sign-up' %}
+                  <li class="nav-item">
+                      <a class="nav-link {% if request.path == '/sign-up' %}active{% endif %}" id="signUp" href="/sign-up">Sign Up</a>
+                  </li>
+                  {% endif %}
+                  {% endif %}
+              </ul>
+          </div>
+      
+  </nav>
 
-    <style>
-      /* Flash messages container styling */
-      #flash-messages {
-        position: fixed;
-        top: 70px; /* Matches navbar height */
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 1050;
-        width: 50%; /* Adjust width as needed */
-        max-width: 600px;
-        text-align: center;
-      }
+  <style>
+    #flash-messages {
+      position: fixed;
+      top: 70px; /* Adjust based on navbar height */
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1050;
+      width: 50%; /* Adjust width as needed */
+      max-width: 600px;
+      text-align: center;
+  }
+  
+  .alert {
+      padding: 15px;
+      border-radius: 5px;
+      font-size: 14px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      display: inline-block;
+  }
+  
+  .alert-success {
+      background-color: #d4edda;
+      border-color: #c3e6cb;
+      color: #155724;
+  }
+  
+  .alert-error {
+      background-color: #f8d7da;
+      border-color: #f5c6cb;
+      color: #721c24;
+  }
+  
+  .alert .close {
+      margin-left: 10px;
+      color: gray; 
+      cursor: pointer;
+  }
+  
+  
+  </style>
 
-      /* Flash message styling */
-      .alert {
-        padding: 15px;
-        border-radius: 5px;
-        font-size: 14px;
-        margin-bottom: 10px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        display: inline-block;
-      }
-
-      /* Success and error alert styles */
-      .alert-success {
-        background-color: #d4edda;
-        color: #155724;
-      }
-
-      .alert-error {
-        background-color: #f8d7da;
-        color: #721c24;
-      }
-
-      /* Close button styling for alerts */
-      .alert .close {
-        margin-left: 10px;
-        color: gray; 
-        cursor: pointer;
-      }
-    </style>
-
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
     <div id="flash-messages">
-      {% for category, message in messages %}
-      <div class="alert alert-{{ 'success' if category == 'success' else 'error' }} alert-dismissable">
-        {{ message }}
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-      </div>
-      {% endfor %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ 'success' if category == 'success' else 'error' }} alert-dismissable">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            </div>
+        {% endfor %}
     </div>
-    {% endif %}
-    {% endwith %}
+{% endif %}
+{% endwith %}
 
-    <div class="container">{% block content %}{% endblock %}</div>
-    <!-- Main content container -->
-
-    <!-- JavaScript dependencies -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
+<div class="container">{% block content %} {% endblock %}</div>
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
 
     {% block javascript %}
     <script>
-      // Automatically dismiss flash messages after 3 seconds
       document.addEventListener('DOMContentLoaded', () => {
-        setTimeout(() => {
-          const alerts = document.querySelectorAll("#flash-messages .alert");
-          alerts.forEach(alert => {
-            alert.style.opacity = "0";
-            setTimeout(() => alert.remove(), 600);
-          });
-        }, 3000);
+          // Auto-dismiss flash messages after 5 seconds
+          setTimeout(() => {
+              const alerts = document.querySelectorAll("#flash-messages .alert");
+              alerts.forEach(alert => {
+                  alert.style.opacity = "0";
+                  setTimeout(() => alert.remove(), 600); 
+              });
+          }, 3000); // 3 seconds
       });
-    </script>
+  </script>
+  
+  
     {% endblock %}
-
+    
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-    <!-- Project-specific JavaScript -->
   </body>
 </html>

@@ -11,7 +11,7 @@ from flask_login import login_required, current_user
 from threading import Thread
 from sqlalchemy import extract,func
 from datetime import datetime
-
+from .models import User2
 views = Blueprint('views', __name__)
 
 def get_best_books():
@@ -309,4 +309,44 @@ def rate_book(borrow_id):
     return render_template('rate_book.html', borrowed_book=borrowed_book)
 
 
+@views.route('/reports', methods=['GET'])
+@login_required
+def report_page():
+    # Renders the reports.html page
+    return render_template('reports.html', user=current_user)
 
+@views.route('/reports/data', methods=['GET'])
+@login_required
+def report_data():
+    # Fetch Most Borrowed Books
+    most_borrowed_books = db.session.query(
+        Book.name,
+        db.func.count(BorrowedBook.id).label('borrow_count')
+    ).join(BorrowedBook, BorrowedBook.book_id == Book.id)\
+     .filter(BorrowedBook.returned == False)\
+     .group_by(Book.id)\
+     .order_by(db.desc('borrow_count')).limit(5).all()
+
+    # Fetch Active Users
+    active_users = db.session.query(
+        db.func.count(User2.id)
+    ).join(BorrowedBook, BorrowedBook.user_id == User2.id)\
+     .filter(BorrowedBook.returned == False).scalar()
+
+    # Fetch Borrowing Trends (Date Formatting Adjusted)
+    borrowing_trends = db.session.query(
+        BorrowedBook.borrowed_date.label('borrow_date'),
+        db.func.count(BorrowedBook.id).label('borrow_count')
+    ).filter(
+        BorrowedBook.borrowed_date >= datetime.now() - timedelta(days=30)
+    ).group_by(BorrowedBook.borrowed_date).order_by(BorrowedBook.borrowed_date).all()
+
+    # Adjust data formatting for trends to include formatted dates
+    trends = [{'date': trend.borrow_date.strftime('%Y-%m-%d'), 'count': trend.borrow_count} for trend in borrowing_trends]
+
+    # Return JSON response
+    return jsonify({
+        'most_borrowed_books': [{'name': book[0], 'count': book[1]} for book in most_borrowed_books],
+        'active_users': active_users,
+        'borrowing_trends': trends
+    })
