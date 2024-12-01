@@ -309,6 +309,21 @@ html {
     .edit-button:hover {
         background-color: #e0a800;
     }
+    .stars {
+        display: flex;
+        justify-content: flex-start; /* Aligns stars to start (left-to-right order) */
+        gap: 5px; /* Adds spacing between stars */
+    }
+    
+    .stars i {
+        font-size: 1.5rem; /* Adjust star size */
+        color: lightgray; /* Default color for unselected stars */
+    }
+    
+    .stars i.filled {
+        color: gold; /* Color for selected stars */
+    }  
+ 
     
 
 
