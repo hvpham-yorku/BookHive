@@ -308,10 +308,40 @@ def return_book(borrow_id):
     borrowed_book.book.remaining_copies += 1
     db.session.commit()
 
+    # Send Return Confirmation Email
+    send_return_confirmation(
+        current_user.email,
+        borrowed_book.book.name,
+        borrowed_book.borrowed_date,
+        borrowed_book.due_date
+    )
+
     flash(f'You have successfully returned "{borrowed_book.book.name}". Please rate the book.', category='success')
 
     # Redirect to the rating page
     return redirect(url_for('views.rate_book', borrow_id=borrow_id))
+
+
+def send_return_confirmation(email, book_name, borrow_date, due_date):
+    msg = Message(
+        subject="Return Confirmation: Book Successfully Returned",
+        recipients=[email],
+        body=f"""
+        Thank you for returning the book!
+
+        Details of your loan:
+        - Book Title: {book_name}
+        - Borrowed Date: {borrow_date.strftime('%Y-%m-%d')}
+        - Due Date: {due_date.strftime('%Y-%m-%d')}
+
+        We hope you enjoyed reading this book. Please take a moment to rate your experience.
+
+        Happy Reading!
+        Library Management System
+        """
+    )
+    mail.send(msg)
+
 
 
 @views.route('/rate-book/<int:borrow_id>', methods=['GET', 'POST'])
@@ -376,23 +406,3 @@ def report_data():
         'active_users': active_users,
         'borrowing_trends': trends
     })
-
-# @views.route('/available-books')
-# def book_list():
-#     books = Book.query.all()
-#     books_data = []
-#     for book in books:
-#         # Calculate the average rating for each book
-#         borrowed_books = BorrowedBook.query.filter_by(book_id=book.id).all()
-#         total_ratings = sum([b.rating for b in borrowed_books if b.rating])
-#         rating_count = len([b.rating for b in borrowed_books if b.rating])
-#         average_rating = total_ratings / rating_count if rating_count > 0 else 0
-#         books_data.append({
-#             'id': book.id,
-#             'name': book.name,
-#             'author': book.author,
-#             'genre': book.genre,
-#             'copies': book.remaining_copies,
-#             'average_rating': average_rating
-#         })
-#     return render_template('book_list.html', books=books_data)

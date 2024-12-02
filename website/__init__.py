@@ -7,9 +7,13 @@ from os import path, getenv
 
 
 
+
 db = SQLAlchemy()
 DB_NAME = "database.db"
 mail = Mail()  # Initialize Flask-Mail
+
+
+
 
 def create_app():
     app = Flask(__name__)
