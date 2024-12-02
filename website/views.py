@@ -14,6 +14,8 @@ from sqlalchemy.sql.expression import func
 from datetime import datetime
 from .models import User2
 views = Blueprint('views', __name__)
+from .models import UserMessage  
+
 
 def get_best_books():
     current_month = datetime.now().month
@@ -216,6 +218,23 @@ def edit_book(book_id):
     # Render the edit page with the book's current details
     return render_template('edit_book.html', book=book)
 
+@views.route('/search-books', methods=['GET'])
+@login_required
+def search_books():
+    query = request.args.get('query', '').strip()  # Extract the query from the URL
+    books = []
+
+    if query:  # Only perform the search if there's a query
+        books = Book.query.filter(
+            (Book.name.ilike(f'%{query}%')) |
+            (Book.author.ilike(f'%{query}%')) |
+            (Book.genre.ilike(f'%{query}%'))
+        ).all()
+    else:
+        flash('Please enter a search term.', category='error')
+
+    # Pass the books and query back to the template
+    return render_template('search_books.html', results=books, query=query)
 
 @views.route('/contact-us', methods=['GET', 'POST'])
 @login_required
@@ -425,3 +444,29 @@ def user_activity(user_id):
                 in_progress_books.append(book_data)
 
     return render_template('user_activity.html', user=user, in_progress_books=in_progress_books, past_books=past_books, overdue_books=overdue_books)
+
+@views.route('/message/<int:message_id>')
+@login_required
+def view_message(message_id):
+    message = UserMessage.query.filter_by(id=message_id, user_id=current_user.id).first()
+    if not message:
+        flash('Message not found', category='error')
+        return redirect(url_for('views.home'))
+
+    # Mark the message as read
+    if not message.is_read:
+        message.is_read = True
+        db.session.commit()
+
+
+    return render_template('view_message.html', message=message)
+
+@views.context_processor
+def inject_messages():
+    if current_user.is_authenticated:
+        user_messages = UserMessage.query.filter_by(user_id=current_user.id).order_by(UserMessage.timestamp.desc()).all()
+        unread_count = UserMessage.query.filter_by(user_id=current_user.id, is_read=False).count()
+
+        return {'user_messages': user_messages, 'unread_count': unread_count}
+    return {}
+
