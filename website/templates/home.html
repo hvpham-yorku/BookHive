@@ -352,16 +352,20 @@ Home
 
 <main class="content-wrapper">
     <section class="book-section">
-        <h1 align="center">Welcome {{ name }}!</h1>
+        <h1>Welcome {{ name }}!</h1>
         <p align="center">
             {% if is_admin %}
-            <p>You are viewing the <strong>Admin Dashboard</strong>.</p>
-            <a href="/add-book"><button class="btn btn-primary dashboard-btn">Add Book</button></a>
-
+                <p>You are viewing the <strong>Admin Dashboard</strong>.</p>
+                <a href="/add-book">
+                    <button class="btn btn-primary dashboard-btn">Add Book</button></a>
+                <a href="{{ url_for('views.track_user_activity') }}">
+                    <button class="btn btn-primary dashboard-btn">Track User Activity</button></a>
             {% else %}
-            <p>You are viewing the <strong>User Dashboard</strong>.</p>
-            <a href="/book-list"><button class="btn btn-primary dashboard-btn">View Available Books</button></a>
-
+                <p>You are viewing the <strong>User Dashboard</strong>.</p>
+                <a href="/book-list">
+                    <button class="btn btn-primary dashboard-btn">View Available Books</button></a>
+                <a href="{{ url_for('views.recommendations') }}">
+                    <button class="btn btn-primary dashboard-btn">View Recommended Books</button></a>
             {% endif %}
         </p>
     </section>
