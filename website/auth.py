@@ -104,7 +104,6 @@ def sign_up():
     return render_template("sign_up.html", user=current_user)
 
 
-
 @auth.route('/reset-password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
     try:
