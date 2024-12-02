@@ -1,0 +1,37 @@
+{% extends "base2.html" %}
+
+{% block content %}
+<style>
+    body {
+        background: none !important;
+    }
+</style>
+
+<div class="content-wrapper">
+    <h1>User List</h1>
+    <h2>Click on "View Activity" of a user email to track their activity.</h2>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>First Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.email }}</td>
+                <td>{{ user.first_name }}</td>
+                <td>
+                    <a href="{{ url_for('views.user_activity', user_id=user.id) }}">
+                        <button class="btn btn-primary">View Activity</button>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

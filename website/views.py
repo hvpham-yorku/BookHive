@@ -10,6 +10,7 @@ from flask import Blueprint, render_template, redirect, url_for
 from flask_login import login_required, current_user
 from threading import Thread
 from sqlalchemy import extract,func
+from sqlalchemy.sql.expression import func
 from datetime import datetime
 from .models import User2
 views = Blueprint('views', __name__)
@@ -350,3 +351,77 @@ def report_data():
         'active_users': active_users,
         'borrowing_trends': trends
     })
+
+
+
+@views.route('/recommendations', methods=['GET'])
+@login_required
+def recommendations():
+    user_id = current_user.id
+
+    borrowed_books = BorrowedBook.query.filter_by(user_id=user_id, returned=False).all()
+
+    borrowed_book_ids = [borrow.book_id for borrow in borrowed_books]
+
+    if borrowed_books:
+        genres = [borrow.book.genre for borrow in borrowed_books if borrow.book]
+        authors = [borrow.book.author for borrow in borrowed_books if borrow.book]
+
+        recommended_books = Book.query.filter(
+            (Book.genre.in_(genres)) | (Book.author.in_(authors)),
+            Book.id.notin_(borrowed_book_ids)  # Exclude books the user has already borrowed
+        ).all()
+    else:
+        recommended_books = Book.query.order_by(func.random()).limit(5).all()
+
+    return render_template('recommend_books.html', books=recommended_books, name=current_user.first_name, borrowed_book_ids=borrowed_book_ids)
+
+@views.route('/users')
+@login_required
+def track_user_activity():
+    if not current_user.is_admin:
+        flash('You do not have permission to access this page.', category='error')
+        return redirect(url_for('views.home'))
+    
+    users = User2.query.filter_by(is_admin=False).all()
+    return render_template('users.html', users=users)
+
+@views.route('/user-activity/<int:user_id>')
+@login_required
+def user_activity(user_id):
+    if not current_user.is_admin:
+        flash('You do not have permission to access this page.', category='error')
+        return redirect(url_for('views.home'))
+
+    user = User2.query.get(user_id)
+    if not user:
+        flash('User not found.', category='error')
+        return redirect(url_for('views.track_user_activity'))
+
+    borrowed_books = BorrowedBook.query.filter_by(user_id=user.id).all()
+    in_progress_books = []
+    past_books = []
+    overdue_books = []
+
+    for borrow in borrowed_books:
+        book_data = {
+            'name': borrow.book.name,
+            'author': borrow.book.author,
+            'due_date': borrow.due_date,
+            'return_date': borrow.return_date,
+            'fine': 0.0  # Default fine is 0
+        }
+
+        if borrow.returned:
+            if borrow.return_date:
+                past_books.append(book_data)
+        else:
+            if borrow.due_date < datetime.now():
+                overdue_days = (datetime.now() - borrow.due_date).days
+                fine = overdue_days * 0.10  # Fine per day
+                book_data['fine'] = round(fine, 2)
+                overdue_books.append(book_data)
+            else:
+                in_progress_books.append(book_data)
+
+    return render_template('user_activity.html', user=user, in_progress_books=in_progress_books, past_books=past_books, overdue_books=overdue_books)

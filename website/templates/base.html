@@ -13,16 +13,6 @@
       {% block extra_styles %}{% endblock %}
       
   <style>
-  /* .navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 60px; 
-  background-color: #333; 
-  z-index: 1000; 
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
-} */
 
 .navbar {
     position: fixed;
@@ -31,13 +21,6 @@
     right: 0;
     z-index: 1000; /* Ensures navbar stays above everything */
 }
-
-
-
- /* position: fixed; /* Ensure the navbar doesn't overlay content */
- /* z-index: 10; /* Make sure it stays on top */
- /* margin-bottom: 0; /* Avoid unnecessary spacing */
-
 
     .btn-secondary {
         background-color: grey;
@@ -49,6 +32,43 @@
         text-decoration: none;
         font-size: 14px;
     }
+
+    /* Flash messages container styling */
+    #flash-messages {
+        position: fixed;
+        top: 70px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1050;
+        width: 50%;
+        max-width: 600px;
+        text-align: center;
+      }
+
+      .alert {
+        padding: 15px;
+        border-radius: 5px;
+        font-size: 14px;
+        margin-bottom: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        display: inline-block;
+      }
+
+      .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+      }
+
+      .alert-error {
+        background-color: #f8d7da;
+        color: #721c24;
+      }
+
+      .alert .close {
+        margin-left: 10px;
+        color: gray;
+        cursor: pointer;
+      }
     </style>
      <style>
         button {
@@ -134,16 +154,21 @@ crossorigin="anonymous"
                     <a class="nav-link {% if request.path == '/book-list' %}active{% endif %}" id="availableBooks" href="/book-list">Available Books</a>
                 </li>
                 {% endif %}
-  
+             
                 <!-- Admin-Specific Link -->
                 {% if current_user.is_admin %}
                 {% if request.path != '/add-book' %}
                 <li class="nav-item">
                     <a class="nav-link {% if request.path == '/add-book' %}active{% endif %}" id="addBook" href="/add-book">Add Book</a>
                 </li>
-
+                
                 {% endif %}
-
+                {% if request.path != '/track-user-activity' %}
+                <li class="nav-item">
+                  <a class="nav-link" id="trackUserActivity" href="{{ url_for('views.track_user_activity') }}">Track User Activity</a>
+                </li>
+                {% endif %}
+      
                 {% if current_user.is_admin %}
 <li class="nav-item">
     <a class="nav-link {% if request.path == '/reports' %}active{% endif %}" href="/reports">
@@ -151,6 +176,7 @@ crossorigin="anonymous"
     </a> 
 </li>
 {% endif %}
+
                 <li class="nav-item">
                     <a class="nav-link" id="logout" href="/logout">Logout</a>
                 </li>
@@ -164,7 +190,16 @@ crossorigin="anonymous"
                     <a class="nav-link {% if request.path == '/contact-us' %}active{% endif %}" id="contact_us" href="/contact-us">Contact Us</a>
                 </li>
                 {% endif %}
-                
+                {% if request.path != '/my-books' %}
+                <li class="nav-item">
+                  <a class="nav-link {% if request.path == '/my-books' %}active{% endif %}" id="myBooks" href="/my-books">My Books</a>
+                </li>
+                {% endif %}
+                {% if request.path != '/recommended-books' %}
+                <li class="nav-item">
+                  <a class="nav-link {% if request.path == '/recommended-books' %}active{% endif %}" id="recommendedBooks" href="{{ url_for('views.recommendations') }}">Recommended Books</a>
+                </li>
+                {% endif %}
                 <li class="nav-item">
                     <a class="nav-link" id="logout" href="/logout">Logout</a>
                 </li>

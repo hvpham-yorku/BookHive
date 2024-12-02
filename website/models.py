@@ -41,6 +41,6 @@ class BorrowedBook(db.Model):
     due_date = db.Column(db.DateTime, nullable=False)
     returned = db.Column(db.Boolean, default=False)
     rating = db.Column(db.Integer, nullable=True)  # New field for rating
-
+    return_date = db.Column(db.DateTime, nullable=True)
 
 
