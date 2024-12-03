@@ -306,6 +306,25 @@ def return_book(borrow_id):
 
     # Redirect to the rating page
     return redirect(url_for('views.rate_book', borrow_id=borrow_id))
+def send_return_confirmation(email, book_name, borrow_date, due_date):
+    msg = Message(
+        subject="Return Confirmation: Book Successfully Returned",
+        recipients=[email],
+        body=f"""
+        Thank you for returning the book!
+
+        Details of your loan:
+        - Book Title: {book_name}
+        - Borrowed Date: {borrow_date.strftime('%Y-%m-%d')}
+        - Due Date: {due_date.strftime('%Y-%m-%d')}
+
+        We hope you enjoyed reading this book. Please take a moment to rate your experience.
+
+        Happy Reading!
+        Library Management System
+        """
+    )
+    mail.send(msg)
 
 
 @views.route('/rate-book/<int:borrow_id>', methods=['GET', 'POST'])
