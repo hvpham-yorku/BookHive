@@ -349,19 +349,23 @@ Home
         </div>
     
 </header>
-
+<!--Welcome header / Not part of any user story-->
 <main class="content-wrapper">
     <section class="book-section">
-        <h1 align="center">Welcome {{ name }}!</h1>
+        <h1>Welcome {{ name }}!</h1>
         <p align="center">
             {% if is_admin %}
-            <p>You are viewing the <strong>Admin Dashboard</strong>.</p>
-            <a href="/add-book"><button class="btn btn-primary dashboard-btn">Add Book</button></a>
-
+                <p>You are viewing the <strong>Admin Dashboard</strong>.</p>
+                <a href="/add-book">
+                    <button class="btn btn-primary dashboard-btn">Add Book</button></a>
+                <a href="{{ url_for('views.track_user_activity') }}">
+                    <button class="btn btn-primary dashboard-btn">Track User Activity</button></a>
             {% else %}
-            <p>You are viewing the <strong>User Dashboard</strong>.</p>
-            <a href="/book-list"><button class="btn btn-primary dashboard-btn">View Available Books</button></a>
-
+                <p>You are viewing the <strong>User Dashboard</strong>.</p>
+                <a href="/book-list">
+                    <button class="btn btn-primary dashboard-btn">View Available Books</button></a>
+                <a href="{{ url_for('views.recommendations') }}">
+                    <button class="btn btn-primary dashboard-btn">View Recommended Books</button></a>
             {% endif %}
         </p>
     </section>
@@ -370,39 +374,31 @@ Home
         <h2>Welcome!</h2>
         <p>You are at BookHive, your ultimate destination for innovative solutions, the finest selections, and the best experiences. Whether you're here to explore new trends, seek out unique items, or simply gain insights, we're delighted to guide you through a seamless journey. Join us as we embark on this adventure together, ensuring every visit leaves you inspired, satisfied, and excited for what's next.</p>
     </section>
-
+<!--User story #18-> best of the month based on users rating-->
     <section class="book-section">
-        <h2>Best of this month for you</h2>
+        <h2>Best of this Month for You</h2>
         <div class="work-item">
             <div class="work-details">
-                <!-- Navigateable Blocks for Book Genres -->
+                {% for book in best_books %}
                 <div class="book-genre">
-                    <h2><a href="#fantasy-genre">The Lord of the Rings</a></h2>
-                    <p>An epic tale of adventure, courage, and friendship set in the magical world of Middle-earth.</p>
+                    <h2 class="hover-text">{{ book.name }}</h2>
+                    <p class="hover-text">By {{ book.author }}</p>
+                    <p class="hover-text">Average Rating: {{ book.avg_rating|round(2) }}</p>
                 </div>
-
-                <div class="book-genre">
-                    <h2><a href="#mystery-thriller-genre">Gone Girl</a></h2>
-                    <p>A gripping psychological thriller that delves into the complexities of marriage and deceit.</p>
-                </div>
-
-                <div class="book-genre">
-                    <h2><a href="#historical-genre">All the Light We Cannot See</a></h2>
-                    <p>A beautifully woven story set during World War II, following two intertwined lives.</p>
-                </div>
-
-                <div class="book-genre">
-                    <h2><a href="#childrens-genre">Harry Potter and the Sorcerer's Stone</a></h2>
-                    <p>An enchanting introduction to the magical world of Hogwarts and the adventures of Harry Potter.</p>
-                </div>
-
-                <div class="book-genre">
-                    <h2><a href="#science-fiction-genre">Dune</a></h2>
-                    <p>A groundbreaking science fiction epic exploring politics, religion, and humanity's future.</p>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </section>
+    
+    <style>
+    .hover-text {
+        transition: color 0.3s ease;
+    }
+    
+    .hover-text:hover {
+        color: rgb(209, 98, 38);
+    }
+    </style>
 
     <section class="book-section">
         <h2>Author List</h2>

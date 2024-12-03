@@ -10,9 +10,12 @@ from flask import Blueprint, render_template, redirect, url_for
 from flask_login import login_required, current_user
 from threading import Thread
 from sqlalchemy import extract,func
+from sqlalchemy.sql.expression import func
 from datetime import datetime
 from .models import User2
 views = Blueprint('views', __name__)
+from .models import UserMessage  
+
 
 def get_best_books():
     current_month = datetime.now().month
@@ -45,10 +48,6 @@ def home():
         is_admin=current_user.is_admin,
         best_books=best_books
     )
-
-
-from sqlalchemy import func
-
 from sqlalchemy import func
 
 @views.route('/book-list', methods=['GET', 'POST'])
@@ -92,7 +91,6 @@ def book_list():
 
 
 
-
 @views.route('/delete-book/<int:book_id>', methods=['POST'])
 @login_required
 def delete_book(book_id):
@@ -109,6 +107,7 @@ def delete_book(book_id):
     db.session.commit()
     flash(f'Book "{book.name}" has been deleted successfully.', category='success')
     return redirect(url_for('views.book_list'))
+
 
 
 
@@ -178,6 +177,8 @@ def send_loan_receipt(email, book_name, author, borrow_date, due_date):
 
 
 
+
+
 @views.route('/add-book', methods=['GET', 'POST'])
 @login_required
 def add_book():
@@ -241,6 +242,23 @@ def edit_book(book_id):
     # Render the edit page with the book's current details
     return render_template('edit_book.html', book=book)
 
+@views.route('/search-books', methods=['GET'])
+@login_required
+def search_books():
+    query = request.args.get('query', '').strip()  # Extract the query from the URL
+    books = []
+
+    if query:  # Only perform the search if there's a query
+        books = Book.query.filter(
+            (Book.name.ilike(f'%{query}%')) |
+            (Book.author.ilike(f'%{query}%')) |
+            (Book.genre.ilike(f'%{query}%'))
+        ).all()
+    else:
+        flash('Please enter a search term.', category='error')
+
+    # Pass the books and query back to the template
+    return render_template('search_books.html', results=books, query=query)
 
 @views.route('/contact-us', methods=['GET', 'POST'])
 @login_required
@@ -268,32 +286,68 @@ def contact_us():
 
     return render_template('contact_us.html')
 
+
 @views.route('/my-books', methods=['GET', 'POST'])
 @login_required
 def my_books():
-    # Fetch books
     borrowed_books = BorrowedBook.query.filter_by(user_id=current_user.id).all()
-
     in_progress_books = []
+    past_books = []
     overdue_books = []
 
     for borrow in borrowed_books:
         if borrow.returned:
-            continue
-        if borrow.due_date < datetime.now():
-            overdue_days = (datetime.now() - borrow.due_date).days
-            fine = round(overdue_days * 0.10, 2)
-            overdue_books.append({'name': borrow.book.name, 'author': borrow.book.author, 'due_date': borrow.due_date, 'fine': fine, 'id': borrow.id})
+            past_books.append({
+                'id': borrow.id,
+                'name': borrow.book.name,
+                'author': borrow.book.author,
+                'return_date': borrow.return_date  # Ensure this is handled
+            })
         else:
-            in_progress_books.append({'name': borrow.book.name, 'author': borrow.book.author, 'due_date': borrow.due_date, 'id': borrow.id, 'content_link': borrow.book.content_link})
+            book_data = {
+                'id': borrow.id,
+                'name': borrow.book.name,
+                'author': borrow.book.author,
+                'due_date': borrow.due_date,  # Handle if due_date is None
+                'content_link': borrow.book.content_link
+            }
 
-    # Check if the popup needs to be shown
-    show_rating_popup = request.args.get('show_rating_popup', default=False, type=bool)
-    borrow_id = request.args.get('borrow_id', type=int)
+            if borrow.due_date and borrow.due_date < datetime.now():
+                overdue_days = (datetime.now() - borrow.due_date).days
+                fine = overdue_days * 0.10  # Fine is 10 cents per day
+                overdue_books.append({
+                    **book_data,
+                    'fine': round(fine, 2)
+                })
+            else:
+                in_progress_books.append(book_data)
 
-    return render_template('my_books.html', in_progress_books=in_progress_books, overdue_books=overdue_books, show_rating_popup=show_rating_popup, borrow_id=borrow_id)
+    return render_template(
+        'my_books.html',
+        in_progress_books=in_progress_books,
+        past_books=past_books,
+        overdue_books=overdue_books
+    )
 
+# @views.route('/return-book/<int:borrow_id>', methods=['POST'])
+# @login_required
+# def return_book(borrow_id):
+#     borrowed_book = BorrowedBook.query.get(borrow_id)
 
+#     if not borrowed_book or borrowed_book.user_id != current_user.id:
+#         flash('Invalid request.', category='error')
+#         return redirect(url_for('views.my_books'))
+
+#     # Mark as returned
+#     borrowed_book.returned = True
+#     borrowed_book.book.remaining_copies += 1
+#     borrowed_book.return_date = datetime.now() # Set the return date
+#     db.session.commit()
+
+#     flash(f'You have successfully returned "{borrowed_book.book.name}". Please rate the book.', category='success')
+
+#     # Redirect to the rating page
+#     return redirect(url_for('views.rate_book', borrow_id=borrow_id))
 @views.route('/return-book/<int:borrow_id>', methods=['POST'])
 @login_required
 def return_book(borrow_id):
@@ -303,24 +357,14 @@ def return_book(borrow_id):
         flash('Invalid request.', category='error')
         return redirect(url_for('views.my_books'))
 
-    # Mark as returned
+    # Mark as returned and set return_date
     borrowed_book.returned = True
+    borrowed_book.return_date = datetime.now()  # Set the return date
     borrowed_book.book.remaining_copies += 1
     db.session.commit()
 
-    # Send Return Confirmation Email
-    send_return_confirmation(
-        current_user.email,
-        borrowed_book.book.name,
-        borrowed_book.borrowed_date,
-        borrowed_book.due_date
-    )
-
     flash(f'You have successfully returned "{borrowed_book.book.name}". Please rate the book.', category='success')
-
-    # Redirect to the rating page
     return redirect(url_for('views.rate_book', borrow_id=borrow_id))
-
 
 def send_return_confirmation(email, book_name, borrow_date, due_date):
     msg = Message(
@@ -341,7 +385,6 @@ def send_return_confirmation(email, book_name, borrow_date, due_date):
         """
     )
     mail.send(msg)
-
 
 
 @views.route('/rate-book/<int:borrow_id>', methods=['GET', 'POST'])
@@ -406,3 +449,102 @@ def report_data():
         'active_users': active_users,
         'borrowing_trends': trends
     })
+
+
+
+@views.route('/recommendations', methods=['GET'])
+@login_required
+def recommendations():
+    user_id = current_user.id
+
+    borrowed_books = BorrowedBook.query.filter_by(user_id=user_id, returned=False).all()
+
+    borrowed_book_ids = [borrow.book_id for borrow in borrowed_books]
+
+    if borrowed_books:
+        genres = [borrow.book.genre for borrow in borrowed_books if borrow.book]
+        authors = [borrow.book.author for borrow in borrowed_books if borrow.book]
+
+        recommended_books = Book.query.filter(
+            (Book.genre.in_(genres)) | (Book.author.in_(authors)),
+            Book.id.notin_(borrowed_book_ids)  # Exclude books the user has already borrowed
+        ).all()
+    else:
+        recommended_books = Book.query.order_by(func.random()).limit(5).all()
+
+    return render_template('recommend_books.html', books=recommended_books, name=current_user.first_name, borrowed_book_ids=borrowed_book_ids)
+
+@views.route('/users')
+@login_required
+def track_user_activity():
+    if not current_user.is_admin:
+        flash('You do not have permission to access this page.', category='error')
+        return redirect(url_for('views.home'))
+    
+    users = User2.query.filter_by(is_admin=False).all()
+    return render_template('users.html', users=users)
+
+@views.route('/user-activity/<int:user_id>')
+@login_required
+def user_activity(user_id):
+    if not current_user.is_admin:
+        flash('You do not have permission to access this page.', category='error')
+        return redirect(url_for('views.home'))
+
+    user = User2.query.get(user_id)
+    if not user:
+        flash('User not found.', category='error')
+        return redirect(url_for('views.track_user_activity'))
+
+    borrowed_books = BorrowedBook.query.filter_by(user_id=user.id).all()
+    in_progress_books = []
+    past_books = []
+    overdue_books = []
+
+    for borrow in borrowed_books:
+        book_data = {
+            'name': borrow.book.name,
+            'author': borrow.book.author,
+            'due_date': borrow.due_date,
+            'return_date': borrow.return_date,
+            'fine': 0.0  # Default fine is 0
+        }
+
+        if borrow.returned:
+            if borrow.return_date:
+                past_books.append(book_data)
+        else:
+            if borrow.due_date < datetime.now():
+                overdue_days = (datetime.now() - borrow.due_date).days
+                fine = overdue_days * 0.10  # Fine per day
+                book_data['fine'] = round(fine, 2)
+                overdue_books.append(book_data)
+            else:
+                in_progress_books.append(book_data)
+
+    return render_template('user_activity.html', user=user, in_progress_books=in_progress_books, past_books=past_books, overdue_books=overdue_books)
+
+@views.route('/message/<int:message_id>')
+@login_required
+def view_message(message_id):
+    message = UserMessage.query.filter_by(id=message_id, user_id=current_user.id).first()
+    if not message:
+        flash('Message not found', category='error')
+        return redirect(url_for('views.home'))
+
+    # Mark the message as read
+    if not message.is_read:
+        message.is_read = True
+        db.session.commit()
+
+
+    return render_template('view_message.html', message=message)
+
+@views.context_processor
+def inject_messages():
+    if current_user.is_authenticated:
+        user_messages = UserMessage.query.filter_by(user_id=current_user.id).order_by(UserMessage.timestamp.desc()).all()
+        unread_count = UserMessage.query.filter_by(user_id=current_user.id, is_read=False).count()
+
+        return {'user_messages': user_messages, 'unread_count': unread_count}
+    return {}

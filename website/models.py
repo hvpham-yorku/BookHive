@@ -41,6 +41,15 @@ class BorrowedBook(db.Model):
     due_date = db.Column(db.DateTime, nullable=False)
     returned = db.Column(db.Boolean, default=False)
     rating = db.Column(db.Integer, nullable=True)  # New field for rating
+    return_date = db.Column(db.DateTime, nullable=True)
+
+    
+class UserMessage(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user2.id'))
+    content = db.Column(db.String(500), nullable=False)
+    is_read = db.Column(db.Boolean, default=False)  # To track if the message is read
+    timestamp = db.Column(db.DateTime, default=func.now())
 
 
 
