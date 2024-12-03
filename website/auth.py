@@ -1,6 +1,6 @@
 
 from flask import Blueprint, render_template, request, flash, redirect, url_for
-from .models import User2
+from .models import User2, UserMessage
 from flask_mail import Message, Mail
 from itsdangerous import URLSafeTimedSerializer
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -98,6 +98,15 @@ def sign_up():
                 password1, method='pbkdf2:sha256'), is_admin=is_admin)
             db.session.add(new_user)
             db.session.commit()
+
+            # Add a welcome message for the new user
+            welcome_message = UserMessage(
+                user_id=new_user.id,
+                content=f"Welcome to our library system, {first_name}! We're excited to have you on board."
+            )
+            db.session.add(welcome_message)
+            db.session.commit()
+
             login_user(new_user, remember=True)
             flash('Account created!', category='success')
             return redirect(url_for('views.home'))
