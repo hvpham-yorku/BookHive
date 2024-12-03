@@ -1,20 +1,22 @@
 {% extends "base2.html" %}
 
-{% block title %}View Message{% endblock %}
+{% block title %}All Messages{% endblock %}
 
 {% block content %}
 <div class="container mt-4">
-    <div class="card">
-        <div class="card-header">
-            <h2>Message Details</h2>
-        </div>
-        <div class="card-body">
-            <p><strong>Message:</strong> {{ message.content }}</p>
-            <p><strong>Date:</strong> {{ message.timestamp.strftime('%b %d, %Y %I:%M %p') }}</p>
-        </div>
-        <div class="card-footer text-center">
-            <a href="/" class="btn btn-primary">Back to Home</a>
-        </div>
-    </div>
+    <h2 style="background-color: rgba(231, 229, 229, 0.637); border-radius: 8px; max-width: 300px; color: rgb(0, 0, 0);text-align: center;"> Your Messages</h2>
+    {% if user_messages %}
+        <ul class="list-group">
+            {% for message in user_messages %}
+                <li class="list-group-item">
+                    <strong>{{ message.content }}</strong>
+                    <small class="d-block text-muted">{{ message.timestamp.strftime('%b %d, %Y %I:%M %p') }}</small>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="mt-5">You have no messages at the moment.</p>
+    {% endif %}
+    <a href="/" class="btn btn-primary mt-4">Back to Home</a>
 </div>
 {% endblock %}

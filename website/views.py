@@ -231,15 +231,15 @@ def search_books():
 @views.route('/message/<int:message_id>')
 @login_required
 def view_message(message_id):
-    message = UserMessage.query.filter_by(id=message_id, user_id=current_user.id).first()
-    if not message:
-        flash('Message not found', category='error')
-        return redirect(url_for('views.home'))
+    message = UserMessage.query.filter_by(user_id=current_user.id).order_by(UserMessage.timestamp.desc()).all()
+    # Mark all unread messages as read
+    unread_messages = UserMessage.query.filter_by(user_id=current_user.id, is_read=False).all()
 
-    # Mark the message as read
-    if not message.is_read:
+    for message in unread_messages:
         message.is_read = True
-        db.session.commit()
+
+   
+    db.session.commit()
 
 
     return render_template('view_message.html', message=message)

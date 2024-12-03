@@ -150,7 +150,7 @@ crossorigin="anonymous"
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="messagesDropdown">
                         {% for message in user_messages %}
                             <a class="dropdown-item {{ 'font-weight-bold' if not message.is_read }}" href="/message/{{ message.id }}"
-                            style="font-size: 0.9rem; font-weight: bold; line-height: 1.5; color: #333;">
+                            style="font-size: 0.7rem; font-weight: bold; line-height: 1.5; color: #333;">
                                 {{ message.content[:50] }}... <small>{{ message.timestamp.strftime('%b %d, %Y') }}</small>
                             </a>
                         {% endfor %}
