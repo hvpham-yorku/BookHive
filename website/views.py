@@ -280,6 +280,40 @@ def contact_us():
 
     return render_template('contact_us.html')
 
+@views.route('/profile_information', methods=['GET', 'POST'])
+@login_required
+def profile_information():
+    # Fetch the currently logged-in user
+    user = User2.query.get(current_user.id)
+
+    if request.method == 'POST':
+        # Update only when the "Update Information" button is clicked
+        user.first_name = request.form.get('firstName', user.first_name)
+        user.last_name = request.form.get('lastName', user.last_name)
+        dob = user.date_of_birth = request.form.get('dateOfBirth')
+
+        # Handle date conversion
+        if dob:
+            try:
+                    user.date_of_birth = datetime.strptime(dob, '%Y-%m-%d').date()
+            except ValueError:
+                    flash('Invalid date format for Date of Birth.', category='error')
+                    return redirect(url_for('views.profile_information'))
+        user.address = request.form.get('address', user.address)
+
+        # Commit changes to the database
+        db.session.commit()
+        flash('Profile updated successfully!', category='success')
+        db.session.refresh(user)  # Reload user to ensure updated data is shown
+
+    
+        # Redirect to the same page to refresh 
+        return redirect(url_for('views.profile_information'))
+    
+    # For GET requests, render the page with the current user's inforamtion
+    return render_template('profile_information.html', user=user)
+
+
 
 # For the admin to manage the users 
 @views.route('/manage_users', methods=['GET', 'POST'])

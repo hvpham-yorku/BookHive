@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}
+Profile Information
+{% endblock %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Address</title>
+    <style>
+        body {
+            background-image: url('/static/update5.jpg'); /* Adjust path if needed */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            text-align: center;
+            color: #4c63af;
+        }
+        .profile-item {
+            margin-bottom: 15px;
+        }
+        .label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .value {
+            padding: 8px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .flash {
+            color: green;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        input[type="text"], input[type="submit"] {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        input[type="submit"] {
+            background-color: #4c63af;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        input[type="submit"]:hover {
+            background-color: #3b4f94;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Profile Information </h1>
+
+        <!-- Display profile information -->
+        <div class="profile-item">
+            <div class="label">First Name:</div>
+            <div class="value">{{ user.first_name }}</div>
+        </div>
+
+        <div class="profile-item">
+            <div class="label">Last Name:</div>
+            <div class="value">{{ user.last_name }}</div>
+        </div>
+        <!-- Update Address Form -->
+        <form method="POST" action="{{ url_for('views.profile_information') }}">
+            <div class="profile-item">
+                <div class="label">Address:</div>
+                <input type="text" name="address" value="{{ user.address }}" placeholder="Enter new address">
+            </div>
+            <input type="submit" value="Update Address">
+        </form>
+    </div>
+</body>
+{% endblock %}

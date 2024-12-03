@@ -158,30 +158,33 @@ crossorigin="anonymous"
                 
                 {% if request.path != '/contact-us' %}
                 <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/profile_information' %}active{% endif %}" id="profile_information" href="profile_information">Profile Information</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link {% if request.path == '/contact-us' %}active{% endif %}" id="contact_us" href="/contact-us">Contact Us</a>
                 </li>
+                
                 {% endif %}
                 <li class="nav-item">
                     <a class="nav-link" id="logout" href="/logout">Logout</a>
                 </li>
                 {% endif %}
                 {% else %}
-                  <!-- Links for Non-Authenticated Users -->
-                  {% if request.path != '/login' %}
-                  <li class="nav-item">
-                      <a class="nav-link {% if request.path == '/login' %}active{% endif %}" id="login" href="/login">Login</a>
-                  </li>
-                  {% endif %}
-                  {% if request.path != '/sign-up' %}
-                  <li class="nav-item">
-                      <a class="nav-link {% if request.path == '/sign-up' %}active{% endif %}" id="signUp" href="/sign-up">Sign Up</a>
-                  </li>
-                  {% endif %}
-                  {% endif %}
-              </ul>
-          </div>
-      
-  </nav>
+                <!-- Links for Non-Authenticated Users -->
+                {% if request.path != '/login' %}
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/login' %}active{% endif %}" id="login" href="/login">Login</a>
+                </li>
+                {% endif %}
+                {% if request.path != '/sign-up' %}
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/sign-up' %}active{% endif %}" id="signUp" href="/sign-up">Sign Up</a>
+                </li>
+                {% endif %}
+                {% endif %}
+            </ul>
+        </div>
+</nav>
 
   <style>
     #flash-messages {
