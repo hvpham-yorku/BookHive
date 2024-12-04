@@ -30,7 +30,7 @@
 
 | **Names**   | **Work Since Last Standup**                                              | **Next Commit**          | **Expected Time** | **Issues Faced**                              |
 |-------------|-------------------------------------------------------------------------|--------------------------|-------------------|-----------------------------------------------|
-| **Raha**    | Finalized User Story 3 and started User Story 12 (update book details)  | Complete User Story 12   | 11/24/2024        | DB not reflecting updated book details        |
+| **Raha**    | Finalized User Story 3 and started User Story 22 & 12 (Message notification/update book details)  | Complete User Story 12   | 11/24/2024        | DB not reflecting updated book details        |
 | **Amira**   | Finalized User Story 4 and started User Story 17 (update profile info)  | Complete User Story 17   | 11/24/2024        | Error in saving updated user data             |
 | **Noran**   | Finalized User Story 6 and started User Story 25 (rate borrowed books)  | Complete User Story 25   | 11/24/2024        | Display formatting for ratings inconsistent   |
 | **Sara**    | Finalized User Story 7 and started User Story 21 (recommended books)    | Complete User Story 21   | 11/24/2024        | Algorithm not returning meaningful results    |
@@ -42,7 +42,7 @@
 
 | **Names**   | **Work Since Last Standup**                                              | **Next Commit**          | **Expected Time** | **Issues Faced**                              |
 |-------------|-------------------------------------------------------------------------|--------------------------|-------------------|-----------------------------------------------|
-| **Raha**    | Revised User Story 12, ensuring updated details save correctly          | Finalize Revisions       | 11/26/2024        | Minor UI inconsistency in book edit form      |
+| **Raha**    | Revised User Story 22 & 12, ensuring updated details save correctly        | Finalize Revisions       | 11/26/2024        | Minor UI inconsistency in book edit form      |
 | **Amira**   | Revised User Story 17, validating updated profile details               | Finalize Revisions       | 11/26/2024        | Handling edge cases for empty profile fields  |
 | **Noran**   | Revised User Story 25, verifying rating calculations and display        | Finalize Revisions       | 11/26/2024        | Ratings not rendering correctly on refresh    |
 | **Sara**    | Revised User Story 21, fine-tuning recommendation algorithm             | Finalize Revisions       | 11/26/2024        | Recommendation generation too slow            |
@@ -54,7 +54,7 @@
 
 | **Names**   | **Work Since Last Standup**                                              | **Next Commit**          | **Expected Time** | **Issues Faced**                              |
 |-------------|-------------------------------------------------------------------------|--------------------------|-------------------|-----------------------------------------------|
-| **Raha**    | Completed all revisions and merged User Stories 3, 12                   | Sprint Closure           | 12/03/2024        | None                                          |
+| **Raha**    | Completed all revisions and merged User Stories 3, 22                 | Sprint Closure           | 12/03/2024        | None                                          |
 | **Amira**   | Completed all revisions and merged User Stories 4, 17                   | Sprint Closure           | 12/03/2024        | None                                          |
 | **Noran**   | Completed all revisions and merged User Stories 6, 25                   | Sprint Closure           | 12/03/2024        | None                                          |
 | **Sara**    | Completed all revisions and merged User Stories 7, 21                   | Sprint Closure           | 12/03/2024        | None                                          |
