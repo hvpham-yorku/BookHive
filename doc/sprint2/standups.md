@@ -2,7 +2,7 @@
 
 ---
 
-## [11/18/2024] - Sprint 2 Standup 1 (Starting Sprint 2 User Stories)
+[11/18/2024] - Sprint 2 Standup 1 (Starting Sprint 2 User Stories)
 
 | **Names**   | **Work Since Last Standup**                                              | **Next Commit**          | **Expected Time** | **Issues Faced**                              |
 |-------------|-------------------------------------------------------------------------|--------------------------|-------------------|-----------------------------------------------|
@@ -14,7 +14,7 @@
 
 ---
 
-## [11/20/2024] - Sprint 2 Standup 2 (Testing Phase)
+[11/20/2024] - Sprint 2 Standup 2 (Testing Phase)
 
 | **Names**   | **Work Since Last Standup**                                              | **Next Commit**          | **Expected Time** | **Issues Faced**                              |
 |-------------|-------------------------------------------------------------------------|--------------------------|-------------------|-----------------------------------------------|
@@ -26,7 +26,7 @@
 
 ---
 
-## [11/22/2024] - Sprint 2 Standup 3 (Finalizing and Documentation)
+[11/22/2024] - Sprint 2 Standup 3 (Finalizing and Documentation)
 
 | **Names**   | **Work Since Last Standup**                                              | **Next Commit**          | **Expected Time** | **Issues Faced**                              |
 |-------------|-------------------------------------------------------------------------|--------------------------|-------------------|-----------------------------------------------|
@@ -38,7 +38,7 @@
 
 ---
 
-## [11/24/2024] - Sprint 2 Standup 4 (Revisions and Preparations for Closure)
+[11/24/2024] - Sprint 2 Standup 4 (Revisions and Preparations for Closure)
 
 | **Names**   | **Work Since Last Standup**                                              | **Next Commit**          | **Expected Time** | **Issues Faced**                              |
 |-------------|-------------------------------------------------------------------------|--------------------------|-------------------|-----------------------------------------------|
@@ -50,7 +50,7 @@
 
 ---
 
-## [12/02/2024] - Sprint 2 Final Standup (Closure)
+[12/02/2024] - Sprint 2 Final Standup (Closure)
 
 | **Names**   | **Work Since Last Standup**                                              | **Next Commit**          | **Expected Time** | **Issues Faced**                              |
 |-------------|-------------------------------------------------------------------------|--------------------------|-------------------|-----------------------------------------------|
