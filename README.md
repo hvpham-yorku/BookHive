@@ -1,4 +1,4 @@
-# BookHive: Library Management System
+# BookHive: Library Management System Sprint 2 branch
 
 BookHive is a modern library management system designed to streamline the management of books, authors, and users while providing an intuitive interface for both administrators and readers. The platform serves as a gateway to a world of knowledge and imagination, featuring seamless book management, interactive dashboards, and an elegant design.
  
@@ -64,12 +64,7 @@ Start the Flask development server:
 flask run
 Visit the app at http://127.0.0.1:5000.
 
-## Future Improvements
-Enhanced Search: Implement a robust search functionality for books and authors.
-User Activity Tracking: Allow users to borrow and return books, with history tracking.
-Recommendations: Add personalized book recommendations based on user preferences.
-In-site Messaging features for Admin and regular Users.
-Enabling users to rate books and displaying Book of Month on the Home Page.
+## Future Improvements (Sprint-2)
 Mobile App: Extend the functionality to mobile platforms.
 
 ## Contributing
