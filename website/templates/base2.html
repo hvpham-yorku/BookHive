@@ -95,6 +95,7 @@ Key Features:
       />
       <!-- Bootstrap CSS for responsive and pre-designed components -->
 
+<<<<<<< HEAD
       <link
         rel="stylesheet"
         href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
@@ -235,6 +236,61 @@ Key Features:
   </div>
 
   </nav>
+=======
+    <title>{% block title %}Home{% endblock %}</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-center" id="navbar">
+            <ul class="navbar-nav">
+                {% if current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/' %}active{% endif %}" id="home" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/book-list' %}active{% endif %}" id="availableBooks" href="/book-list">Available Books</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/search-books' %}active{% endif %}" id="searchBooks" href="/search-books">Search Books</a>
+                    </li>
+                    {% if not current_user.is_admin %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/contact-us' %}active{% endif %}" id="contact_us" href="/contact-us">Contact Us</a>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" id="logout" href="/logout">Logout</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/login' %}active{% endif %}" id="login" href="/login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/sign-up' %}active{% endif %}" id="signUp" href="/sign-up">Sign Up</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+    
+  
+  
+  
+<style>
+  #flash-messages {
+    position: fixed;
+    top: 70px; /* Adjust based on navbar height */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1050;
+    width: 50%; /* Adjust width as needed */
+    max-width: 600px;
+    text-align: center;
+}
+>>>>>>> 03edd5c3082998ed70a6ba6db7ebb680f8f8b3f4
 
       <style>
         /* Flash message container styles */

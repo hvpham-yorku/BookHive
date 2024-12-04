@@ -1,0 +1,1 @@
+ALTER TABLE user2 ADD COLUMN is_active BOOLEAN; 

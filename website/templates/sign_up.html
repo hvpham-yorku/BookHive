@@ -8,6 +8,7 @@
     1. Title Block:
     - Sets the page title to "Sign Up".
 
+<<<<<<< HEAD
     2. Content Block:
     - Background Video:
         - Displays a looping background video for a visually engaging signup page.
@@ -15,6 +16,86 @@
         - Collects user information including email, first name, last name, date of birth, address, password, and an optional admin passcode.
         - Includes required fields with proper labels and placeholders for a user-friendly experience.
         - Form submission handled via a POST method.
+=======
+<div class="login-container">
+    <form method="POST">
+        <h2 align="center">Sign Up</h2>
+        
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input 
+            type="email" 
+            class="form-control" 
+            id="email" 
+            name="email" 
+            placeholder="Enter email"
+            required />
+        </div>
+        
+        <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input 
+            type="text" 
+            class="form-control" 
+            id="firstName" 
+            name="firstName" 
+            placeholder="Enter First Name"
+            required />
+        </div>
+
+        <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input 
+            type="text" 
+            class="form-control" 
+            id="lastName"
+            name="lastName" 
+            placeholder="Enter Last Name"
+            required />
+        </div>
+
+        <div class="form-group">
+            <label for="dateOfBirth">Date of Birth</label>
+            <input 
+            type="date" 
+            class="form-control" 
+            id="dateOfBirth" 
+            name="dateOfBirth" 
+            placeholder="Enter date of birth: YYYY-MM-DD"
+            required />
+        </div>
+        <div class="form-group">
+            <label for="address">Address</label>
+            <input 
+            type="text" 
+            class="form-control" 
+            id="address" 
+            name="address" 
+            placeholder="Enter address"
+            required />
+        </div>
+        <div class="form-group">
+            <label for="password1">Password</label>
+            <input 
+            type="password" 
+            class="form-control" 
+            id="password1" 
+            name="password1" 
+            placeholder="Enter password"
+            required />
+        </div>
+        
+        <div class="form-group">
+            <label for="password2">Password (Confirm)</label>
+            <input 
+            type="password" 
+            class="form-control" 
+            id="password2" 
+            name="password2" 
+            placeholder="Confirm password"
+            required />
+        </div>
+>>>>>>> 03edd5c3082998ed70a6ba6db7ebb680f8f8b3f4
 
     Styling:
     - Uses Bootstrap classes for consistent layout and styling of the form and its elements.

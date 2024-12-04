@@ -43,10 +43,15 @@ This Blueprint serves as the backbone of the application, integrating user-facin
 """
 from flask import Blueprint, render_template, request, flash, jsonify
 from flask_login import login_required, current_user
+<<<<<<< HEAD
 from .models import Note, Book, BorrowedBook
+=======
+from .models import Book, BorrowedBook, User2
+>>>>>>> 03edd5c3082998ed70a6ba6db7ebb680f8f8b3f4
 from . import db
 import json
 from flask_mail import Message
+from .models import UserMessage  
 from datetime import datetime, timedelta
 from . import mail
 from flask import Blueprint, render_template, redirect, url_for
@@ -337,22 +342,36 @@ def borrow_book(book_id):
     )
     book.remaining_copies -= 1
     db.session.add(new_borrow)
+<<<<<<< HEAD
      # Create a notification message for the Messages Tab
+=======
+
+    # Create a notification message for the Messages Tab
+>>>>>>> 03edd5c3082998ed70a6ba6db7ebb680f8f8b3f4
     message_content = f'You have successfully borrowed "{book.name}" by {book.author}. It is due on {due_date.strftime("%b %d, %Y")}.'
     new_message = UserMessage(
     user_id=current_user.id,
     content=message_content,
+<<<<<<< HEAD
     )
     db.session.add(new_message)
 
     # Commit changes to the database
     db.session.commit()
+=======
+)
+    db.session.add(new_message)
+
+    # Commit changes to the database
+>>>>>>> 03edd5c3082998ed70a6ba6db7ebb680f8f8b3f4
     db.session.commit()
 
     # Send Loan Receipt Email
     send_loan_receipt(current_user.email, book.name, book.author, new_borrow.borrowed_date, new_borrow.due_date)
 
+    # Flash success message
     flash(f'You have successfully borrowed "{book.name}". A loan receipt has been emailed to you.', category='success')
+
     return redirect(url_for('views.book_list'))
 
 
@@ -523,6 +542,7 @@ def edit_book(book_id):
     # Render the edit page with the book's current details
     return render_template('edit_book.html', book=book)
 
+<<<<<<< HEAD
 """
 The `search_books` route allows users to search for books in the library based on the book's name, author, or genre.
 
@@ -553,6 +573,8 @@ Returns:
 
 This route provides a simple search functionality for users to find books based on their preferences.
 """
+=======
+>>>>>>> 03edd5c3082998ed70a6ba6db7ebb680f8f8b3f4
 @views.route('/search-books', methods=['GET'])
 @login_required
 def search_books():
@@ -570,6 +592,7 @@ def search_books():
 
     # Pass the books and query back to the template
     return render_template('search_books.html', results=books, query=query)
+<<<<<<< HEAD
 """
 The `contact_us` route allows users to submit queries or feedback to the library management system.
 
@@ -601,6 +624,34 @@ Returns:
 
 This route provides users with a way to directly contact the library management system for support, inquiries, or feedback.
 """
+=======
+
+@views.route('/message/<int:message_id>')
+@login_required
+def view_message(message_id):
+    message = UserMessage.query.filter_by(id=message_id, user_id=current_user.id).first()
+    if not message:
+        flash('Message not found', category='error')
+        return redirect(url_for('views.home'))
+
+    # Mark the message as read
+    if not message.is_read:
+        message.is_read = True
+        db.session.commit()
+
+
+    return render_template('view_message.html', message=message)
+
+@views.context_processor
+def inject_messages():
+    if current_user.is_authenticated:
+        user_messages = UserMessage.query.filter_by(user_id=current_user.id).order_by(UserMessage.timestamp.desc()).all()
+        unread_count = UserMessage.query.filter_by(user_id=current_user.id, is_read=False).count()
+
+        return {'user_messages': user_messages, 'unread_count': unread_count}
+    return {}
+
+>>>>>>> 03edd5c3082998ed70a6ba6db7ebb680f8f8b3f4
 
 @views.route('/contact-us', methods=['GET', 'POST'])
 @login_required
@@ -628,6 +679,7 @@ def contact_us():
 
     return render_template('contact_us.html')
 
+<<<<<<< HEAD
 """
 The `my_books` route displays a categorized list of books borrowed by the current user, including books currently in progress, overdue books, and past (returned) books.
 
@@ -1256,6 +1308,8 @@ Returns:
 
 This route provides users with an intuitive interface to manage their personal information securely and efficiently.
 """
+=======
+>>>>>>> 03edd5c3082998ed70a6ba6db7ebb680f8f8b3f4
 @views.route('/profile_information', methods=['GET', 'POST'])
 @login_required
 def profile_information():
@@ -1284,13 +1338,18 @@ def profile_information():
 
     
         # Redirect to the same page to refresh 
+<<<<<<< HEAD
         return redirect(url_for('views.home'))
+=======
+        return redirect(url_for('views.profile_information'))
+>>>>>>> 03edd5c3082998ed70a6ba6db7ebb680f8f8b3f4
     
     # For GET requests, render the page with the current user's inforamtion
     return render_template('profile_information.html', user=user)
 
 
 
+<<<<<<< HEAD
 """
 The `manage_users` route allows admin users to view and manage all non-admin users in the system.
 
@@ -1321,6 +1380,9 @@ Returns:
 
 This route provides a secure and centralized interface for admin users to monitor and manage regular user accounts.
 """
+=======
+# For the admin to manage the users 
+>>>>>>> 03edd5c3082998ed70a6ba6db7ebb680f8f8b3f4
 @views.route('/manage_users', methods=['GET', 'POST'])
 @login_required
 def manage_users():
@@ -1333,6 +1395,7 @@ def manage_users():
     return render_template('manage_users.html', users=users)
 
 
+<<<<<<< HEAD
 """
 The `toggle_user` route allows admin users to activate or deactivate user accounts in the system.
 
@@ -1366,6 +1429,8 @@ Returns:
 
 This route provides admin users with a straightforward mechanism to manage user access to the system by toggling their activation status.
 """
+=======
+>>>>>>> 03edd5c3082998ed70a6ba6db7ebb680f8f8b3f4
 @views.route('/toggle_user/<int:user_id>', methods=['POST'])
 @login_required
 def toggle_user(user_id):
@@ -1385,3 +1450,7 @@ def toggle_user(user_id):
     flash(f"User {user.first_name} has been {status}.", category="success")
 
     return redirect(url_for('views.manage_users'))
+<<<<<<< HEAD
+=======
+
+>>>>>>> 03edd5c3082998ed70a6ba6db7ebb680f8f8b3f4

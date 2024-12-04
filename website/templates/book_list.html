@@ -1,8 +1,27 @@
     <!--
 File: book_list.html
 
+<<<<<<< HEAD
 Purpose:
 This HTML template is used to display a list of available books with filtering and borrowing options. It allows both regular users and admins to interact with the book list, applying filters and performing actions like borrowing, editing, or deleting books.
+=======
+{% block content %}
+<style>
+    /* Add padding to push the content below the fixed navbar */
+    .content-wrapper {
+        padding-top: 70px; /* Adjust based on the height of your navbar */
+    }
+</style>
+<div class="content-wrapper">
+    <header>
+        <div class="content-wrapper">
+            <h1>Available Books</h1>
+            <h2>Browse and Borrow Your Favorite Books</h2>
+            <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+            <link rel="stylesheet" href="styles.css">
+        </div>
+    </header>
+>>>>>>> 03edd5c3082998ed70a6ba6db7ebb680f8f8b3f4
 
 Features:
 1. Filters:

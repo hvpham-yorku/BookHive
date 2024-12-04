@@ -31,7 +31,11 @@ This class organizes all authentication-related functionality into a dedicated B
 
 
 from flask import Blueprint, render_template, request, flash, redirect, url_for
+<<<<<<< HEAD
 from .models import User2, UserMessage
+=======
+from .models import User2
+>>>>>>> 03edd5c3082998ed70a6ba6db7ebb680f8f8b3f4
 from flask_mail import Message, Mail
 from itsdangerous import URLSafeTimedSerializer
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -44,6 +48,7 @@ auth = Blueprint('auth', __name__)
 s = URLSafeTimedSerializer('nono')  
 mail = Mail()
 
+mail = Mail()
 
 """
 The `login` route handles user login functionality, allowing registered users to authenticate and access the system.

@@ -40,6 +40,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_mail import Mail  # Import Flask-Mail
 from os import path, getenv
+from flask_migrate import Migrate
 
 db = SQLAlchemy()
 DB_NAME = "database.db"
@@ -48,6 +49,7 @@ mail = Mail()  # Initialize Flask-Mail
 
 def create_app():
     app = Flask(__name__)
+    migrate = Migrate()
 
     
     # App configurations
@@ -66,7 +68,7 @@ def create_app():
     # Initialize extensions
     db.init_app(app)
     mail.init_app(app)  # Initialize Flask-Mail with the app
-
+    migrate.init_app(app, db)
     # Import and register blueprints
     from .views import views
     from .auth import auth

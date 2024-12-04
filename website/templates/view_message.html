@@ -1,3 +1,4 @@
+<<<<<<< HEAD
     <!-- 
     All Messages Page Template.
 
@@ -53,3 +54,17 @@
         <a href="/" class="btn btn-primary mt-4">Back to Home</a>
     </div>
     {% endblock %}
+=======
+{% extends "base.html" %}
+
+{% block title %}View Message{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Message Details</h2>
+    <p><strong>Message:</strong> {{ message.content }}</p>
+    <p><strong>Date:</strong> {{ message.timestamp.strftime('%b %d, %Y %I:%M %p') }}</p>
+    <a href="/" class="btn btn-primary">Back to Home</a>
+</div>
+{% endblock %}
+>>>>>>> 03edd5c3082998ed70a6ba6db7ebb680f8f8b3f4
