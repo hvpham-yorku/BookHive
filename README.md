@@ -86,5 +86,8 @@ Contributions are welcome! Follow these steps to contribute:
 ## Contact
 For questions or feedback, please reach out via the Contact Us page on BookHive or send an email to librarymanagementsystem59@gmail.com.
 
+## Discord Link:
+https://discord.gg/JGZXMhrA
+
 
 
