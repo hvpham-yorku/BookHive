@@ -1,5 +1,6 @@
-# Sprint 2 is located in main-2 branch
+# Sprint 2 is located in main2 branch
 # Sprint 0 and Sprint 1 are located in sprint-1 branch
+# All members have their user stories pushed to seperate branches
 # BookHive: Library Management System
 
 BookHive is a modern library management system designed to streamline the management of books, authors, and users while providing an intuitive interface for both administrators and readers. The platform serves as a gateway to a world of knowledge and imagination, featuring seamless book management, interactive dashboards, and an elegant design.
