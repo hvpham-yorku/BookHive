@@ -4,7 +4,7 @@ The `__init__.py` file initializes and configures the Flask application, setting
 Key Components:
 1. Application Initialization:
    - The `create_app` function initializes the Flask application and configures settings such as the secret key and database URI.
-
+ 
 2. Configurations:
    - `SECRET_KEY`: Used for securely signing session data.
    - `SQLALCHEMY_DATABASE_URI`: Specifies the SQLite database file (`database.db`).
