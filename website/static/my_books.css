@@ -1,166 +1,201 @@
-/* Table Styles */
-.table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-}
+    /*
+    Stylesheet Documentation:
 
-.table th, .table td {
-    border: 1px solid #ddd;
-    padding: 10px;
-    text-align: center;
-}
+    1. Table Styles:
+    - `.table`: Defines basic table structure, with full width, collapsible borders, and spacing.
+    - `th, td`: Ensures consistent padding, border styling, and text alignment.
+    - `th`: Highlights table headers with a light background and bold text.
 
-.table th {
-    background-color: #f4f4f4;
-    font-weight: bold;
-}
+    2. Button Styles:
+    - `.btn`: Ensures consistent size, alignment, and style for buttons.
+    - `.btn i`: Adds spacing for icons inside buttons.
+    - `.btn-primary`: Styled for primary actions with hover effects.
+    - `.btn-danger`: Styled for destructive actions with hover effects.
 
-/* Ensure Consistent Button Size */
-.btn {
-    display: inline-block; /* Inline-block to apply consistent dimensions */
-    width: 160px; /* Fixed width for all buttons */
-    height: 45px; /* Fixed height for all buttons */
-    line-height: 45px; /* Align text vertically in the middle */
-    text-align: center; /* Center align text horizontally */
-    vertical-align: middle; /* Align the buttons properly in table cells */
-    font-size: 14px; /* Font size consistency */
-    font-weight: bold; /* Bold text for visibility */
-    border-radius: 5px; /* Rounded edges for all buttons */
-    cursor: pointer; /* Pointer cursor for better UX */
-    margin: 5px; /* Spacing between buttons */
-    padding: 0; /* Remove padding to prevent size inconsistencies */
-}
+    3. Background Video:
+    - `.background-video`: Configures full-screen video background with slight transparency for readability.
 
-/* Icons inside buttons */
-.btn i {
-    margin-right: 5px; /* Space between icon and text */
-    vertical-align: middle;
-}
+    4. Content Wrapper:
+    - `.content-wrapper`: Creates a central content block with padding, rounded corners, and shadow.
 
-/* Primary Button */
-.btn-primary {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    text-decoration: none; /* Remove underline for anchor links */
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-}
+    5. Modal Styles:
+    - `.modal`: Defines structure and background overlay for modals.
+    - `.modal-content`: Centralizes and styles modal content with a shadow and rounded corners.
 
-.btn-primary:hover {
-    background-color: #0056b3;
-}
+    6. Star Rating:
+    - `.star-rating`: Flexible layout for rating stars with hover effects.
+    - `.star`: Defines individual star styling and hover states.
+    - `.rating-popup`: Full-screen overlay for rating modals.
+    - `.rating-modal`: Central modal for star ratings.
+    - `.star-rating input`: Hides radio inputs while still making them functional.
+    - `.star-rating label`: Styles and colors stars based on selection or hover state.
 
-/* Danger Button */
-.btn-danger {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-}
+    Overall:
+    - This stylesheet emphasizes responsive design, consistent button styling, and enhanced interactivity with modals and star ratings.*/
 
-.btn-danger:hover {
-    background-color: #bd2130;
-}
+    /* Table Styles */
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
 
-/* Video Styling */
-.background-video {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: -1;
-    opacity: 0.5; /* Adjust transparency for better readability */
-}
+    .table th, .table td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: center;
+    }
 
-/* Content Wrapper Styling */
-.content-wrapper {
-    position: relative;
-    z-index: 1;
-    background-color: rgba(255, 255, 255, 0.9); /* Add a semi-transparent background */
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-}
+    .table th {
+        background-color: #f4f4f4;
+        font-weight: bold;
+    }
 
-/* Modal Styles */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 10;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4);
-}
+    /* Ensure Consistent Button Size */
+    .btn {
+        display: inline-block; /* Inline-block to apply consistent dimensions */
+        width: 160px; /* Fixed width for all buttons */
+        height: 45px; /* Fixed height for all buttons */
+        line-height: 45px; /* Align text vertically in the middle */
+        text-align: center; /* Center align text horizontally */
+        vertical-align: middle; /* Align the buttons properly in table cells */
+        font-size: 14px; /* Font size consistency */
+        font-weight: bold; /* Bold text for visibility */
+        border-radius: 5px; /* Rounded edges for all buttons */
+        cursor: pointer; /* Pointer cursor for better UX */
+        margin: 5px; /* Spacing between buttons */
+        padding: 0; /* Remove padding to prevent size inconsistencies */
+    }
 
-.modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 50%;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    text-align: center;
-}
+    /* Icons inside buttons */
+    .btn i {
+        margin-right: 5px; /* Space between icon and text */
+        vertical-align: middle;
+    }
 
-.star-rating {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin: 20px 0;
-}
+    /* Primary Button */
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        text-decoration: none; /* Remove underline for anchor links */
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-.star {
-    font-size: 24px;
-    color: #ddd;
-    cursor: pointer;
-}
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
 
-.star:hover,
-.star.selected {
-    color: gold;
-}
-.rating-popup {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
+    /* Danger Button */
+    .btn-danger {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-.rating-modal {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-}
+    .btn-danger:hover {
+        background-color: #bd2130;
+    }
 
-.star-rating label {
-    font-size: 2rem;
-    color: gold;
-    cursor: pointer;
-}
+    /* Video Styling */
+    .background-video {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -1;
+        opacity: 0.5; /* Adjust transparency for better readability */
+    }
 
-.star-rating input {
-    display: none;
-}
+    /* Content Wrapper Styling */
+    .content-wrapper {
+        position: relative;
+        z-index: 1;
+        background-color: rgba(255, 255, 255, 0.9); /* Add a semi-transparent background */
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
 
-.star-rating input:checked ~ label {
-    color: orange;
-}
+    /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 10;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 50%;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        text-align: center;
+    }
+
+    .star-rating {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin: 20px 0;
+    }
+
+    .star {
+        font-size: 24px;
+        color: #ddd;
+        cursor: pointer;
+    }
+
+    .star:hover,
+    .star.selected {
+        color: gold;
+    }
+    .rating-popup {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .rating-modal {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    .star-rating label {
+        font-size: 2rem;
+        color: gold;
+        cursor: pointer;
+    }
+
+    .star-rating input {
+        display: none;
+    }
+
+    .star-rating input:checked ~ label {
+        color: orange;
+    }
 

@@ -1,93 +1,121 @@
-{% extends "base2.html" %}
+    <!-- 
+    Search Books Page Template.
 
-{% block title %}
-Search Books
-{% endblock %}
+    Purpose:
+    - This template extends "base2.html" and allows users to search for books based on name, author, or genre.
 
-{% block content %}
+    Structure:
+    1. Title Block:
+    - Sets the page title to "Search Books".
 
-<div class="container text-center mt-4">
-    <!-- Title Section with Transparent Background -->
-    <div class="p-4 mb-4 mx-auto text-center" style="background-color: rgba(240, 240, 240, 0.8); border-radius: 8px; max-width: 600px;">
-        <h1 class="font-weight-bold">Search Books</h1>
-        <p class="text-muted">Find your favorite books by name, author, or genre!</p>
-    </div>
+    2. Content Block:
+    - Title Section:
+        - Displays the page title with a brief description, styled with a semi-transparent background.
+    - Search Form:
+        - Provides an input field and a search button for submitting search queries.
+    - Results Section:
+        - Dynamically displays the search results, showing book details like name, author, genre, and availability.
+        - Includes action buttons for editing, deleting (admin), or borrowing books.
+        - Displays a message if no results are found.
 
-    <!-- Search Form -->
-    <div class="search-form">
-        <form method="GET" action="/search-books" class="d-flex flex-column align-items-center">
-            <input
-                type="text"
-                name="query"
-                class="form-control mb-3"
-                style="width: 50%;"
-                placeholder="Search by book name, author, or genre"
-                value="{{ query | default('') }}"
-                required
-            />
-            <button
-                type="submit"
-                class="btn btn-primary"
-                style="width: 50%; height: 40px; text-align: top; line-height: 0;"
-            >
-                Search
-            </button>
-        </form>
-    </div>
+    Additional Features:
+    - Results section styles use Bootstrap classes for a card layout and responsive design.
+    - "No books found" message is styled to be visually distinct.
 
-    <!-- Search Results -->
-    {% if results %}
-    <div class="results-section mt-5">
-        <h3 style="color: #e7e7e7c7;">Search Results</h3> <!-- Set the color to a visible shade like #333 (dark gray) -->
-        <div class="card-deck">
-            {% for book in results %}
-            <div class="card mb-4 shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">{{ book.name }}</h5>
-                    <p class="card-text">
-                        <strong>Author:</strong> {{ book.author }}<br>
-                        <strong>Genre:</strong> {{ book.genre }}<br>
-                        <strong>Copies Available:</strong> {{ book.remaining_copies }}
-                    </p>
-                    <div class="actions">
-                        {% if current_user.is_admin %}
-                        <a href="/edit-book/{{ book.id }}" class="btn btn-warning btn-sm">Edit</a>
-                        <form action="{{ url_for('views.delete_book', book_id=book.id) }}" method="POST" style="display: inline;">
-                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                        </form>
-                        {% else %}
-                        {% if book.remaining_copies > 0 %}
-                        <form action="{{ url_for('views.borrow_book', book_id=book.id) }}" method="POST" style="display: inline;">
-                            <button type="submit" class="btn btn-success btn-sm">Borrow</button>
-                        </form>
-                        {% else %}
-                        <button class="btn btn-secondary btn-sm" disabled>Out of Stock</button>
-                        {% endif %}
-                        {% endif %}
+    Styling:
+    - Custom styles for the "No books found" message to enhance visibility and align with Bootstrap's danger color scheme.
+    -->
+
+    {% extends "base2.html" %}
+
+    {% block title %}
+    Search Books
+    {% endblock %}
+
+    {% block content %}
+
+    <div class="container text-center mt-4">
+        <!-- Title Section with Transparent Background -->
+        <div class="p-4 mb-4 mx-auto text-center" style="background-color: rgba(240, 240, 240, 0.8); border-radius: 8px; max-width: 600px;">
+            <h1 class="font-weight-bold">Search Books</h1>
+            <p class="text-muted">Find your favorite books by name, author, or genre!</p>
+        </div>
+
+        <!-- Search Form -->
+        <div class="search-form">
+            <form method="GET" action="/search-books" class="d-flex flex-column align-items-center">
+                <input
+                    type="text"
+                    name="query"
+                    class="form-control mb-3"
+                    style="width: 50%;"
+                    placeholder="Search by book name, author, or genre"
+                    value="{{ query | default('') }}"
+                    required
+                />
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                    style="width: 50%; height: 40px; text-align: top; line-height: 0;"
+                >
+                    Search
+                </button>
+            </form>
+        </div>
+
+        <!-- Search Results -->
+        {% if results %}
+        <div class="results-section mt-5">
+            <h3 style="color: #e7e7e7c7;">Search Results</h3> <!-- Set the color to a visible shade like #333 (dark gray) -->
+            <div class="card-deck">
+                {% for book in results %}
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ book.name }}</h5>
+                        <p class="card-text">
+                            <strong>Author:</strong> {{ book.author }}<br>
+                            <strong>Genre:</strong> {{ book.genre }}<br>
+                            <strong>Copies Available:</strong> {{ book.remaining_copies }}
+                        </p>
+                        <div class="actions">
+                            {% if current_user.is_admin %}
+                            <a href="/edit-book/{{ book.id }}" class="btn btn-warning btn-sm">Edit</a>
+                            <form action="{{ url_for('views.delete_book', book_id=book.id) }}" method="POST" style="display: inline;">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                            {% else %}
+                            {% if book.remaining_copies > 0 %}
+                            <form action="{{ url_for('views.borrow_book', book_id=book.id) }}" method="POST" style="display: inline;">
+                                <button type="submit" class="btn btn-success btn-sm">Borrow</button>
+                            </form>
+                            {% else %}
+                            <button class="btn btn-secondary btn-sm" disabled>Out of Stock</button>
+                            {% endif %}
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
+        {% else %}
+        <p class="no-results mt-5">No books found. Try a different search term.</p>
+        {% endif %}
     </div>
-    {% else %}
-    <p class="no-results mt-5">No books found. Try a different search term.</p>
-    {% endif %}
-</div>
 
-<style>
-    /* Style for "No books found" message */
-    .no-results {
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: #d9534f; /* Bootstrap danger color for emphasis */
-        background-color: #f8d7da; /* Light red background for visibility */
-        border: 1px solid #f5c6cb; /* Border matching the theme */
-        border-radius: 5px;
-        text-align: center;
-        width: 50%;
-        margin: 20px auto; /* Center horizontally */
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-    </style>
-{% endblock %}
+    <style>
+        /* Style for "No books found" message */
+        .no-results {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #d9534f; /* Bootstrap danger color for emphasis */
+            background-color: #f8d7da; /* Light red background for visibility */
+            border: 1px solid #f5c6cb; /* Border matching the theme */
+            border-radius: 5px;
+            text-align: center;
+            width: 50%;
+            margin: 20px auto; /* Center horizontally */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        </style>
+    {% endblock %}

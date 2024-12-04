@@ -1,88 +1,153 @@
-{% extends "base.html" %}
+    <!-- 
+File: reports.html
 
-{% block content %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/reports.css') }}">
-<video class="background-video" src="{{ url_for('static', filename='v12.mp4') }}" muted loop autoplay>
-    <!-- Fallback message for browsers that don't support video -->
-    Your browser does not support the video tag.
-</video>
-<h2>Library Usage Reports</h2>
+Purpose:
+This page provides detailed library usage reports, including:
+1. A table of the most borrowed books, displaying book names and their borrow counts.
+2. A count of active users in the library system.
+3. A line chart visualizing borrowing trends over the past 30 days.
 
-<h3>Most Borrowed Books</h3>
-<table id="most-borrowed-books-table">
-    <thead>
-        <tr>
-            <th>Book Name</th>
-            <th>Borrow Count</th>
-        </tr>
-    </thead>
-    <tbody>
-        <!-- Data will be dynamically added here -->
-    </tbody>
-</table>
+Features:
+1. Background Video:
+   - A looping video enhances visual appeal, setting the tone for the reports page.
 
-<h3>Active Users</h3>
-<p id="active-users"></p>
+2. Dynamic Data Display:
+   - Fetches data from the `/reports/data` endpoint and dynamically updates:
+     - The "Most Borrowed Books" table.
+     - The count of active users.
+     - A line chart of borrowing trends.
 
-<h3>Borrowing Trends (Last 30 Days)</h3>
-<div class="chart-container">
-    <canvas id="borrowing-trends-chart"></canvas>
-</div>
+3. Interactive Chart:
+   - Uses Chart.js to render an interactive and responsive line chart, showcasing borrowing trends over the last month.
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        fetch('/reports/data')
-            .then(response => response.json())
-            .then(data => {
-                // Populate Most Borrowed Books table
-                const mostBorrowedTableBody = document.getElementById('most-borrowed-books-table').querySelector('tbody');
-                mostBorrowedTableBody.innerHTML = '';
-                data.most_borrowed_books.forEach(book => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `<td>${book.name}</td><td>${book.count}</td>`;
-                    mostBorrowedTableBody.appendChild(row);
-                });
- 
-                // Display Active Users
-                document.getElementById('active-users').textContent = `Total Active Users: ${data.active_users}`;
+Implementation Details:
+- `fetch` API retrieves data from the server and updates DOM elements dynamically.
+- Chart.js creates a visually appealing and user-friendly borrowing trends chart.
+- Data visualization enhances insights into library activity.
 
-                // Render Borrowing Trends Chart
-                const ctx = document.getElementById('borrowing-trends-chart').getContext('2d');
-                new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: data.borrowing_trends.map(trend => trend.date),
-                        datasets: [{
-                            label: 'Books Borrowed',
-                            data: data.borrowing_trends.map(trend => trend.count),
-                            borderColor: '#4CAF50',
-                            fill: false
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            x: {
-                                title: {
-                                    display: true,
-                                    text: 'Date'
-                                }
-                            },
-                            y: {
-                                title: {
-                                    display: true,
-                                    text: 'Borrow Count'
+Styling:
+- A responsive and modern design using CSS and `reports.css`.
+- Background video and animations enhance the user experience.
+
+Usage:
+- Suitable for library admins to monitor book popularity, active users, and borrowing patterns.
+-->
+
+    {% extends "base.html" %}
+
+    {% block content %}
+    <!--Style and Background Video-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/reports.css') }}">
+    <video class="background-video" src="{{ url_for('static', filename='v12.mp4') }}" muted loop autoplay>
+        <!-- Fallback message for browsers that don't support video -->
+        Your browser does not support the video tag.
+    </video>
+    <!--Heading-->
+    <h2>Library Usage Reports</h2>
+    <!--Sub heading-->
+    <h3>Most Borrowed Books</h3>
+    <!-- This table displays the most borrowed books in the library system. 
+    - The header includes columns for the book name and borrow count.
+    - Data is dynamically added to the table's body based on the library's borrowing statistics. -->
+
+    <table id="most-borrowed-books-table">
+        <thead>
+            <tr>
+                <th>Book Name</th>
+                <th>Borrow Count</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data will be dynamically added here -->
+        </tbody>
+    </table>
+
+    <!-- This section displays the count of currently active users.
+    - The heading "Active Users" provides context for the displayed data.
+    - A paragraph element with the ID "active-users" will dynamically show the number of active users. -->
+
+    <h3>Active Users</h3>
+    <p id="active-users"></p>
+
+    <!-- This section displays borrowing trends over the last 30 days using a chart.
+    - The heading indicates the purpose of the chart.
+    - A canvas element is used for rendering the chart dynamically within a container. -->
+    <h3>Borrowing Trends (Last 30 Days)</h3>
+    <div class="chart-container">
+        <canvas id="borrowing-trends-chart"></canvas>
+    </div>
+
+    <!-- This script includes the Chart.js library from a CDN.
+    - Chart.js is used for creating interactive and visually appealing charts.
+    - Including this script enables the use of Chart.js functionalities within the page. -->
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- 
+    This script dynamically fetches and displays report data, including:
+    - Populating the "Most Borrowed Books" table with book names and borrow counts.
+    - Displaying the total number of active users in the library system.
+    - Rendering a line chart to show borrowing trends over the past 30 days using Chart.js.
+
+    Key Functionality:
+    - Fetches data from the `/reports/data` endpoint.
+    - Updates the DOM elements for table and text content.
+    - Utilizes Chart.js to render an interactive chart for borrowing trends.
+    -->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('/reports/data')
+                .then(response => response.json())
+                .then(data => {
+                    // Populate Most Borrowed Books table
+                    const mostBorrowedTableBody = document.getElementById('most-borrowed-books-table').querySelector('tbody');
+                    mostBorrowedTableBody.innerHTML = '';
+                    data.most_borrowed_books.forEach(book => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `<td>${book.name}</td><td>${book.count}</td>`;
+                        mostBorrowedTableBody.appendChild(row);
+                    });
+    
+                    // Display Active Users
+                    document.getElementById('active-users').textContent = `Total Active Users: ${data.active_users}`;
+
+                    // Render Borrowing Trends Chart
+                    const ctx = document.getElementById('borrowing-trends-chart').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: data.borrowing_trends.map(trend => trend.date),
+                            datasets: [{
+                                label: 'Books Borrowed',
+                                data: data.borrowing_trends.map(trend => trend.count),
+                                borderColor: '#4CAF50',
+                                fill: false
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                x: {
+                                    title: {
+                                        display: true,
+                                        text: 'Date'
+                                    }
+                                },
+                                y: {
+                                    title: {
+                                        display: true,
+                                        text: 'Borrow Count'
+                                    }
                                 }
                             }
                         }
-                    }
-                });
-            })
-            .catch(error => console.error('Error fetching report data:', error));
-    });
-</script>
+                    });
+                })
+                .catch(error => console.error('Error fetching report data:', error));
+        });
+    </script>
 
 
-{% endblock %}
+    {% endblock %}

@@ -1,0 +1,158 @@
+    <!-- 
+File: manage_users.html
+
+Purpose:
+This template facilitates the management of user accounts for administrators in the BookHives Library Management System. Administrators can view users and toggle their account status between active and inactive.
+
+Features:
+1. Video Background:
+   - Adds a dynamic video as the page's background for an engaging interface.
+
+2. User Table:
+   - Displays user information, including name, email, and current activation status.
+   - Provides options to activate or deactivate user accounts.
+
+3. Action Buttons:
+   - "Activate" and "Deactivate" buttons are conditionally enabled/disabled based on the user's current status.
+   - Buttons are styled for visual clarity and user interactivity.
+
+Styling:
+- Modern and clean table design with hover effects for better usability.
+- Custom button styles for activation and deactivation actions.
+- Uses responsive design principles for wider compatibility.
+
+Usage:
+- Designed for the "Manage Users" feature of the admin dashboard.
+- Enables administrators to efficiently toggle user statuses through an intuitive interface.
+-->
+
+    {% extends "base.html" %}
+
+    {% block title %}
+    Manage Users Account
+    {% endblock %}
+
+    {% block content %}
+    <video class="background-video" src="{{ url_for('static', filename='v11.mp4') }}" autoplay muted loop></video>
+    <h1 style="text-align: center; color: white (255, 255, 255);">Manage Users</h1> 
+    <style>
+        body {
+                background-size: cover; /* Ensure the image covers the entire page */
+                background-position: center; /* Centers the image */
+                background-attachment: fixed; /* Keeps the background image fixed during scrolling */
+            }
+        /* Table styling */
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            font-family: Arial, sans-serif;
+            background-color: #e8e2e2;
+            box-shadow: 0 4px 8px rgba(227, 221, 221, 0.1);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border: 1px solid #141414;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+            text-transform: uppercase;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #eaf1f5;
+        }
+
+        /* Button styling */
+        button {
+            padding: 8px 15px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Disabled button styling */
+        button:disabled {
+            background-color: #dcdcdc; /* Grey */
+            color: #a9a9a9; /* Light grey text */
+            cursor: not-allowed;
+        }
+
+        /* Activate button */
+        button.activate {
+            background-color: #4CAF50; /* Green */
+            color: white;
+        }
+
+        button.activate:disabled {
+            background-color: #dcdcdc; /* Grey when disabled */
+        }
+
+        button.activate:hover:not(:disabled) {
+            background-color: #45a049; /* Darker green */
+        }
+
+        /* Deactivate button */
+        button.deactivate {
+            background-color: #f44336; /* Red */
+            color: white;
+        }
+
+        button.deactivate:disabled {
+            background-color: #dcdcdc; /* Grey when disabled */
+        }
+
+        button.deactivate:hover:not(:disabled) {
+            background-color: #d32f2f; /* Darker red */
+        }
+    </style>
+
+    <h1 style="text-align: center; color: white;">Manage Users</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <!-- Table cells displaying the user's first name, email, and activation status. -->
+                <td>{{ user.first_name }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ "Active" if user.is_active else "Inactive" }}</td>
+                <td>
+                    <!-- Activate button -->
+                    <form action="{{ url_for('views.toggle_user', user_id=user.id) }}" method="POST" style="display: inline;">
+                        <button type="submit" 
+                                class="activate" 
+                                {% if user.is_active %} disabled {% endif %}>
+                            Activate
+                        </button>
+                    </form>
+                    <!-- Deactivate button -->
+                    <form action="{{ url_for('views.toggle_user', user_id=user.id) }}" method="POST" style="display: inline;">
+                        <button type="submit" 
+                                class="deactivate" 
+                                {% if not user.is_active %} disabled {% endif %}>
+                            Deactivate
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endblock %}

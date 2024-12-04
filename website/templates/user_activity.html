@@ -1,121 +1,150 @@
-{% extends "base2.html" %}
+    <!-- 
+    User Activity Page Template.
 
-{% block content %}
-<style>
-    /* Remove background */
-    body {
-        background: none !important;
-    }
- 
-    /* Card-like structure for the sections */
-    .card {
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 20px;
-        margin-bottom: 20px;
-    }
+    Purpose:
+    - Displays the borrowing activity of a specific user categorized into "In Progress Books," "Past Books," and "Overdue Books."
 
-    .card-header {
-        font-size: 18px;
-        font-weight: bold;
-        background-color: #f8f9fa;
-        padding: 10px;
-    }
+    Structure:
+    1. Content Block:
+    - Styled using a card-like layout to separate different sections for clarity.
+    - Includes three tables:
+        - In Progress Books: Shows books currently borrowed by the user with due dates.
+        - Past Books: Lists books the user has returned, including return dates.
+        - Overdue Books: Displays books with overdue fines.
 
-    .table th, .table td {
-        text-align: center;
-        vertical-align: middle;
-    }
+    2. Styling:
+    - Applies a neutral background with none style to blend with the base layout.
+    - Uses a card layout for sections with borders, padding, and rounded corners.
+    - Enhances table readability with alternating row colors for striped appearance.
 
-    .table-container {
-        margin-bottom: 20px;
-    }
+    3. Features:
+    - User-friendly and responsive interface with clear categorization.
+    - Data displayed in tables with aligned columns for easy scanning.
+    - Fine amounts calculated for overdue books and displayed in the "Overdue Books" section.
 
-    .table-striped tbody tr:nth-of-type(odd) {
-        background-color: #f9f9f9;
-    }
+    Additional Notes:
+    - Dynamic content injected from the backend using Jinja2 template tags.
+    - Ensures consistent presentation and improved user experience by grouping similar data together.
+    -->
+
+    {% extends "base2.html" %}
+
+    {% block content %}
+    <style>
+        /* Remove background */
+        body {
+            background: none !important;
+        }
     
-</style>
+        /* Card-like structure for the sections */
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
 
-<div class="content-wrapper">
-    <h1>User Activity</h1>
-    <h2>Below you can see the user's activity.</h2>
+        .card-header {
+            font-size: 18px;
+            font-weight: bold;
+            background-color: #f8f9fa;
+            padding: 10px;
+        }
 
-    <!-- In Progress Books Section -->
-    <div class="card">
-        <div class="card-header">
-            In Progress Books
-        </div>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Book Title</th>
-                    <th>Author</th>
-                    <th>Due Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for book in in_progress_books %}
+        .table th, .table td {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .table-container {
+            margin-bottom: 20px;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #f9f9f9;
+        }
+        
+    </style>
+
+    <div class="content-wrapper">
+        <h1>User Activity</h1>
+        <h2>Below you can see the user's activity.</h2>
+
+        <!-- In Progress Books Section -->
+        <div class="card">
+            <div class="card-header">
+                In Progress Books
+            </div>
+            <table class="table table-striped">
+                <thead>
                     <tr>
-                        <td>{{ book.name }}</td>
-                        <td>{{ book.author }}</td>
-                        <td>{{ book.due_date.strftime('%Y-%m-%d') }}</td> <!-- Showing only the date -->
+                        <th>Book Title</th>
+                        <th>Author</th>
+                        <th>Due Date</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Past Books Section -->
-    <div class="card">
-        <div class="card-header">
-            Past Books
+                </thead>
+                <tbody>
+                    {% for book in in_progress_books %}
+                        <tr>
+                            <td>{{ book.name }}</td>
+                            <td>{{ book.author }}</td>
+                            <td>{{ book.due_date.strftime('%Y-%m-%d') }}</td> <!-- Showing only the date -->
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Book Title</th>
-                    <th>Author</th>
-                    <th>Return Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for book in past_books %}
-                    <tr>
-                        <td>{{ book.name }}</td>
-                        <td>{{ book.author }}</td>
-                        <td>{{ book.return_date.strftime('%Y-%m-%d') }}</td> <!-- Showing only the date -->
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
 
-    <!-- Overdue Books Section -->
-    <div class="card">
-        <div class="card-header">
-            Overdue Books
-        </div>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Book Title</th>
-                    <th>Author</th>
-                    <th>Due Date</th>
-                    <th>Fine (CAD)</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for book in overdue_books %}
+        <!-- Past Books Section -->
+        <div class="card">
+            <div class="card-header">
+                Past Books
+            </div>
+            <table class="table table-striped">
+                <thead>
                     <tr>
-                        <td>{{ book.name }}</td>
-                        <td>{{ book.author }}</td>
-                        <td>{{ book.due_date.strftime('%Y-%m-%d') }}</td> <!-- Showing only the date -->
-                        <td>{{ book.fine }}</td>
+                        <th>Book Title</th>
+                        <th>Author</th>
+                        <th>Return Date</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {% for book in past_books %}
+                        <tr>
+                            <td>{{ book.name }}</td>
+                            <td>{{ book.author }}</td>
+                            <td>{{ book.return_date.strftime('%Y-%m-%d') }}</td> <!-- Showing only the date -->
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Overdue Books Section -->
+        <div class="card">
+            <div class="card-header">
+                Overdue Books
+            </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Book Title</th>
+                        <th>Author</th>
+                        <th>Due Date</th>
+                        <th>Fine (CAD)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for book in overdue_books %}
+                        <tr>
+                            <td>{{ book.name }}</td>
+                            <td>{{ book.author }}</td>
+                            <td>{{ book.due_date.strftime('%Y-%m-%d') }}</td> <!-- Showing only the date -->
+                            <td>{{ book.fine }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
-{% endblock %}
+    {% endblock %}

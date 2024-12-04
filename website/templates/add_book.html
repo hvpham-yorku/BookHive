@@ -1,47 +1,82 @@
-{% extends "base.html" %}
+    <!-- 
+File: add_book.html
 
-{% block title %}
-Add Book
-{% endblock %}
+Purpose:
+This file defines the structure and layout for the "Add Book" page in the application. It includes:
+- A form to collect details about a new book, such as its name, author, genre, total copies, and an optional content link.
+- Integration with 'add_book.css' for page-specific styling.
 
-{% block extra_styles %}
-<link rel="stylesheet" href="{{ url_for('static', filename='add_book.css') }}">
-{% endblock %}
+Key Features:
+1. Template Extension:
+   - Extends the 'base.html' layout for consistent page design.
 
-{% block content %}
-<div id="add-book-page">
-    <h1>Add a New Book</h1>
-    <form method="POST">
-        <div class="form-group">
-            <label for="name">Book Name</label>
-            <input
-                type="text"
-                id="name"
-                name="name"
-                class="form-control"
-                placeholder="Enter book name"
-                required
-            />
-        </div>
-        <div class="form-group">
-            <label for="author">Author</label>
-            <input type="text" id="author" name="author" class="form-control" placeholder="Enter author name" required />
-        </div>
-        <div class="form-group">
-            <label for="genre">Genre</label>
-            <input type="text" id="genre" name="genre" class="form-control" placeholder="Enter genre (e.g., Fiction, Mystery)" />
-        </div>
-        <div class="form-group">
-            <label for="copies">Total Copies</label>
-            <input type="number" id="copies" name="copies" class="form-control" placeholder="Enter total copies" required />
-        </div>
-        <div class="form-group">
-            <label for="content_link">Book Content (Optional)</label>
-            <input type="url" id="content_link" name="content_link" class="form-control" placeholder="Enter a link to the book content" />
-        </div>
-        <br />
-        <button type="submit" class="btn btn-success">Add Book</button>
+2. Dynamic Title and Styles:
+   - Customizes the page title and includes additional styles for the form.
 
-    </form>
-</div>
-{% endblock %}
+3. User Input Form:
+   - Allows users to input book details and submit them via POST to add new books to the catalog.
+
+4. Accessibility:
+   - Includes proper labels and placeholders for input fields to enhance usability.
+
+5. Scalability:
+   - Designed to accommodate future additions, such as more fields or advanced validation.
+-->
+
+    {% extends "base.html" %}
+
+    {% block title %}
+    Add Book
+    {% endblock %}
+
+    {% block extra_styles %}
+    <!-- Linking the CSS file for the "Add Book" page -->
+    <!-- The 'add_book.css' file contains styles specific to the Add Book form and layout -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='add_book.css') }}">
+    {% endblock %}
+
+    {% block content %}
+    <div id="add-book-page">
+        <!----Heading-->
+        <h1>Add a New Book</h1>
+        <form method="POST">
+            <div class="form-group">
+                <!--Fields-->
+                <!---Book Name Input Field-->
+                <label for="name">Book Name</label>
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    class="form-control"
+                    placeholder="Enter book name"
+                    required
+                />
+            </div>
+            <!---Author Input Field-->
+            <div class="form-group">
+                <label for="author">Author</label>
+                <input type="text" id="author" name="author" class="form-control" placeholder="Enter author name" required />
+            </div>
+            <!---Genre Input Field-->
+            <div class="form-group">
+                <label for="genre">Genre</label>
+                <input type="text" id="genre" name="genre" class="form-control" placeholder="Enter genre (e.g., Fiction, Mystery)" />
+            </div>
+            <!---Total Copies Input Field-->
+            <div class="form-group">
+                <label for="copies">Total Copies</label>
+                <input type="number" id="copies" name="copies" class="form-control" placeholder="Enter total copies" required />
+            </div>
+            <div class="form-group">
+                <!---Book Content Input Field-->
+                <label for="content_link">Book Content (Optional)</label>
+                <input type="url" id="content_link" name="content_link" class="form-control" placeholder="Enter a link to the book content" />
+            </div>
+            <br />
+            <!--Submit Button to add the book to the Catalog-->
+            <button type="submit" class="btn btn-success">Add Book</button>
+
+        </form>
+    </div>
+    {% endblock %}

@@ -1,3 +1,39 @@
+"""
+The `__init__.py` file initializes and configures the Flask application, setting up extensions, routes, and database connections.
+
+Key Components:
+1. Application Initialization:
+   - The `create_app` function initializes the Flask application and configures settings such as the secret key and database URI.
+
+2. Configurations:
+   - `SECRET_KEY`: Used for securely signing session data.
+   - `SQLALCHEMY_DATABASE_URI`: Specifies the SQLite database file (`database.db`).
+   - Flask-Mail configurations:
+     - `MAIL_SERVER`, `MAIL_PORT`, `MAIL_USE_TLS`: Configures the SMTP server for sending emails.
+     - `MAIL_USERNAME`, `MAIL_PASSWORD`: Provides the email credentials for the library's account.
+     - `MAIL_DEFAULT_SENDER`: Specifies the sender address for all outgoing emails.
+
+3. Extensions:
+   - `SQLAlchemy`: Configured to manage database operations.
+   - `Flask-Mail`: Initialized to handle email functionality.
+
+4. Blueprints:
+   - Registers `views` and `auth` blueprints, which organize the application's routes.
+
+5. Database Initialization:
+   - Ensures the database tables are created if they do not exist when the app starts.
+   - Includes models like `User2` and `Note` for database structure.
+
+6. Login Manager:
+   - Sets up Flask-Login for user session management.
+   - Specifies `auth.login` as the default login view.
+   - Configures the `load_user` function to retrieve user details by ID.
+
+Returns:
+- The Flask application instance configured with the specified settings and extensions.
+
+This file serves as the entry point for the Flask application, combining configurations, database setup, route organization, and extension initialization.
+"""
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
@@ -5,14 +41,9 @@ from flask_login import LoginManager
 from flask_mail import Mail  # Import Flask-Mail
 from os import path, getenv
 
-
-
-
 db = SQLAlchemy()
 DB_NAME = "database.db"
 mail = Mail()  # Initialize Flask-Mail
-
-
 
 
 def create_app():
@@ -30,7 +61,6 @@ def create_app():
     app.config['MAIL_USERNAME'] = 'librarymanagementsystem59@gmail.com'
     app.config['MAIL_PASSWORD'] = 'jjrv hbht kqtc lryj'  #DONT CHANGE THIS (app password for our account)
     app.config['MAIL_DEFAULT_SENDER'] = 'librarymanagementsystem59@gmail.com'
-
 
 
     # Initialize extensions

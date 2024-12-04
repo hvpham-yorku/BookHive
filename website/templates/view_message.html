@@ -1,12 +1,55 @@
-{% extends "base.html" %}
+    <!-- 
+    All Messages Page Template.
 
-{% block title %}View Message{% endblock %}
+    Purpose:
+    - Displays a list of messages for the logged-in user in a clean, user-friendly format.
 
-{% block content %}
-<div class="container mt-4">
-    <h2>Message Details</h2>
-    <p><strong>Message:</strong> {{ message.content }}</p>
-    <p><strong>Date:</strong> {{ message.timestamp.strftime('%b %d, %Y %I:%M %p') }}</p>
-    <a href="/" class="btn btn-primary">Back to Home</a>
-</div>
-{% endblock %}
+    Structure:
+    1. Header:
+    - Title "Your Messages" with a styled background and centered text.
+
+    2. Message List:
+    - Dynamically generated list of messages using Jinja2.
+    - Each message shows:
+        - Content: Displayed in bold.
+        - Timestamp: Formatted as "Month Day, Year Hour:Minute AM/PM" in muted text.
+
+    3. No Messages Case:
+    - Displays a friendly message if there are no messages for the user.
+
+    4. Navigation:
+    - Provides a button to navigate back to the homepage.
+
+    Features:
+    - Responsive layout with Bootstrap styling for a clean presentation.
+    - Accessible design for quick message review.
+
+    Additional Notes:
+    - Suitable for personal notifications or system messages.
+    - User-friendly navigation back to the main page.
+    -->
+
+    {% extends "base2.html" %}
+    <!--Header-->
+
+    {% block title %}All Messages{% endblock %}
+
+    {% block content %}
+    <!--List of Messages-->
+    <div class="container mt-4">
+        <h2 style="background-color: rgba(231, 229, 229, 0.637); border-radius: 8px; max-width: 300px; color: rgb(0, 0, 0);text-align: center;"> Your Messages</h2>
+        {% if user_messages %}
+            <ul class="list-group">
+                {% for message in user_messages %}
+                    <li class="list-group-item">
+                        <strong>{{ message.content }}</strong>
+                        <small class="d-block text-muted">{{ message.timestamp.strftime('%b %d, %Y %I:%M %p') }}</small>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="mt-5">You have no messages at the moment.</p>
+        {% endif %}
+        <a href="/" class="btn btn-primary mt-4">Back to Home</a>
+    </div>
+    {% endblock %}

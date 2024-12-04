@@ -1,39 +1,85 @@
-{% extends "base2.html" %}
+   <!-- 
+File: recommended_books.html
 
-{% block content %}
-<style>
-    body {
-        background: none !important;
-    }
-</style>
- 
-<div class="content-wrapper">
-    <h1>Recommended Books</h1>
-    <p>These books are recommended based on your previously borrowed books, or randomly if you have never borrowed!</p>
+Purpose:
+Displays a list of recommended books for the user. Recommendations are generated based on the user's borrowing history or randomly if no history exists.
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Genre</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for book in books %}
-            <tr>
-                <td>{{ book.name }}</td>
-                <td>{{ book.author }}</td>
-                <td>{{ book.genre }}</td>
-                <td>
-                    <form action="{{ url_for('views.borrow_book', book_id=book.id) }}" method="POST">
-                        <button type="submit" class="btn btn-primary">Borrow</button>
-                    </form>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-{% endblock %}
+Features:
+1. Background Video:
+   - A looping background video enhances visual appeal and sets the tone for the page.
+
+2. Recommendations Table:
+   - Structured layout using a table to display book details:
+     - Title
+     - Author
+     - Genre
+     - Action (Borrow button)
+   - Allows users to directly borrow books from the recommendations list.
+
+3. Dynamic Content:
+   - Book data is dynamically populated using Flask template variables.
+
+Styling:
+- Background:
+  - Overrides existing body background to ensure a transparent or neutral appearance.
+- Table:
+  - Uses Bootstrap's `table-striped` class for an alternating row color effect.
+  - Clean, professional look for book details.
+- Buttons:
+  - Styled using Bootstrap's `btn btn-primary` class for consistency and prominence.
+
+Usage:
+- Provides an intuitive way for users to explore and borrow recommended books.
+
+Notes:
+- Flask's `url_for` dynamically generates paths for the borrow form submission.
+- Recommendations enhance user engagement by personalizing content.
+
+-->
+
+   {% extends "base2.html" %}
+
+    {% block content %}
+    <!--Background Video-->
+    <video class="background-video" src="{{ url_for('static', filename='v13.mp4') }}" autoplay muted loop></video>
+
+    <!-- Style override to ensure the body background is removed or remains transparent by disabling any existing background styles. -->
+    <style>
+        body {
+            background: none !important;
+        }
+    </style>
+
+    <!-- This section displays a list of recommended books for the user. 
+    - Recommendations are based on the user's borrowing history or are random if no borrowing history exists.
+    - A table is used to show the book details, including Title, Author, Genre, and a Borrow action button for each book. -->
+    <div class="content-wrapper">
+        <h1>Recommended Books</h1>
+        <p>These books are recommended based on your previously borrowed books, or randomly if you have never borrowed!</p>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Genre</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in books %}
+                <tr>
+                    <td>{{ book.name }}</td>
+                    <td>{{ book.author }}</td>
+                    <td>{{ book.genre }}</td>
+                    <td>
+                        <form action="{{ url_for('views.borrow_book', book_id=book.id) }}" method="POST">
+                            <button type="submit" class="btn btn-primary">Borrow</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endblock %}

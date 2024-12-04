@@ -1,4 +1,21 @@
 
+<!--
+File: base.html
+
+Purpose:
+Defines the main structure for the website's base layout. Includes:
+1. Navbar: Provides navigation links for authenticated and non-authenticated users.
+2. Flash Messages: Displays success or error messages dynamically.
+3. Styles and Scripts: Integrates Bootstrap, FontAwesome, and custom CSS/JavaScript files.
+4. Dynamic Content Blocks: Supports page-specific titles, styles, and scripts via Jinja2 template blocks.
+
+Key Features:
+- Responsive design with Bootstrap for cross-device compatibility.
+- Styled buttons, alerts, and a fixed navbar for a user-friendly interface.
+- Auto-dismiss functionality for flash messages.
+- Dynamic inclusion of content and resources for scalability.
+-->
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -154,6 +171,9 @@ crossorigin="anonymous"
                     <a class="nav-link {% if request.path == '/book-list' %}active{% endif %}" id="availableBooks" href="/book-list">Available Books</a>
                 </li>
                 {% endif %}
+                {% if request.path != '/search-books' %}
+                <a class="nav-link {% if request.path == '/search-books' %}active{% endif %}" href="/search-books">Search Books</a>
+                {% endif %}
              
                 <!-- Admin-Specific Link -->
                 {% if current_user.is_admin %}
@@ -161,6 +181,12 @@ crossorigin="anonymous"
                 <li class="nav-item">
                     <a class="nav-link {% if request.path == '/add-book' %}active{% endif %}" id="addBook" href="/add-book">Add Book</a>
                 </li>
+                {% if request.path != '/manage_users' %}
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/manage_users' %} active{%endif%}" href="/manage_users">Manage Users</a>
+                </li>
+                
+                {% endif %}
                 
                 {% endif %}
                 {% if request.path != '/track-user-activity' %}
@@ -177,73 +203,83 @@ crossorigin="anonymous"
 </li>
 {% endif %}
 
+<li class="nav-item">
+    <a class="nav-link" id="logout" href="/logout">Logout</a>
+</li>
+{% endif %}
+
+<!-- User-Specific Link -->
+{% if not current_user.is_admin %}
+{% if request.path != '/manage_users' %}
+                {% if request.path != '/profile_information' %}
                 <li class="nav-item">
-                    <a class="nav-link" id="logout" href="/logout">Logout</a>
+                    <a class="nav-link {% if request.path == '/profile_information' %}active{% endif %}" id="profile_information" href="profile_information">Profile Information</a>
                 </li>
-                {% endif %}
-  
-                <!-- User-Specific Link -->
-                {% if not current_user.is_admin %}
                 
-                {% if request.path != '/contact-us' %}
-                <li class="nav-item">
-                    <a class="nav-link {% if request.path == '/contact-us' %}active{% endif %}" id="contact_us" href="/contact-us">Contact Us</a>
-                </li>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Messages
-                      {% if unread_count > 0 %}
-                          <span class="badge badge-danger">{{ unread_count }}</span>
-                      {% endif %}
-                  </a>
-                  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="messagesDropdown">
-                      {% for message in user_messages %}
-                          <a class="dropdown-item {{ 'font-weight-bold' if not message.is_read }}" href="/message/{{ message.id }}">
-                              {{ message.content[:50] }}... <small>{{ message.timestamp.strftime('%b %d, %Y') }}</small>
-                          </a>
-                      {% endfor %}
-                      {% if user_messages|length == 0 %}
-                          <span class="dropdown-item text-muted">No messages</span>
-                      {% endif %}
-                  </div>
-              </li>
                 {% endif %}
-                {% if request.path != '/my-books' %}
-                <li class="nav-item">
-                  <a class="nav-link {% if request.path == '/my-books' %}active{% endif %}" id="myBooks" href="/my-books">My Books</a>
-                </li>
+                
                 {% endif %}
-                {% if request.path != '/recommended-books' %}
-                <li class="nav-item">
-                  <a class="nav-link {% if request.path == '/recommended-books' %}active{% endif %}" id="recommendedBooks" href="{{ url_for('views.recommendations') }}">Recommended Books</a>
-                </li>
-                <li class="nav-item">
-                  {% if request.path != '/search-books' %}
-                  <a class="nav-link {% if request.path == '/search-books' %}active{% endif %}" href="/search-books">Search Books</a>
-                  {% endif %}
-              </li>
-                {% endif %}
-                <li class="nav-item">
-                    <a class="nav-link" id="logout" href="/logout">Logout</a>
-                </li>
-                {% endif %}
-                {% else %}
-                  <!-- Links for Non-Authenticated Users -->
-                  {% if request.path != '/login' %}
-                  <li class="nav-item">
-                      <a class="nav-link {% if request.path == '/login' %}active{% endif %}" id="login" href="/login">Login</a>
-                  </li>
-                  {% endif %}
-                  {% if request.path != '/sign-up' %}
-                  <li class="nav-item">
-                      <a class="nav-link {% if request.path == '/sign-up' %}active{% endif %}" id="signUp" href="/sign-up">Sign Up</a>
-                  </li>
-                  {% endif %}
-                  {% endif %}
-              </ul>
-          </div>
-      
-  </nav>
+
+{% if request.path != '/contact-us' %}
+<li class="nav-item">
+    <a class="nav-link {% if request.path == '/contact-us' %}active{% endif %}" id="contact_us" href="/contact-us">Contact Us</a>
+</li>
+<li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Messages
+      {% if unread_count > 0 %}
+          <span class="badge badge-danger">{{ unread_count }}</span>
+      {% endif %}
+  </a>
+  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="messagesDropdown">
+      {% for message in user_messages %}
+          <a class="dropdown-item {{ 'font-weight-bold' if not message.is_read }}" href="/message/{{ message.id }}">
+              {{ message.content[:50] }}... <small>{{ message.timestamp.strftime('%b %d, %Y') }}</small>
+          </a>
+      {% endfor %}
+      {% if user_messages|length == 0 %}
+          <span class="dropdown-item text-muted">No messages</span>
+      {% endif %}
+  </div>
+</li>
+{% endif %}
+{% if request.path != '/my-books' %}
+<li class="nav-item">
+  <a class="nav-link {% if request.path == '/my-books' %}active{% endif %}" id="myBooks" href="/my-books">My Books</a>
+</li>
+{% endif %}
+{% if request.path != '/recommended-books' %}
+<li class="nav-item">
+  <a class="nav-link {% if request.path == '/recommended-books' %}active{% endif %}" id="recommendedBooks" href="{{ url_for('views.recommendations') }}">Recommended Books</a>
+</li>
+<li class="nav-item">
+  {% if request.path != '/search-books' %}
+  <a class="nav-link {% if request.path == '/search-books' %}active{% endif %}" href="/search-books">Search Books</a>
+  {% endif %}
+</li>
+{% endif %}
+<li class="nav-item">
+    <a class="nav-link" id="logout" href="/logout">Logout</a>
+</li>
+{% endif %}
+{% else %}
+  <!-- Links for Non-Authenticated Users -->
+  {% if request.path != '/login' %}
+  <li class="nav-item">
+      <a class="nav-link {% if request.path == '/login' %}active{% endif %}" id="login" href="/login">Login</a>
+  </li>
+  {% endif %}
+  {% if request.path != '/sign-up' %}
+  <li class="nav-item">
+      <a class="nav-link {% if request.path == '/sign-up' %}active{% endif %}" id="signUp" href="/sign-up">Sign Up</a>
+  </li>
+  {% endif %}
+  {% endif %}
+</ul>
+</div>
+
+</nav>
+
 
   <style>
     #flash-messages {

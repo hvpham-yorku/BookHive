@@ -1,239 +1,323 @@
-{% extends "base2.html" %}
+    <!--
+File: book_list.html
 
-{% block content %}
-<div class="content-wrapper"> 
-    <!-- Wrapper for the main content section -->
+Purpose:
+This HTML template is used to display a list of available books with filtering and borrowing options. It allows both regular users and admins to interact with the book list, applying filters and performing actions like borrowing, editing, or deleting books.
 
-    <header>
-        <!-- Header section that contains the title and description for the page -->
+Features:
+1. Filters:
+   - Users can filter books by author or genre using dynamic dropdowns.
+2. Book List:
+   - Displays book details (title, author, genre, copies, and rating).
+   - Provides user-specific actions (e.g., borrow books) and admin-specific actions (e.g., edit or delete books).
+3. Dynamic Rating:
+   - Shows star ratings for books based on their average ratings.
+4. Responsive Design:
+   - Ensures compatibility with different devices using Bootstrap.
 
-        <div class="content-wrapper">
-            <!-- Inner wrapper for additional content organization -->
+JavaScript:
+Includes a function to toggle filter sections dynamically based on user selection.
 
-            <h1>Available Books</h1>
-            <!-- Main title of the page -->
+CSS:
+Custom styles are included for the table, buttons, and filter dropdowns.
+-->
 
-            <h2>Browse and Borrow Your Favorite Books</h2>
-            <!-- Subtitle providing more context about the page content -->
+    {% extends "base2.html" %}
 
-            <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-            <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    {% block content %}
+    <div class="content-wrapper"> 
+        <!-- Wrapper for the main content section -->
 
-            <!-- Link to an external CSS file located in the "static" directory for styling -->
+        <header>
+            <!-- Header section that contains the title and description for the page -->
 
-            <link rel="stylesheet" href="styles.css">
-            <!-- Link to another external CSS file, likely for additional or specific styles -->
-        </div>
-    </header>
+            <div class="content-wrapper">
+                <!-- Inner wrapper for additional content organization -->
 
-    <main class="book-section">
-        <!-- Main section of the page dedicated to displaying books and related options -->
-    
-        <h2>Filter Options</h2>
-        <!-- Section title for filtering options -->
-    
-        <div class="filter-section">
-            <!-- Wrapper for filter dropdowns -->
-    
-            <!-- Dropdown for Filters -->
-            <div id="filter-section">
-                <!-- Container for the filter dropdown button and its menu -->
-    
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="filterDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Filter
-                </button>
-                <!-- Button to toggle the filter dropdown menu -->
-                <!-- Attributes:
-                     - `data-toggle="dropdown"`: Activates the dropdown behavior
-                     - `aria-haspopup="true"`: Indicates the button opens a menu
-                     - `aria-expanded="false"`: Indicates the menu is initially collapsed -->
-    
-                <div class="dropdown-menu" aria-labelledby="filterDropdown">
-                    <!-- Dropdown menu for filter options -->
+                <h1>Available Books</h1>
+                <!-- Main title of the page -->
+
+                <h2>Browse and Borrow Your Favorite Books</h2>
+                <!-- Subtitle providing more context about the page content -->
+
+                <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+                <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+                <!-- Link to an external CSS file located in the "static" directory for styling -->
+
+                <link rel="stylesheet" href="styles.css">
+                <!-- Link to another external CSS file-->
+            </div>
+        </header>
+
+        <main class="book-section">
+            <!-- Main section of the page dedicated to displaying books and related options -->
+        
+            <h2>Filter Options</h2>
+            <!-- Section title for filtering options -->
+        
+            <div class="filter-section">
+                <!-- Wrapper for filter dropdowns -->
+        
+                <!-- Dropdown for Filters -->
+                <div id="filter-section">
+                    <!-- Container for the filter dropdown button and its menu -->
+        
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="filterDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Filter
+                    </button>
+                    <!-- Button to toggle the filter dropdown menu -->
                     <!-- Attributes:
-                         - `aria-labelledby="filterDropdown"`: Associates the menu with the button -->
-    
-                    <a class="dropdown-item" href="#" onclick="showFilter('author')">Author</a>
-                    <!-- Option to filter by author. Triggers `showFilter('author')` JavaScript function -->
-    
-                    <a class="dropdown-item" href="#" onclick="showFilter('genre')">Genre</a>
-                    <!-- Option to filter by genre. Triggers `showFilter('genre')` JavaScript function -->
+                        - `data-toggle="dropdown"`: Activates the dropdown behavior
+                        - `aria-haspopup="true"`: Indicates the button opens a menu
+                        - `aria-expanded="false"`: Indicates the menu is initially collapsed -->
+        
+                    <div class="dropdown-menu" aria-labelledby="filterDropdown">
+                        <!-- Dropdown menu for filter options -->
+                        <!-- Attributes:
+                            - `aria-labelledby="filterDropdown"`: Associates the menu with the button -->
+        
+                        <a class="dropdown-item" href="#" onclick="showFilter('author')">Author</a>
+                        <!-- Option to filter by author. Triggers `showFilter('author')` JavaScript function -->
+        
+                        <a class="dropdown-item" href="#" onclick="showFilter('genre')">Genre</a>
+                        <!-- Option to filter by genre. Triggers `showFilter('genre')` JavaScript function -->
+                    </div>
                 </div>
             </div>
-        </div>
-   
     
+        
 
-            <!-- Dropdown (Author) -->
-<div id="author-filter" style="display:none;">
-    <!-- Container for the Author filter section -->
-    <!-- Initially hidden using `style="display:none;"` -->
+                <!-- Dropdown (Author) -->
+    <div id="author-filter" style="display:none;">
+        <!-- Container for the Author filter section -->
+        <!-- Initially hidden using `style="display:none;"` -->
 
-    <form method="GET" action="/book-list">
-        <!-- Form to filter books by author -->
-        <!-- Method: GET - Sends query parameters to the server -->
-        <!-- Action: "/book-list" - Server endpoint to handle the filter request -->
+        <form method="GET" action="/book-list">
+            <!-- Form to filter books by author -->
+            <!-- Method: GET - Sends query parameters to the server -->
+            <!-- Action: "/book-list" - Server endpoint to handle the filter request -->
 
-        <label for="author">Filter by Author:</label>
-        <!-- Label for the dropdown selection field -->
+            <label for="author">Filter by Author:</label>
+            <!-- Label for the dropdown selection field -->
 
-        <select id="author" name="author">
-            <!-- Dropdown menu for selecting an author -->
-            <!-- Attributes:
-                 - `id="author"`: Unique identifier for the dropdown
-                 - `name="author"`: Name used in the query string -->
+            <select id="author" name="author">
+                <!-- Dropdown menu for selecting an author -->
+                <!-- Attributes:
+                    - `id="author"`: Unique identifier for the dropdown
+                    - `name="author"`: Name used in the query string -->
 
-            <option value="">All</option>
-            <!-- Default option to show all authors -->
+                <option value="">All</option>
+                <!-- Default option to show all authors -->
 
-            {% for author in authors %}
-            <!-- Loop through the list of authors dynamically provided by the server -->
+                {% for author in authors %}
+                <!-- Loop through the list of authors dynamically provided by the server -->
 
-            <option value="{{ author[0] }}" {% if selected_author == author[0] %}selected{% endif %}>
-                <!-- Create an option for each author -->
-                <!-- `value="{{ author[0] }}"`: Sends the selected author's value -->
-                <!-- `{% if selected_author == author[0] %}selected{% endif %}`: Marks the option as selected if it matches the currently selected author -->
-                {{ author[0] }}
-                <!-- Display the author's name in the dropdown -->
-            </option>
-            {% endfor %}
-        </select>
+                <option value="{{ author[0] }}" {% if selected_author == author[0] %}selected{% endif %}>
+                    <!-- Create an option for each author -->
+                    <!-- `value="{{ author[0] }}"`: Sends the selected author's value -->
+                    <!-- `{% if selected_author == author[0] %}selected{% endif %}`: Marks the option as selected if it matches the currently selected author -->
+                    {{ author[0] }}
+                    <!-- Display the author's name in the dropdown -->
+                </option>
+                {% endfor %}
+            </select>
 
-        <button type="submit" class="btn btn-primary">Filter</button>
-        <!-- Submit button to apply the selected filter -->
-        <!-- Class: `btn btn-primary` for styling -->
-    </form>
-</div>
-
-
-           <!-- Dropdown (Genre) -->
-<div id="genre-filter" style="display:none;">
-    <!-- Container for the Genre filter section -->
-    <!-- Initially hidden using `style="display:none;"` -->
-
-    <form method="GET" action="/book-list">
-        <!-- Form to filter books by genre -->
-        <!-- Method: GET - Sends query parameters to the server -->
-        <!-- Action: "/book-list" - Server endpoint to handle the filter request -->
-
-        <label for="genre">Filter by Genre:</label>
-        <!-- Label for the dropdown selection field -->
-
-        <select id="genre" name="genre">
-            <!-- Dropdown menu for selecting a genre -->
-            <!-- Attributes:
-                 - `id="genre"`: Unique identifier for the dropdown
-                 - `name="genre"`: Name used in the query string -->
-
-            <option value="">All</option>
-            <!-- Default option to show all genres -->
-
-            {% for genre in genres %}
-            <!-- Loop through the list of genres dynamically provided by the server -->
-
-            <option value="{{ genre[0] }}" {% if selected_genre == genre[0] %}selected{% endif %}>
-                <!-- Create an option for each genre -->
-                <!-- `value="{{ genre[0] }}"`: Sends the selected genre's value -->
-                <!-- `{% if selected_genre == genre[0] %}selected{% endif %}`: Marks the option as selected if it matches the currently selected genre -->
-                {{ genre[0] }}
-                <!-- Display the genre's name in the dropdown -->
-            </option>
-            {% endfor %}
-        </select>
-
-        <button type="submit" class="btn btn-primary">Filter</button>
-        <!-- Submit button to apply the selected filter -->
-        <!-- Class: `btn btn-primary` for styling -->
-    </form>
-</div>
+            <button type="submit" class="btn btn-primary">Filter</button>
+            <!-- Submit button to apply the selected filter -->
+            <!-- Class: `btn btn-primary` for styling -->
+        </form>
+    </div>
 
 
-<h2>Book List</h2>
-<!-- Section heading for the list of books -->
+            <!-- Dropdown (Genre) -->
+    <div id="genre-filter" style="display:none;">
+        <!-- Container for the Genre filter section -->
+        <!-- Initially hidden using `style="display:none;"` -->
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Genre</th>
-            <th>Copies</th>
-            <th>Action</th>
-            <th>Rating</th>
+        <form method="GET" action="/book-list">
+            <!-- Form to filter books by genre -->
+            <!-- Method: GET - Sends query parameters to the server -->
+            <!-- Action: "/book-list" - Server endpoint to handle the filter request -->
 
-        </tr>
-    </thead>
-    <tbody>
-        {% for row in books %}
-        <tr>
-            <td>{{ row.name }}</td>
-            <td>{{ row.author }}</td>
-            <td>{{ row.genre }}</td>
-            <td>{{ row.remaining_copies }}</td>
-            <td>
-                {% if current_user.is_admin %}
-                <!-- Admin Options -->
-                <a href="/edit-book/{{ row.id }}">
-                    <button class="btn btn-warning edit-button">
-                        <i class="fas fa-cog"></i> Edit
-                    </button>
-                </a>
-                <form action="{{ url_for('views.delete_book', book_id=row.id) }}" method="POST" style="display: inline;">
-                    <button class="button" onclick="deleteBook(event, {{ row.id }})">
-                        <div class="trash">
-                            <div class="top">
-                                <div class="paper"></div>
+            <label for="genre">Filter by Genre:</label>
+            <!-- Label for the dropdown selection field -->
+
+            <select id="genre" name="genre">
+                <!-- Dropdown menu for selecting a genre -->
+                <!-- Attributes:
+                    - `id="genre"`: Unique identifier for the dropdown
+                    - `name="genre"`: Name used in the query string -->
+
+                <option value="">All</option>
+                <!-- Default option to show all genres -->
+
+                {% for genre in genres %}
+                <!-- Loop through the list of genres dynamically provided by the server -->
+
+                <option value="{{ genre[0] }}" {% if selected_genre == genre[0] %}selected{% endif %}>
+                    <!-- Create an option for each genre -->
+                    <!-- `value="{{ genre[0] }}"`: Sends the selected genre's value -->
+                    <!-- `{% if selected_genre == genre[0] %}selected{% endif %}`: Marks the option as selected if it matches the currently selected genre -->
+                    {{ genre[0] }}
+                    <!-- Display the genre's name in the dropdown -->
+                </option>
+                {% endfor %}
+            </select>
+
+            <button type="submit" class="btn btn-primary">Filter</button>
+            <!-- Submit button to apply the selected filter -->
+            <!-- Class: `btn btn-primary` for styling -->
+        </form>
+    </div>
+
+
+    <h2>Book List</h2>
+    <!-- Section heading for the list of books -->
+
+    <table class="table table-striped">
+        <!-- 
+    This `<thead>` section defines the header row for a table.
+
+    Purpose:
+    - Provides column headers for a table displaying book-related data.
+
+    Headers:
+    - Title: Displays the title of the book.
+    - Author: Displays the author's name.
+    - Genre: Displays the book's genre.
+    - Copies: Shows the number of copies available or total copies of the book.
+    - Action: Contains action buttons or links for user interaction, such as borrowing or returning books.
+    - Rating: Displays the average rating or user-provided rating for the book.
+
+    Usage:
+    - Placed at the top of a table to describe the content in each column for better readability and organization.
+    -->
+
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Genre</th>
+                <th>Copies</th>
+                <th>Action</th>
+                <th>Rating</th>
+
+            </tr>
+        </thead>
+        <!-- 
+    This `<tbody>` section defines the body of a table that dynamically displays book data and corresponding actions.
+
+    Purpose:
+    - Iterates over a list of books (`books`) and generates table rows dynamically.
+    - Each row represents a single book with its details and available actions based on the user's role (admin or regular user).
+
+    Dynamic Data and Actions:
+    - Book Details:
+    - Title, Author, Genre, Remaining Copies: Displays respective details from the `row` object.
+    - Admin Actions:
+    - Edit Button: Redirects to an edit page for the selected book.
+    - Delete Button: Submits a form to delete the selected book. Styled with a custom trash icon animation.
+    - User Actions:
+    - Out of Stock Button: Shown when no copies are available.
+    - Borrowed Button: Disabled if the user has already borrowed the book.
+    - Borrow Button: Enables users to borrow the book if it is available.
+    - Rating:
+    - Displays a star-based rating system, filling stars based on the book's average rating.
+
+    Logic:
+    - Checks if the current user is an admin to display admin-specific actions.
+    - For regular users, determines the availability of the book or if the book has already been borrowed.
+
+    Usage:
+    - Dynamically generates a table of books with actions tailored to the user's role and the book's availability.
+    -->
+
+        <tbody>
+            {% for row in books %}
+            <tr>
+                <td>{{ row.name }}</td>
+                <td>{{ row.author }}</td>
+                <td>{{ row.genre }}</td>
+                <td>{{ row.remaining_copies }}</td>
+                <td>
+                    {% if current_user.is_admin %}
+                    <!-- Admin Options -->
+                    <a href="/edit-book/{{ row.id }}">
+                        <button class="btn btn-warning edit-button">
+                            <i class="fas fa-cog"></i> Edit
+                        </button>
+                    </a>
+                    <form action="{{ url_for('views.delete_book', book_id=row.id) }}" method="POST" style="display: inline;">
+                        <button class="button" onclick="deleteBook(event, {{ row.id }})">
+                            <div class="trash">
+                                <div class="top">
+                                    <div class="paper"></div>
+                                </div>
+                                <div class="box"></div>
+                                <div class="check">
+                                    <svg viewBox="0 0 8 6">
+                                        <polyline points="1 3.4 2.71428571 5 7 1"></polyline>
+                                    </svg>
+                                </div>
                             </div>
-                            <div class="box"></div>
-                            <div class="check">
-                                <svg viewBox="0 0 8 6">
-                                    <polyline points="1 3.4 2.71428571 5 7 1"></polyline>
-                                </svg>
-                            </div>
-                        </div>
-                        <span>Delete</span>
-                    </button>
-                </form>
-                {% else %}
-                <!-- User Options -->
-                {% if row.remaining_copies <= 0 %}
-                <button class="btn btn-secondary" disabled>Out of Stock</button>
-                {% elif row.id in borrowed_book_ids %}
-                <button class="btn btn-secondary" disabled>Borrowed</button>
-                {% else %}
-                <form action="{{ url_for('views.borrow_book', book_id=row.id) }}" method="POST" style="display: inline;">
-                    <button type="submit" class="btn btn-primary">Borrow</button>
-                </form>
-                {% endif %}
-                {% endif %}
-            </td>
-            <td>
-                <div class="stars">
-                    {% for i in range(1, 6) %}
-                        <i class="fas fa-star {% if i <= row.average_rating|round %}filled{% endif %}"></i>
-                    {% endfor %}
-                </div>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-</main>
-</div>
-<script>
-   function showFilter(type) {
-    // Function to toggle the visibility of the author and genre filter sections
+                            <span>Delete</span>
+                        </button>
+                    </form>
+                    {% else %}
+                    <!-- User Options -->
+                    {% if row.remaining_copies <= 0 %}
+                    <button class="btn btn-secondary" disabled>Out of Stock</button>
+                    {% elif row.id in borrowed_book_ids %}
+                    <button class="btn btn-secondary" disabled>Borrowed</button>
+                    {% else %}
+                    <form action="{{ url_for('views.borrow_book', book_id=row.id) }}" method="POST" style="display: inline;">
+                        <button type="submit" class="btn btn-primary">Borrow</button>
+                    </form>
+                    {% endif %}
+                    {% endif %}
+                </td>
+                <td>
+                    <div class="stars">
+                        {% for i in range(1, 6) %}
+                            <i class="fas fa-star {% if i <= row.average_rating|round %}filled{% endif %}"></i>
+                        {% endfor %}
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </main>
+    </div>
+    <!-- 
+    This JavaScript function `showFilter` is used to toggle the visibility of filter sections in the UI.
 
-    document.getElementById('author-filter').style.display = type === 'author' ? 'block' : 'none';
-    // Sets the display style of the "author-filter" element
-    // If the `type` argument equals 'author', the display style is set to 'block' (visible)
-    // Otherwise, it is set to 'none' (hidden)
+    Purpose:
+    - Dynamically displays or hides the "author" and "genre" filter sections based on user interaction.
 
-    document.getElementById('genre-filter').style.display = type === 'genre' ? 'block' : 'none';
-    // Sets the display style of the "genre-filter" element
-    // If the `type` argument equals 'genre', the display style is set to 'block' (visible)
-    // Otherwise, it is set to 'none' (hidden)
-}
+    Functionality:
+    - Accepts a `type` argument that determines which filter to display.
+    - If the `type` is 'author':
+    - The "author-filter" section is made visible by setting its `display` style to `block`.
+    - The "genre-filter" section is hidden by setting its `display` style to `none`.
+    - If the `type` is 'genre':
+    - The "genre-filter" section is made visible by setting its `display` style to `block`.
+    - The "author-filter" section is hidden by setting its `display` style to `none`.
 
-</script>
-{% endblock %}
+    Usage:
+    - Attach this function to UI elements like buttons or dropdown menus to toggle filter sections dynamically.
+    - Enhances user experience by showing relevant filters based on the selected type.
+    -->
+
+    <script>
+    function showFilter(type) {
+        
+
+        document.getElementById('author-filter').style.display = type === 'author' ? 'block' : 'none';
+        document.getElementById('genre-filter').style.display = type === 'genre' ? 'block' : 'none';
+
+    }
+
+    </script>
+    {% endblock %}

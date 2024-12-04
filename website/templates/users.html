@@ -1,37 +1,66 @@
-{% extends "base2.html" %}
+    <!-- 
+    User List Page Template.
 
-{% block content %}
-<style>
-    body {
-        background: none !important;
-    }
-</style>
+    Purpose:
+    - Provides a list of all users with options to track their activity.
 
-<div class="content-wrapper">
-    <h1>User List</h1>
-    <h2>Click on "View Activity" of a user email to track their activity.</h2>
+    Structure:
+    1. Header:
+    - Displays the title "User List" and a description guiding admins to view user activity.
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Email</th>
-                <th>First Name</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for user in users %}
-            <tr>
-                <td>{{ user.email }}</td>
-                <td>{{ user.first_name }}</td>
-                <td>
-                    <a href="{{ url_for('views.user_activity', user_id=user.id) }}">
-                        <button class="btn btn-primary">View Activity</button>
-                    </a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-{% endblock %}
+    2. User Table:
+    - Lists users with columns for:
+        - Email: User's email address.
+        - First Name: User's first name.
+        - Action: A "View Activity" button linking to detailed activity tracking for each user.
+
+    3. Styling:
+    - Removes any background styling for consistency with the base template.
+    - Applies a striped table style for better readability.
+
+    Features:
+    - Dynamic user data injected via Jinja2 template tags.
+    - Easy navigation to individual user activity tracking using the "View Activity" button.
+    - Clean and simple design for administrative purposes.
+
+    Additional Notes:
+    - Suitable for admins managing user activity.
+    -->
+
+    {% extends "base2.html" %}
+
+    {% block content %}
+    <style>
+        body {
+            background: none !important;
+        }
+    </style>
+
+    <div class="content-wrapper">
+        <h1>User List</h1>
+        <h2>Click on "View Activity" of a user email to track their activity.</h2>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>First Name</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.first_name }}</td>
+                    <td>
+                        <a href="{{ url_for('views.user_activity', user_id=user.id) }}">
+                            <button class="btn btn-primary">View Activity</button>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endblock %}

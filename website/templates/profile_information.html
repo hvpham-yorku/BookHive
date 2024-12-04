@@ -1,0 +1,134 @@
+    <!-- 
+File: profile_information.html
+
+Purpose:
+This template allows users to view their profile details, including first and last name, and update their address through a user-friendly form.
+
+Features:
+1. Background Video:
+   - Adds a visually engaging looping video as the page's background.
+
+2. Profile Information Display:
+   - Shows the user's first and last name in a clear, visually distinct section.
+
+3. Update Address Form:
+   - Provides a form for users to update their address.
+   - Includes a prefilled input field with the current address for easy editing.
+
+Styling:
+- Modern and responsive design:
+  - Centered container with rounded corners and shadow for depth.
+  - Clear distinction between labels, values, and form elements.
+  - Color palette with soft tones and hover effects for better usability.
+
+Usage:
+- Ideal for users to manage and update their personal profile information efficiently.
+
+Notes:
+- Utilizes Flask's `url_for` function to dynamically set form actions and link static files.
+- Flash messages or form errors could be added for enhanced feedback handling.
+-->
+
+    {% extends "base.html" %}
+
+    {% block title %}
+    Profile Information
+    {% endblock %}
+
+    {% block content %}
+    <!--background Video-->
+    <video class="background-video" src="{{ url_for('static', filename='v2.mp4') }}" autoplay muted loop></video>
+    <head>
+        <!-- Sets character encoding to UTF-8 and ensures the page is responsive on all devices. -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Update Address</title>
+
+        <!-- Defines styling for a responsive profile page with a centered container, modern layout, and visually distinct sections for labels, values, and form elements. -->
+        <style>
+            body {
+                background-size: cover;
+                background-position: center;
+                background-attachment: fixed;
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+            }
+            .container {
+                max-width: 600px;
+                margin: 50px auto;
+                padding: 20px;
+                background-color: rgba(255, 255, 255, 0.9);
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            }
+            h1 {
+                text-align: center;
+                color: #4c63af;
+            }
+            .profile-item {
+                margin-bottom: 15px;
+            }
+            .label {
+                font-weight: bold;
+                margin-bottom: 5px;
+                color: #333;
+            }
+            .value {
+                padding: 8px;
+                background-color: #f9f9f9;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+            }
+            .flash {
+                color: green;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+            form {
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+            }
+            input[type="text"], input[type="submit"] {
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+            }
+            input[type="submit"] {
+                background-color: #4c63af;
+                color: white;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+            input[type="submit"]:hover {
+                background-color: #3b4f94;
+            }
+        </style>
+        <!-- Displays user profile information and provides a form for updating the address. Includes sections for first name, last name, and address, with a responsive and user-friendly layout. -->
+    </head>
+    <body>
+        <div class="container">
+            <h1>Profile Information </h1>
+
+            <!-- Display profile information -->
+            <div class="profile-item">
+                <div class="label">First Name:</div>
+                <div class="value">{{ user.first_name }}</div>
+            </div>
+
+            <div class="profile-item">
+                <div class="label">Last Name:</div>
+                <div class="value">{{ user.last_name }}</div>
+            </div>
+            <!-- Update Address Form -->
+            <form method="POST" action="{{ url_for('views.profile_information') }}">
+                <div class="profile-item">
+                    <div class="label">Address:</div>
+                    <input type="text" name="address" value="{{ user.address }}" placeholder="Enter new address">
+                </div>
+                <input type="submit" value="Update Address">
+            </form>
+        </div>
+    </body>
+    {% endblock %}

@@ -1,59 +1,81 @@
-{% extends "base.html" %}
+ <!-- 
+File: login.html
 
-{% block title %}Login{% endblock %}
+Purpose:
+This template provides the login page for the BookHives Library Management System. It allows users to securely enter their credentials and access the system.
 
-{% block content %}
-<!-- Background Video -->
-<!-- Embeds a video as the background of the login page -->
-<video class="background-video" src="{{ url_for('static', filename='v3.mp4') }}" muted loop autoplay>
-    <!-- Fallback text if the browser does not support the video tag -->
-    My browser does not support the video tag.
-</video>
+Features:
+1. Background Video:
+   - Adds a visually engaging video as the page background to enhance user experience.
 
-<!-- Login Form Container -->
-<div class="login-container">
-  <!-- Login Form -->
-  <!-- This form uses the POST method to securely send user credentials to the server -->
-  <form method="POST">
-    <!-- Page Title -->
-    <h1 align="center">Login</h1>
+2. Login Form:
+   - Contains fields for entering an email and password.
+   - Uses the POST method for secure data submission.
 
-    <!-- Email Input Field -->
-    <div class="form-group">
-      <label for="email">Email Address</label>
-      <!-- Input for user email -->
-      <input
-        type="email"
-        class="form-control"
-        id="email"
-        name="email"
-        placeholder="Enter email"
-        required
-      />
-    </div>
+3. Forgot Password:
+   - Includes a link for users to reset their password in case they forget it.
 
-    <!-- Password Input Field -->
-    <div class="form-group">
-      <label for="password">Password</label>
-      <!-- Input for user password -->
-      <input
-        type="password"
-        class="form-control"
-        id="password"
-        name="password"
-        placeholder="Enter password"
-        required
-      />
-    </div>
-    
-    <!-- Submit Button -->
-    <br />
-    <button type="submit" class="btn btn-primary login-button">Login</button>
-  </form>
+Styling:
+- Utilizes Bootstrap classes for responsive design and form styling.
+- Inline styles and custom CSS ensure a clean and modern interface.
+-->
 
-  <!-- Forgot Password Link -->
-  <p align="center">
-    <a href="/forgot-password">Forgot Password?</a>
-  </p>
-</div>
-{% endblock %}
+ {% extends "base.html" %}
+
+  {% block title %}Login{% endblock %}
+
+  {% block content %}
+  <!-- Background Video -->
+  <!-- Embeds a video as the background of the login page -->
+  <video class="background-video" src="{{ url_for('static', filename='v3.mp4') }}" muted loop autoplay>
+      <!-- Fallback text if the browser does not support the video tag -->
+      My browser does not support the video tag.
+  </video>
+
+  <!-- Login Form Container -->
+  <div class="login-container">
+    <!-- Login Form -->
+    <!-- This form uses the POST method to securely send user credentials to the server -->
+    <form method="POST">
+      <!-- Page Title -->
+      <h1 align="center">Login</h1>
+
+      <!-- Email Input Field -->
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <!-- Input for user email -->
+        <input
+          type="email"
+          class="form-control"
+          id="email"
+          name="email"
+          placeholder="Enter email"
+          required
+        />
+      </div>
+
+      <!-- Password Input Field -->
+      <div class="form-group">
+        <label for="password">Password</label>
+        <!-- Input for user password -->
+        <input
+          type="password"
+          class="form-control"
+          id="password"
+          name="password"
+          placeholder="Enter password"
+          required
+        />
+      </div>
+      
+      <!-- Submit Button -->
+      <br />
+      <button type="submit" class="btn btn-primary login-button">Login</button>
+    </form>
+
+    <!-- Forgot Password Link -->
+    <p align="center">
+      <a href="/forgot-password">Forgot Password?</a>
+    </p>
+  </div>
+  {% endblock %}

@@ -1,76 +1,100 @@
+    /* 
+    Stylesheet Documentation:
 
+    Purpose:
+    - Defines styles for headings, tables, paragraphs, and chart containers in the application.
 
-h2 {
-    text-align: center;
-    margin-bottom: 30px;
-    font-size: 28px;
-    color: #7c0000;
+    1. Headings (h2, h3):
+    - h2: Center-aligned with red color (#7c0000) and a clean, minimal design.
+    - h3: Black text with a bold yellow border (#b48100) and padding for emphasis.
+
+    2. Tables:
+    - Full-width layout with a white background and collapsible borders.
+    - Header (th): Maroon background (#7d2424) with contrasting white text.
+    - Rows: Alternating light gray for even rows and a hover effect for interactivity.
+
+    3. Paragraphs (p):
+    - Large, bold, center-aligned text with a light brown background (#f3d3aa) for emphasis.
+
+    4. Chart Container:
+    - Responsive design with centered alignment.
+    - White background, subtle box-shadow, and rounded corners for a modern appearance.
+
+    Overall:
+    - Provides a cohesive and visually appealing layout for application components, prioritizing readability and user engagement.
+    */
+
+    h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 28px;
+        color: #7c0000;
+        text-shadow: none;
+    }
+
+    h3 {
     text-shadow: none;
-}
+        margin-top: 20px;
+        color: #000000;
+        font-size: 30px;
+        font-weight: 500;
+        border-bottom: 5px solid #b48100;
+        padding-bottom: 5px;
+    }
 
-h3 {
-  text-shadow: none;
-    margin-top: 20px;
-    color: #000000;
-    font-size: 30px;
-    font-weight: 500;
-    border-bottom: 5px solid #b48100;
-    padding-bottom: 5px;
-}
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+    table, th, td {
+        border: 1px solid #ddd;
+    }
 
-table, th, td {
-    border: 1px solid #ddd;
-}
+    th {
+        background-color: #7d2424;
+        color: white;
+        font-weight: bold;
+        padding: 12px;
+    }
 
-th {
-    background-color: #7d2424;
-    color: white;
-    font-weight: bold;
-    padding: 12px;
-}
+    td {
+        padding: 12px;
+        text-align: left;
+    }
 
-td {
-    padding: 12px;
-    text-align: left;
-}
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
 
-tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
+    tr:hover {
+        background-color: #f1f1f1;
+    }
 
-tr:hover {
-    background-color: #f1f1f1;
-}
+    p {
+        font-size: 25px;
+        text-align: center;
+        font-weight: 700;
+        padding-top: 10px;
+        padding-bottom: 20px;
+        color: #000000;
+        background-color: #f3d3aa;
+    }
 
-p {
-    font-size: 25px;
-    text-align: center;
-    font-weight: 700;
-    padding-top: 10px;
-    padding-bottom: 20px;
-    color: #000000;
-    background-color: #f3d3aa;
-}
+    .chart-container {
+        width: 100%;
+        max-width: 800px;
+        margin: 30px auto;
+        background-color: #fff;
+        padding: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+    }
 
-.chart-container {
-    width: 100%;
-    max-width: 800px;
-    margin: 30px auto;
-    background-color: #fff;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-}
-
-h2, h3{
-    background-color: #ffffff; /* White background */
-    padding: 10px; 
-}
+    h2, h3{
+        background-color: #ffffff; /* White background */
+        padding: 10px; 
+    }

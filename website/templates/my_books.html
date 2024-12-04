@@ -1,112 +1,155 @@
-{% extends "base.html" %}
+    <!-- 
+File: my_books.html
 
-{% block content %}
-<video class="background-video" src="{{ url_for('static', filename='v2.mp4') }}" autoplay muted loop></video>
-<h1 class="text-center">My Books</h1>
+Purpose:
+This template provides a user-centric interface to manage books associated with a user's account. It is divided into three sections:
+1. In Progress Books
+2. Overdue Books
+3. Past Books
 
-<div class="content-wrapper">
-    <!-- In Progress Books -->
-    <h2>In Progress</h2>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='my_books.css') }}">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Book Title</th>
-                <th>Author</th>
-                <th>Due Date</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for book in in_progress_books %}
-            <tr>
-                <td>{{ book['name'] }}</td>
-                <td>{{ book['author'] }}</td>
-                <td>{{ book['due_date'].strftime('%Y-%m-%d') }}</td>
-                <td>
-                    <form method="POST" action="{{ url_for('views.return_book', borrow_id=book['id']) }}" style="display:inline-block;">
-                        <button type="submit" class="btn btn-danger">
-                            <i class="fa fa-undo"></i> Return Book
-                        </button>
-                    </form>
-                    <a href="{{ book['content_link'] }}" target="_blank" class="btn btn-primary">
-                        <i class="fa fa-eye"></i> View Book
-                    </a>
-                </td>
-                              
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+Features:
+1. Background Video:
+   - Adds a visually appealing video background to enhance the user experience.
 
+2. In Progress Books:
+   - Displays books currently being read by the user with their due dates.
+   - Includes options to:
+     - Return the book (via a POST form).
+     - View the book content through an external link.
 
+3. Overdue Books:
+   - Highlights books past their due dates and calculates fines in CAD.
+   - Similar action options as "In Progress" books.
+
+4. Past Books:
+   - Lists books the user has already returned with their respective return dates.
+
+5. User-Friendly Table Design:
+   - Each section includes a well-structured table for ease of access and navigation.
+
+Styling:
+- Uses a consistent design for tables and buttons to ensure readability and a modern look.
+- Buttons are styled with icons for enhanced interactivity (e.g., return and view actions).
+
+Usage:
+- Designed for users to manage their book borrowing history effectively.
+- Allows users to keep track of due dates, fines, and previously borrowed books.
+-->
+
+    {% extends "base.html" %}
+
+    {% block content %}
+    <!--background Video-->
+    <video class="background-video" src="{{ url_for('static', filename='v2.mp4') }}" autoplay muted loop></video>
+    <h1 class="text-center">My Books</h1>
 
     <div class="content-wrapper">
-    <!-- Overdue Books -->
-    <h2>Overdue Books</h2>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Book Title</th>
-                <th>Author</th>
-                <th>Due Date</th>
-                <th>Fine (CAD)</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for book in overdue_books %}
-            <tr>
-                <td>{{ book['name'] }}</td>
-                <td>{{ book['author'] }}</td>
-                <td>{{ book['due_date'].strftime('%Y-%m-%d') }}</td>
-                <td>${{ book['fine'] }}</td>
-                <td>
-                    <form method="POST" action="{{ url_for('views.return_book', borrow_id=book['id']) }}" style="display:inline-block;">
-                        <button type="submit" class="btn btn-danger">
-                            <i class="fa fa-undo"></i> Return Book
-                        </button>
+        <!-- In Progress Books -->
+        <h2>In Progress</h2>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='my_books.css') }}">
+        <table class="table">
+            <thead>
+                <tr>
+                    <!--Table Columns-->
+                    <th>Book Title</th>
+                    <th>Author</th>
+                    <th>Due Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in in_progress_books %}
+                <tr>
+                    <td>{{ book['name'] }}</td>
+                    <td>{{ book['author'] }}</td>
+                    <td>{{ book['due_date'].strftime('%Y-%m-%d') }}</td>
+                    <td>
+                        <form method="POST" action="{{ url_for('views.return_book', borrow_id=book['id']) }}" style="display:inline-block;">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fa fa-undo"></i> Return Book
+                            </button>
+                        </form>
                         <a href="{{ book['content_link'] }}" target="_blank" class="btn btn-primary">
                             <i class="fa fa-eye"></i> View Book
                         </a>
-                    </form>
+                    </td>
+                                
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
 
-<div class = "content-wrapper">
-<h2>Past Books</h2>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Return Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for book in past_books %}
-            <tr>
-                <td>{{ book['name'] }}</td>
-                <td>{{ book['author'] }}</td>
-                <td>
-                    {% if book['return_date'] %}
-                        {{ book['return_date'].strftime('%Y-%m-%d') }}
-                    {% else %}
-                        N/A
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-{% endblock %}
+
+        <div class="content-wrapper">
+        <!-- Overdue Books -->
+        <h2>Overdue Books</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <!--Table Columns-->
+                    <th>Book Title</th>
+                    <th>Author</th>
+                    <th>Due Date</th>
+                    <th>Fine (CAD)</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in overdue_books %}
+                <tr>
+                    <td>{{ book['name'] }}</td>
+                    <td>{{ book['author'] }}</td>
+                    <td>{{ book['due_date'].strftime('%Y-%m-%d') }}</td>
+                    <td>${{ book['fine'] }}</td>
+                    <td>
+                        <form method="POST" action="{{ url_for('views.return_book', borrow_id=book['id']) }}" style="display:inline-block;">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fa fa-undo"></i> Return Book
+                            </button>
+                            <a href="{{ book['content_link'] }}" target="_blank" class="btn btn-primary">
+                                <i class="fa fa-eye"></i> View Book
+                            </a>
+                        </form>
+
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!--Past Books Table-->
+    <div class = "content-wrapper">
+    <h2>Past Books</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <!--Table Columns-->
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Return Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in past_books %}
+                <tr>
+                    <td>{{ book['name'] }}</td>
+                    <td>{{ book['author'] }}</td>
+                    <td>
+                        {% if book['return_date'] %}
+                            {{ book['return_date'].strftime('%Y-%m-%d') }}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endblock %}
 
 

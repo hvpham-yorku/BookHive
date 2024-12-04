@@ -1,67 +1,95 @@
-body {
-    background: url('L.jpg') center;
-    background-size: cover;
-    margin: 0;
-  }
-  
-  .content-wrapper {
-    margin: 70px auto 0;
-    padding: 30px;
-    max-width: 1000px;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  header {
-    text-align: center;
-    margin-bottom: 30px;
-  }
-  
-  header h1 {
-    font-size: 36px;
-    color: #333;
-  }
-  
-  header h2 {
-    font-size: 24px;
-    color: #666;
-  }
-  
-  .book-section {
-    margin-top: 20px;
-    padding: 20px;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .table {
-    margin-top: 20px;
-    border-collapse: collapse;
-    width: 100%;
-    background: white;
-    border-radius: 5px;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .table thead {
-    background: #450303;
-    color: white;
-  }
-  
-  .table th, .table td {
-    padding: 15px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .table tbody tr:hover {
-    background-color: #f1f1f1;
-  }
-  
-  .filter-section {
-    margin-bottom: 20px;
-    text-align: center;
-  }
+  /*
+  Stylesheet Documentation:
+
+  Purpose:
+  - Provides styling for a book management page with a clean layout, interactive tables, and user-friendly design.
+
+  1. Background:
+    - `body`: Applies a centered, full-screen background image with responsive scaling.
+
+  2. Layout:
+    - `.content-wrapper`: Centralized content area with padding, rounded corners, and a subtle shadow for emphasis.
+    - `header`: Centers headings with distinct font sizes and colors for title and subtitle hierarchy.
+
+  3. Book Section Styling:
+    - `.book-section`: Creates a visually separated area for book-related content, styled with shadows and rounded corners.
+
+  4. Table Design:
+    - `.table`: Styles for data presentation, including rounded corners and shadow effects for a polished look.
+    - `.table thead`: Sets a standout dark header with white text for clarity.
+    - `.table th, .table td`: Adds padding, left-aligned text, and subtle borders for structure.
+    - `.table tbody tr:hover`: Highlights rows on hover for improved user interactivity.
+
+  5. Filters:
+    - `.filter-section`: Aligns filter options centrally for easy accessibility and spacing.
+
+  Overall:
+  - Focuses on readability, accessibility, and visual appeal, with interactive elements like hover effects.*/
+
+  body {
+      background: url('L.jpg') center;
+      background-size: cover;
+      margin: 0;
+    }
+    
+    .content-wrapper {
+      margin: 70px auto 0;
+      padding: 30px;
+      max-width: 1000px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    header h1 {
+      font-size: 36px;
+      color: #333;
+    }
+    
+    header h2 {
+      font-size: 24px;
+      color: #666;
+    }
+    
+    .book-section {
+      margin-top: 20px;
+      padding: 20px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .table {
+      margin-top: 20px;
+      border-collapse: collapse;
+      width: 100%;
+      background: white;
+      border-radius: 5px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .table thead {
+      background: #450303;
+      color: white;
+    }
+    
+    .table th, .table td {
+      padding: 15px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    .table tbody tr:hover {
+      background-color: #f1f1f1;
+    }
+    
+    .filter-section {
+      margin-bottom: 20px;
+      text-align: center;
+    }

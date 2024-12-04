@@ -1,116 +1,161 @@
-{% extends "base.html" %}
+    <!-- 
+File: rate_book.html
 
-{% block content %}
-<video class="background-video" src="{{ url_for('static', filename='v10.mp4') }}" autoplay muted loop></video>
-<div class="rating-popup">
-    <h2>Rate "{{ borrowed_book.book.name }}"</h2>
-    <form method="POST">
-        <div class="stars">
-            <input type="radio" id="star5" name="rating" value="5" />
-            <label for="star5" title="5 stars">★</label>
-            <input type="radio" id="star4" name="rating" value="4" />
-            <label for="star4" title="4 stars">★</label>
-            <input type="radio" id="star3" name="rating" value="3" />
-            <label for="star3" title="3 stars">★</label>
-            <input type="radio" id="star2" name="rating" value="2" />
-            <label for="star2" title="2 stars">★</label>
-            <input type="radio" id="star1" name="rating" value="1" />
-            <label for="star1" title="1 star">★</label>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-        <a href="{{ url_for('views.my_books') }}" class="btn btn-secondary">Skip</a>
-    </form>
-</div>
+Purpose:
+This template allows users to provide a star rating for a borrowed book or skip the rating process.
 
-<style>
-    .rating-popup {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center; /* Add this for vertical centering */
-        position: fixed; /* Position the box relative to the viewport */
-        top: 50%; /* Move to the vertical center */
-        left: 50%; /* Move to the horizontal center */
-        transform: translate(-50%, -50%); /* Adjust for the box's dimensions */
-        background: white;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        max-width: 400px;
-        z-index: 1000; /* Ensure it appears above other content */
-    }
+Features:
+1. Background Video:
+   - A looping background video enhances the visual appeal of the page.
 
-    .stars {
-        display: flex;
-        flex-direction: row-reverse;
-        justify-content: center;
-        margin: 20px 0;
-    }
+2. Rating Popup:
+   - A centered popup where users can select a star rating (1 to 5) for the book.
+   - Includes a styled star rating system with hover and selection effects.
 
-    .stars input {
-        display: none;
-    }
+3. Buttons:
+   - Submit Button: Allows users to submit their rating.
+   - Skip Button: Redirects users back to the "My Books" page if they choose not to rate.
 
-    .stars label {
-        font-size: 2rem;
-        color: #ccc;
-        cursor: pointer;
-        transition: color 0.2s;
-    }
+Styling:
+- Popup:
+  - Positioned in the center of the viewport with a white background, rounded corners, and shadow.
+  - Includes a semi-transparent background overlay to dim the page.
+- Stars:
+  - Styled with a hover effect, changing to gold when selected.
+- Buttons:
+  - Submit button styled in red for prominence.
+  - Skip button styled in gray for secondary action.
 
-    .stars input:checked ~ label {
-        color: gold;
-    }
+Usage:
+- Ideal for gathering feedback from users on their borrowed books.
 
-    .stars label:hover,
-    .stars label:hover ~ label {
-        color: gold;
-    }
+Notes:
+- The form submits the selected rating using the POST method for security.
+- Flask's `url_for` function dynamically sets paths for the form action and skip button.
+-->
 
-    /* Optional: Dim the background */
-    body::after {
-        content: '';
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-        z-index: 999; /* Behind the popup */
-    }
-   
-    .rating-popup button, 
-    .rating-popup a.btn {
-        width: 100px; /* Set a consistent width */
-        padding: 10px; /* Ensure consistent padding */
-        text-align: center; /* Center-align text */
-        margin: 5px; /* Add spacing */
-        font-size: 14px; /* Set consistent font size */
-        border-radius: 5px; /* Add a slight border radius for consistency */
-    }
+    {% extends "base.html" %}
 
-    .rating-popup .btn-primary {
-        background-color: #dc3545; /* Keep the red color for submit */
-        color: white;
-        border: none;
-    }
+    {% block content %}
+    <!--background Video-->
+    <video class="background-video" src="{{ url_for('static', filename='v10.mp4') }}" autoplay muted loop></video>
+    <div class="rating-popup">
+        <h2>Rate "{{ borrowed_book.book.name }}"</h2>
+        <!-- Provides a star rating system for user input and submission. 
+    Includes options for ratings from 1 to 5 stars, with an associated label for each, 
+    a submit button for saving the rating, and a skip button to return to the user's book list. -->
 
-    .rating-popup .btn-primary:hover {
-        background-color: #bd2130; /* Slightly darker on hover */
-    }
+        <form method="POST">
+            <div class="stars">
+                <input type="radio" id="star5" name="rating" value="5" />
+                <label for="star5" title="5 stars">★</label>
+                <input type="radio" id="star4" name="rating" value="4" />
+                <label for="star4" title="4 stars">★</label>
+                <input type="radio" id="star3" name="rating" value="3" />
+                <label for="star3" title="3 stars">★</label>
+                <input type="radio" id="star2" name="rating" value="2" />
+                <label for="star2" title="2 stars">★</label>
+                <input type="radio" id="star1" name="rating" value="1" />
+                <label for="star1" title="1 star">★</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <a href="{{ url_for('views.my_books') }}" class="btn btn-secondary">Skip</a>
+        </form>
+    </div>
 
-    .rating-popup .btn-secondary {
-        background-color: #6c757d; /* Keep the grey color for skip */
-        color: white;
-        border: none;
-    }
+    <!-- Styles for a rating popup that allows users to provide feedback with a star rating. 
+    The popup is centered on the screen with a semi-transparent background overlay, includes a star rating system, 
+    and provides styled buttons for submitting the rating or skipping the action. -->
 
-    .rating-popup .btn-secondary:hover {
-        background-color: #5a6268; /* Slightly darker on hover */
-    }
+    <style>
+        .rating-popup {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; /* Add this for vertical centering */
+            position: fixed; /* Position the box relative to the viewport */
+            top: 50%; /* Move to the vertical center */
+            left: 50%; /* Move to the horizontal center */
+            transform: translate(-50%, -50%); /* Adjust for the box's dimensions */
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            z-index: 1000; /* Ensure it appears above other content */
+        }
+
+        .stars {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .stars input {
+            display: none;
+        }
+
+        .stars label {
+            font-size: 2rem;
+            color: #ccc;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .stars input:checked ~ label {
+            color: gold;
+        }
+
+        .stars label:hover,
+        .stars label:hover ~ label {
+            color: gold;
+        }
+
+        /* Optional: Dim the background */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+            z-index: 999; /* Behind the popup */
+        }
+    
+        .rating-popup button, 
+        .rating-popup a.btn {
+            width: 100px; /* Set a consistent width */
+            padding: 10px; /* Ensure consistent padding */
+            text-align: center; /* Center-align text */
+            margin: 5px; /* Add spacing */
+            font-size: 14px; /* Set consistent font size */
+            border-radius: 5px; /* Add a slight border radius for consistency */
+        }
+
+        .rating-popup .btn-primary {
+            background-color: #dc3545; /* Keep the red color for submit */
+            color: white;
+            border: none;
+        }
+
+        .rating-popup .btn-primary:hover {
+            background-color: #bd2130; /* Slightly darker on hover */
+        }
+
+        .rating-popup .btn-secondary {
+            background-color: #6c757d; /* Keep the grey color for skip */
+            color: white;
+            border: none;
+        }
+
+        .rating-popup .btn-secondary:hover {
+            background-color: #5a6268; /* Slightly darker on hover */
+        }
 
 
-</style>
+    </style>
 
 
-{% endblock %}
+    {% endblock %}
