@@ -109,14 +109,13 @@ class User2(db.Model, UserMixin):
     date_of_birth = db.Column((db.Date))
     address = db.Column(db.String(100))
     is_admin = db.Column(db.Boolean, default=False)
+    last_name = db.Column(db.String(150))
+    date_of_birth = db.Column((db.Date))
+    address = db.Column(db.String(100))
+    is_admin = db.Column(db.Boolean, default=False)
     borrowed_books = db.relationship('BorrowedBook', backref='user', lazy=True)
     messages = db.relationship('UserMessage', backref='user', lazy=True)
-<<<<<<< HEAD
     is_active = db.Column(db.Boolean, default=True)  
-=======
-    is_active = db.Column(db.Boolean, default=True)  # To check if the account is active
-
->>>>>>> 03edd5c3082998ed70a6ba6db7ebb680f8f8b3f4
 
 """
 The `BorrowedBook` table tracks borrowing transactions in the library system, linking users with the books they have borrowed.
@@ -147,7 +146,6 @@ This table is crucial for managing borrowing activity, enforcing due dates, trac
 """
 class BorrowedBook(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-<<<<<<< HEAD
     book_id = db.Column(db.Integer, db.ForeignKey('book.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user2.id'), nullable=False)
     borrowed_date = db.Column(db.DateTime, default=datetime.now)
@@ -176,25 +174,11 @@ Relationships:
 
 This table facilitates user notifications by storing system-generated or admin-generated messages and tracking whether they have been read.
 """    
-=======
-    user_id = db.Column(db.Integer, db.ForeignKey('user2.id'))  
-    book_id = db.Column(db.Integer, db.ForeignKey('book.id'))  
-    borrow_date = db.Column(db.DateTime, default=func.now())   
-    due_date = db.Column(db.DateTime)                         
-    returned = db.Column(db.Boolean, default=False)
-
->>>>>>> 03edd5c3082998ed70a6ba6db7ebb680f8f8b3f4
 class UserMessage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user2.id'))
     content = db.Column(db.String(500), nullable=False)
-<<<<<<< HEAD
     is_read = db.Column(db.Boolean, default=False)  
     timestamp = db.Column(db.DateTime, default=func.now())
 
 
-
-=======
-    is_read = db.Column(db.Boolean, default=False)  # To track if the message is read
-    timestamp = db.Column(db.DateTime, default=func.now())
->>>>>>> 03edd5c3082998ed70a6ba6db7ebb680f8f8b3f4
