@@ -31,16 +31,13 @@ This class organizes all authentication-related functionality into a dedicated B
 
 
 from flask import Blueprint, render_template, request, flash, redirect, url_for
-<<<<<<< HEAD
 from .models import User2, UserMessage
-=======
-from .models import User2
->>>>>>> 03edd5c3082998ed70a6ba6db7ebb680f8f8b3f4
 from flask_mail import Message, Mail
 from itsdangerous import URLSafeTimedSerializer
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db, mail  
 from flask_login import login_user, login_required, logout_user, current_user
+from datetime import datetime
 from datetime import datetime
 
 
@@ -48,7 +45,6 @@ auth = Blueprint('auth', __name__)
 s = URLSafeTimedSerializer('nono')  
 mail = Mail()
 
-mail = Mail()
 
 """
 The `login` route handles user login functionality, allowing registered users to authenticate and access the system.
@@ -99,7 +95,12 @@ def login():
             if not user.is_active:
                 flash("Your account is deactivated. Please contact admin.", category="error")
                 return redirect(url_for('auth.login'))
+            # To check if the user is active
+            if not user.is_active:
+                flash("Your account is deactivated. Please contact admin.", category="error")
+                return redirect(url_for('auth.login'))
             if check_password_hash(user.password, password):
+                login_user(user, remember=True)
                 login_user(user, remember=True)
                 flash('Logged in successfully!', category='success')
                 return redirect(url_for('views.home'))
@@ -244,9 +245,20 @@ def sign_up():
         last_name = request.form.get('lastName')
         date_of_birth = request.form.get('dateOfBirth')
         address = request.form.get('address')
+        last_name = request.form.get('lastName')
+        date_of_birth = request.form.get('dateOfBirth')
+        address = request.form.get('address')
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
         passcode = request.form.get('passcode') 
+
+        # Convert date_of_birth to a date object
+        try:
+            date_of_birth = datetime.strptime(date_of_birth, "%Y-%m-%d").date()
+        except ValueError:
+            flash('Invalid date format. Please use YYYY-MM-DD.', category='error')
+            return render_template("sign_up.html", user=current_user)
+        
 
         # Convert date_of_birth to a date object
         try:
@@ -266,6 +278,10 @@ def sign_up():
             flash('Last name must be greater than 1 character.', category='error')
         elif len(address) < 2:
             flash('Address must be greater than 1 character.', category='error')
+        elif len(last_name) < 2:
+            flash('Last name must be greater than 1 character.', category='error')
+        elif len(address) < 2:
+            flash('Address must be greater than 1 character.', category='error')
         elif password1 != password2:
             flash('Passwords don\'t match.', category='error')
         elif len(password1) < 7:
@@ -273,11 +289,13 @@ def sign_up():
         else:
 
             # Default admin passcode
+            # Default admin passcode
             admin_passcode = "secure_passcode"
             
             # Check passcode for admin registration
             is_admin = passcode == admin_passcode
 
+            # new_user = User2(email=email, first_name=first_name, last_name=last_name, date_of_birth=date_of_birth, address=address, password=generate_password_hash(
             new_user = User2(email=email, first_name=first_name, last_name=last_name, date_of_birth=date_of_birth, address=address, password=generate_password_hash(
                 password1, method='pbkdf2:sha256'), is_admin=is_admin)
             db.session.add(new_user)
