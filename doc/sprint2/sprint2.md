@@ -1,7 +1,7 @@
 # Sprint 2 Planning Meeting
 
 ## Meeting Goals
-- **Date:** 11/23/2024
+- **Date:** 11/22/2024
 - **Goal:** The primary goal of this meeting was to identify what are the
 remaining user stories that we need to complete for sprint 2, divide the tasks
 between team members, and update Trello accordingly.
